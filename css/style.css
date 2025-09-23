@@ -4,8 +4,7 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: "Red Hat Display", sans-serif;
-    background-color: #f4f4f4; /* Un colore di sfondo neutro */
-    background-color: #f3f0ce; /* Sfondo generale delle pagine */
+    background-color: #f3f0ce;
 }
 
 /* Contenitore principale della landing page */
@@ -58,7 +57,7 @@ body, html {
 
 .glass-container {
     background: rgba(244, 190, 190, 0.066); /* Sfondo semi-trasparente */
-    backdrop-filter: blur(5px); /* Effetto sfocatura */
+    backdrop-filter: blur(4px); /* Effetto sfocatura */
     -webkit-backdrop-filter: blur(12px); /* Supporto per Safari */
     border-radius: 30px; /* Angoli arrotondati */
     border: 1px solid rgba(255, 255, 255, 0.18); /* Bordo sottile e traslucido */
@@ -73,19 +72,21 @@ body, html {
 .btn {
     display: block;
     padding: 15px 30px;
-    min-width: 220px; /* Larghezza minima per tutti i bottoni */
-    background-color: #333; /* Colore di sfondo scuro */
-    color: #fff; /* Testo bianco */
+    min-width: 220px;
+    background-color: #f3f0ce; /* Colore di sfondo chiaro */
+    color: #ff0403; /* Testo rosso */
     text-decoration: none; /* Rimuove la sottolineatura dei link */
     border-radius: 8px; /* Angoli arrotondati */
+    border: 2px solid #ff0403; /* Bordo rosso */
     font-size: 18px;
-    font-weight: 500;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
+    font-weight: 700; /* Testo più in grassetto per leggibilità */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
 }
 
 /* Effetto al passaggio del mouse sui bottoni */
 .btn:hover {
-    background-color: #555; /* Scurisce leggermente il bottone */
+    background-color: #ff0403; /* Sfondo rosso al passaggio */
+    color: #f3f0ce; /* Testo chiaro al passaggio */
     transform: scale(1.05); /* Ingrandisce leggermente il bottone */
 }
 
@@ -94,17 +95,16 @@ body, html {
     padding: 40px;
     max-width: 800px;
     margin: 40px auto;
-    background-color: #fff;
-    background-color: #f3f0ce; /* Colore di sfondo della "card" */
+    background-color: #f3f0ce;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .page-container h1 {
-    color: #333;
     color: #ff0403;
     border-bottom: 2px solid #f0f0f0;
     padding-bottom: 10px;
+    text-align: center; /* Centra il titolo principale */
     margin-bottom: 20px;
 }
 
@@ -149,13 +149,32 @@ body, html {
 }
 
 /* --- Stili per la Pagina Menu --- */
+.menu-category {
+    margin-bottom: 60px;
+}
+
+.category-title {
+    background-color: #f3f0ce; /* Colore di sfondo come i bottoni */
+    color: #ff0403; /* Colore testo come i bottoni */
+    border: 5px solid #ff0403; /* Bordo come i bottoni */
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    font-weight: 700; /* Grassetto come i bottoni */
+}
+
 .menu-section {
     margin-bottom: 40px;
 }
 
-.menu-section h2 {
+/* Titoli delle sotto-sezioni (es. Bianchi, Rossi, Taglieri...) */
+.menu-section h3 {
+    font-family: "Red Hat Display", sans-serif;
     font-size: 28px;
-    color: #444;
+    font-weight: bold;
     color: #ff0403;
     padding-bottom: 10px;
     border-bottom: 2px solid #eee;
@@ -185,29 +204,25 @@ body, html {
     z-index: 1; /* Mette la linea dietro al testo */
 }
 
-.menu-item-header h3 {
+.menu-item-header h4 {
     margin: 0;
     font-size: 20px;
-    color: #333;
     color: #ff0403;
     /* Stili per mettere il testo sopra i puntini */
     position: relative;
     z-index: 2;
-    background-color: #fff; /* Deve corrispondere allo sfondo del .page-container */
-    background-color: #f3f0ce; /* Deve corrispondere allo sfondo del .page-container */
+    background-color: #f3f0ce;
     padding-right: 10px; /* Spazio tra testo e puntini */
 }
 
 .price {
     font-size: 18px;
     font-weight: bold;
-    color: #555;
     color: #ff0403;
     white-space: nowrap;
     /* Stili per mettere il prezzo sopra i puntini */
     position: relative;
     z-index: 2;
-    background-color: #fff;
     background-color: #f3f0ce;
     padding-left: 10px; /* Spazio tra puntini e prezzo */
 }
@@ -215,7 +230,6 @@ body, html {
 .description {
     margin: 0;
     font-size: 16px;
-    color: #777;
     color: #ff0403;
     font-style: italic;
 }
