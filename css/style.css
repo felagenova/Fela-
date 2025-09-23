@@ -1,0 +1,281 @@
+/* Stili generali per resettare margini e padding */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Red Hat Display", sans-serif;
+    background-color: #f4f4f4; /* Un colore di sfondo neutro */
+    background-color: #f3f0ce; /* Sfondo generale delle pagine */
+}
+
+/* Contenitore principale della landing page */
+.landing-container {
+    display: flex; /* Attiva Flexbox per un allineamento facile */
+    flex-direction: column; /* Dispone gli elementi in colonna (verticalmente) */
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra orizzontalmente */
+    height: 100vh; /* Occupa il 100% dell'altezza dello schermo */
+    text-align: center;
+    padding: 20px; /* Aggiunge un po' di spazio sui lati */
+    box-sizing: border-box; /* Assicura che il padding non aumenti la dimensione totale */
+
+    /* --- Sfondo Animato --- */
+    /* Sostituisci 'background.jpg' con il nome della tua immagine */
+    background-image: url('../images/backlanding.png');
+    background-color: #1a1a1a; /* Colore di fallback se l'immagine non carica */
+    background-size: cover; /* Copre l'intera area */
+    background-position: center center;
+    background-repeat: repeat-x; /* Ripete l'immagine orizzontalmente */
+    animation: scrollBackground 60s linear infinite;
+
+}
+
+/* Stile per il logo */
+.logo {
+    max-width: 180px; /* Imposta una larghezza massima per il logo */
+    height: auto; /* Mantiene le proporzioni */
+    margin-bottom: 40px; /* Spazio tra il logo e i bottoni */
+}
+
+/* Contenitore per i bottoni */
+.button-container {
+    display: flex;
+    flex-direction: column; /* Assicura che i bottoni rimangano in colonna */
+    gap: 15px; /* Aggiunge spazio tra i bottoni */
+}
+
+/* --- Keyframes per l'animazione dello sfondo --- */
+@keyframes scrollBackground {
+    from {
+        background-position-x: 0;
+    }
+    to {
+        /* Usa una larghezza grande per un movimento continuo.
+           Se la tua immagine è larga 1920px, questo valore la farà scorrere completamente. */
+        background-position-x: -1920px;
+    }
+}
+
+.glass-container {
+    background: rgba(244, 190, 190, 0.066); /* Sfondo semi-trasparente */
+    backdrop-filter: blur(5px); /* Effetto sfocatura */
+    -webkit-backdrop-filter: blur(12px); /* Supporto per Safari */
+    border-radius: 30px; /* Angoli arrotondati */
+    border: 1px solid rgba(255, 255, 255, 0.18); /* Bordo sottile e traslucido */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); /* Ombra leggera */
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Stile base dei bottoni */
+.btn {
+    display: block;
+    padding: 15px 30px;
+    min-width: 220px; /* Larghezza minima per tutti i bottoni */
+    background-color: #333; /* Colore di sfondo scuro */
+    color: #fff; /* Testo bianco */
+    text-decoration: none; /* Rimuove la sottolineatura dei link */
+    border-radius: 8px; /* Angoli arrotondati */
+    font-size: 18px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
+}
+
+/* Effetto al passaggio del mouse sui bottoni */
+.btn:hover {
+    background-color: #555; /* Scurisce leggermente il bottone */
+    transform: scale(1.05); /* Ingrandisce leggermente il bottone */
+}
+
+/* Stile per le pagine interne (menu, eventi) */
+.page-container {
+    padding: 40px;
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #fff;
+    background-color: #f3f0ce; /* Colore di sfondo della "card" */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.page-container h1 {
+    color: #333;
+    color: #ff0403;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.back-link {
+    display: block; /* Lo trasforma in un blocco per poterlo centrare */
+    width: fit-content; /* La sua larghezza si adatta al testo */
+    margin: 30px auto 0 auto; /* Margine sopra e centrato orizzontalmente */
+    color: #ff0403;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* === Media Queries per il Responsive Design === */
+/* Stili per schermi più piccoli (es. smartphone con larghezza massima di 600px) */
+@media (max-width: 600px) {
+
+    /* Landing Page */
+    .logo {
+        max-width: 150px;
+        margin-bottom: 30px;
+    }
+
+    .button-container {
+        width: 90%; /* Occupa il 90% della larghezza dello schermo */
+    }
+
+    .btn {
+        min-width: auto; /* Rimuove la larghezza minima fissa per adattarsi al container */
+    }
+
+    /* Pagine Interne (Menu, Eventi) */
+    .page-container {
+        margin: 0; /* Occupa tutta la larghezza */
+        padding: 25px; /* Mantiene un po' di padding interno */
+        border-radius: 0; /* Niente angoli arrotondati per un look a schermo intero */
+        box-shadow: none; /* Rimuove l'ombra, più pulito su mobile */
+    }
+}
+
+/* --- Stili per la Pagina Menu --- */
+.menu-section {
+    margin-bottom: 40px;
+}
+
+.menu-section h2 {
+    font-size: 28px;
+    color: #444;
+    color: #ff0403;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 25px;
+}
+
+.menu-item {
+    margin-bottom: 25px;
+}
+
+.menu-item-header {
+    position: relative; /* Necessario per il posizionamento dello pseudo-elemento */
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+
+/* Crea una linea di puntini che collega il nome al prezzo */
+.menu-item-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4px; /* Allineamento verticale dei puntini */
+    border-bottom: 2px dotted #ccc;
+    z-index: 1; /* Mette la linea dietro al testo */
+}
+
+.menu-item-header h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+    color: #ff0403;
+    /* Stili per mettere il testo sopra i puntini */
+    position: relative;
+    z-index: 2;
+    background-color: #fff; /* Deve corrispondere allo sfondo del .page-container */
+    background-color: #f3f0ce; /* Deve corrispondere allo sfondo del .page-container */
+    padding-right: 10px; /* Spazio tra testo e puntini */
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+    color: #ff0403;
+    white-space: nowrap;
+    /* Stili per mettere il prezzo sopra i puntini */
+    position: relative;
+    z-index: 2;
+    background-color: #fff;
+    background-color: #f3f0ce;
+    padding-left: 10px; /* Spazio tra puntini e prezzo */
+}
+
+.description {
+    margin: 0;
+    font-size: 16px;
+    color: #777;
+    color: #ff0403;
+    font-style: italic;
+}
+
+/* --- Stili per la Pagina Eventi --- */
+.event-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05); /* Sfondo leggermente traslucido */
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff0403;
+    color: #f3f0ce; /* Colore testo che riprende lo sfondo della card menu */
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-right: 20px;
+    font-weight: bold;
+    text-align: center;
+    flex-shrink: 0; /* Evita che la data si rimpicciolisca */
+}
+
+.event-date .day {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.event-date .month {
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.event-details h3 {
+    margin: 0 0 8px 0;
+    color: #ff0403;
+    font-size: 22px;
+}
+
+.event-details h2 {
+    margin: 0 0 8px 0;
+    color: #ff0403;
+    font-size: 19px;
+}
+
+.event-details p {
+    margin: 0;
+    color: #ff0403;
+    font-style: normal; /* Rimuove l'italic delle descrizioni del menu */
+}
