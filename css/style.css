@@ -121,6 +121,20 @@ body, html {
     text-decoration: underline;
 }
 
+/* --- Stili per il Footer --- */
+.site-footer {
+    background-color: #ff0403; /* Colore rosso principale */
+    color: #f3f0ce; /* Colore testo chiaro */
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.site-footer p {
+    margin: 5px 0;
+}
+
 /* === Media Queries per il Responsive Design === */
 /* Stili per schermi più piccoli (es. smartphone con larghezza massima di 600px) */
 @media (max-width: 600px) {
@@ -289,7 +303,13 @@ body, html {
 }
 
 .event-details p {
+    font-size: medium;
     margin: 0;
     color: #ff0403;
     font-style: normal; /* Rimuove l'italic delle descrizioni del menu */
+}
+
+.event-details .event-time {
+    margin-top: 10px; /* Aggiunge un po' di spazio sopra l'orario */
+    font-weight: 700; /* Rende il testo in grassetto */
 }
