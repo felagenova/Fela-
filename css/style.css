@@ -184,15 +184,20 @@ body, html {
     margin-bottom: 40px;
 }
 
+/* Contenitore per i titoli di sotto-sezione e i loro sottotitoli */
+.menu-section-header {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 25px;
+}
+
 /* Titoli delle sotto-sezioni (es. Bianchi, Rossi, Taglieri...) */
 .menu-section h3 {
     font-family: "Red Hat Display", sans-serif;
     font-size: 28px;
     font-weight: bold;
     color: #ff0403;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
-    margin-bottom: 25px;
+    margin: 0; /* Rimuoviamo il margine per avvicinarlo al sottotitolo */
 }
 
 .menu-item {
@@ -246,6 +251,32 @@ body, html {
     font-size: 16px;
     color: #ff0403;
     font-style: italic;
+}
+
+/* Stile per le icone tonde degli allergeni */
+.allergen-icon {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px; /* Centra il numero verticalmente */
+    text-align: center;
+    border-radius: 50%; /* Rende il box un cerchio */
+    background-color: #ff0403;
+    color: #f3f0ce;
+    font-size: 13px;
+    font-weight: 700;
+    margin-left: 4px;
+    vertical-align: middle; /* Allinea le icone con il testo */
+    font-style: normal; /* Rimuove l'italic ereditato */
+}
+
+/* Stili per le note a piè di pagina del menu */
+.menu-footnotes {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
+    color: #ff0403;
 }
 
 /* --- Stili per la Pagina Eventi --- */
