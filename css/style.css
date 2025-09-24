@@ -134,6 +134,35 @@ body {
     text-decoration: underline;
 }
 
+/* --- Stile per il bottone "Torna su" --- */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(255, 4, 3, 0.7); /* Rosso semi-trasparente */
+    color: #f3f0ce;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 24px;
+    z-index: 1000;
+    opacity: 0; /* Nascosto di default */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.back-to-top-btn.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top-btn:hover {
+    background-color: rgba(255, 4, 3, 1); /* Rosso pieno al passaggio */
+}
+
 /* --- Stili per il Footer --- */
 .site-footer {
     background-color: #ff0403; /* Colore rosso principale */
