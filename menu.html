@@ -15,8 +15,15 @@
     <div class="page-container">
         <h1>Il Nostro Menu</h1>
 
+        <!-- Bottoni di navigazione rapida -->
+        <div class="jump-links">
+            <a href="#vini" class="jump-btn">Vini</a>
+            <a href="#cocktails" class="jump-btn">Cocktails</a>
+            <a href="#food" class="jump-btn">Food</a>
+        </div>
+
         <!-- Categoria VINI -->
-        <div class="menu-category">
+        <div class="menu-category" id="vini">
             <h2 class="category-title">Vini</h2>
             <section class="menu-section">
                 <h3>Bianchi</h3>
@@ -198,10 +205,11 @@
                     <p class="description">Granache, Syrah e Mourvèdre</p>
                 </div>
             </section>
+            <p class="category-footnote">* I Vini in mescita sono esposti sulla lavagna</p>
         </div>
 
         <!-- Categoria COCKTAILS -->
-        <div class="menu-category">
+        <div class="menu-category" id="cocktails">
             <h2 class="category-title">Cocktails</h2>
             <section class="menu-section">
                 <div class="menu-item">
@@ -247,10 +255,11 @@
                     <p class="description">Tequila, friggitello, agave, sale.</p>
                 </div>
             </section>
+            <p class="category-footnote">* Drink base 8€</p>
         </div>
 
         <!-- Categoria DA MANGIARE -->
-        <div class="menu-category">
+        <div class="menu-category" id="food">
             <h2 class="category-title">Da Mangiare</h2>
             <section class="menu-section">
                 <div class="menu-section-header">
@@ -287,7 +296,7 @@
                         </h4>
                         <span class="price">€7</span>
                     </div>
-                    <p class="description">‘Nduja, scamorza affumicata, pomodori, friggitelli freschi</p>
+                    <p class="description">‘Nduja, scamorza affumicata, pomodori secchi, friggitelli freschi</p>
                 </div>
                 <div class="menu-item">
                     <div class="menu-item-header">
@@ -297,7 +306,7 @@
                         </h4>
                         <span class="price">€8</span>
                     </div>
-                    <p class="description">Pancetta cotta, melanzane grigliate, gorgonzola.</p>
+                    <p class="description">Pancetta cotta della Macelleria “Giacobbe”, melanzane grigliate, gorgonzola.</p>
                 </div>
             </section>
             <section class="menu-section">
@@ -306,7 +315,7 @@
                 </div>
                 <div class="menu-item">
                     <div class="menu-item-header">
-                        <h4>Tagliere di salumi della Macelleria “Giacobbe” di Sassello*</h4>
+                        <h4>Tagliere di salumi della Macelleria “Giacobbe” di Sassello</h4>
                         <span class="price">€10</span>
                     </div>
                 </div>
@@ -320,7 +329,7 @@
                 </div>
                 <div class="menu-item">
                     <div class="menu-item-header">
-                        <h4>Tagliere “combo”**</h4>
+                        <h4>Tagliere “COMBO”**</h4>
                         <span class="price">€15</span>
                     </div>
                 </div>
@@ -336,9 +345,15 @@
     </div>
 
     <footer class="site-footer">
-        <p><strong>Fela!<br>Social Space<br></strong></p>
+        <p><strong>Fela!<br>Music Bar - Social Hub<br></strong></p>
         <p>Via di S. Cosimo, 12r, 16128 Genova GE</p>
-        <p><strong>Orari:</strong> Mar-Dom, 18:00 - 01:00<br></p>
+        <p>
+            <strong>Orari:</strong><br>
+            Mar-Gio: 18:00 - 01:00<br>
+            Ven-Sab: 18:00 - 03:00<br>
+            Dom: 18:00 - 01:00<br>
+            Lun: FELAKIUDI
+        </p>
     </footer>
 </body>
 </html>

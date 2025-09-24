@@ -1,5 +1,9 @@
+html {
+    scroll-behavior: smooth; /* Abilita lo scorrimento fluido */
+}
+
 /* Stili generali per resettare margini e padding */
-body, html {
+body {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -33,7 +37,16 @@ body, html {
 .logo {
     max-width: 180px; /* Imposta una larghezza massima per il logo */
     height: auto; /* Mantiene le proporzioni */
-    margin-bottom: 40px; /* Spazio tra il logo e i bottoni */
+}
+
+/* Stile per il claim sotto il logo */
+.claim {
+    color: #333; /* Colore nero/scuro */
+    font-size: 12px; /* Dimensione ridotta */
+    font-weight: 500;
+    margin: 10px 0 30px 0; /* Margine sopra e sotto il claim */
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* Contenitore per i bottoni */
@@ -162,6 +175,31 @@ body, html {
     }
 }
 
+/* --- Stili per i bottoni di navigazione rapida nel menu --- */
+.jump-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap; /* Manda a capo i bottoni su schermi piccoli */
+}
+
+.jump-btn {
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #ff0403;
+    border: 2px solid #ff0403;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.jump-btn:hover {
+    background-color: #ff0403;
+    color: #f3f0ce;
+}
+
 /* --- Stili per la Pagina Menu --- */
 .menu-category {
     margin-bottom: 60px;
@@ -178,6 +216,13 @@ body, html {
     margin-bottom: 40px;
     text-transform: uppercase;
     font-weight: 700; /* Grassetto come i bottoni */
+}
+
+.category-footnote {
+    font-style: italic;
+    font-size: 18px;
+    color: #ff0403;
+    text-align: left;
 }
 
 .menu-section {
