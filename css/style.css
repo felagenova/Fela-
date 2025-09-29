@@ -418,3 +418,29 @@ body {
     margin-top: 10px; /* Aggiunge un po' di spazio sopra l'orario */
     font-weight: 700; /* Rende il testo in grassetto */
 }
+
+/* Stile per il placeholder quando non ci sono eventi */
+.event-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+    margin-bottom: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-placeholder p {
+    color: #ff0403;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Stile per i giorni di chiusura */
+.event-card.closing-day {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.event-card.closing-day h3 {
+    color: #888;
+}
