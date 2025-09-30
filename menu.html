@@ -7,11 +7,14 @@
     <!-- Google Fonts: Red Hat Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="inner-page-bg">
 
+    <!-- Contenitore per le animazioni -->
+    <div id="animation-container"></div>
+    
     <div class="page-container">
         <h1>Il Nostro Menu</h1>
 
@@ -397,22 +400,11 @@
     <!-- Bottone "Torna su" -->
     <a href="#" id="back-to-top" class="back-to-top-btn" title="Torna su">↑</a>
 
-    <script>
-        // Seleziona il bottone
-        const backToTopButton = document.getElementById("back-to-top");
-
-        // Aggiunge un listener per l'evento di scroll della finestra
-        window.addEventListener("scroll", () => {
-            // Se l'utente ha scrollato più di 200px verso il basso
-            if (window.scrollY > 200) {
-                // Mostra il bottone aggiungendo la classe 'show'
-                backToTopButton.classList.add("show");
-            } else {
-                // Altrimenti, nascondi il bottone rimuovendo la classe 'show'
-                backToTopButton.classList.remove("show");
-            }
-        });
-    </script>
+    <!-- Script per le animazioni -->
+    <script src="js/animations.js"></script>
+    
+    <!-- Script per funzionalità comuni (es. "Torna su") -->
+    <script src="js/main.js"></script>
 
 </body>
 </html>
