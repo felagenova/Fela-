@@ -38,6 +38,8 @@ body {
     height: 100vh; /* Occupa il 100% dell'altezza dello schermo */
     text-align: center;
     padding: 20px; /* Aggiunge un po' di spazio sui lati */
+    position: relative; /* Necessario per z-index */
+    z-index: 10; /* Assicura che il contenuto sia sopra gli asset animati */
     box-sizing: border-box; /* Assicura che il padding non aumenti la dimensione totale */
 
     /* --- Sfondo Animato --- */
@@ -126,7 +128,10 @@ body {
     padding: 40px;
     max-width: 800px;
     margin: 40px auto;
+
     background-color: #f3f0ce;
+    position: relative; /* Necessario per z-index */
+    z-index: 10; /* Assicura che il contenuto sia sopra gli asset animati */
     margin: 40px auto;    
     background-color: #f3f0ce; /* Sfondo di default per le altre pagine */
     border-radius: 8px;
@@ -500,6 +505,8 @@ body {
     background: #f3f0ce; /* Sfondo chiaro per il box del calendario */
     border-radius: 12px;
     padding: 25px;
+    position: relative; /* Necessario per z-index */
+    z-index: 10; /* Assicura che il calendario sia sopra gli asset animati */
     border: 3px solid #ff0403; /* Corretto l'errore di battitura */
 }
 
@@ -636,6 +643,8 @@ body {
     background-color: #f3f0ce; /* Sfondo chiaro per il box di navigazione */
     padding: 20px;
     border-radius: 8px;
+    position: relative; /* Necessario per z-index */
+    z-index: 10; /* Assicura che la navigazione sia sopra gli asset animati */
     border: 3px solid #ff0403; /* Bordo rosso e più visibile */
 }
 
@@ -688,4 +697,86 @@ body {
     will-change: transform, opacity; /* Ottimizzazione per le performance */
     image-rendering: -webkit-optimize-contrast; /* Per browser Webkit */
     image-rendering: crisp-edges; /* Standard moderno */
+}
+
+/* --- Keyframes per le traiettorie degli asset --- */
+
+/* Animazione di caduta con una leggera curva */
+@keyframes fall {
+    0% {
+        transform: translate(-20vw, -150vh) rotate(0deg);
+    }
+    50% {
+        transform: translate(10vw, 0vh) rotate(180deg);
+    }
+    100% {
+        transform: translate(-10vw, 150vh) rotate(360deg);
+    }
+}
+
+/* Animazione di risalita con una leggera curva */
+@keyframes rise {
+    0% {
+        transform: translate(20vw, 150vh) rotate(0deg);
+    }
+    50% {
+        transform: translate(-10vw, 0vh) rotate(-180deg);
+    }
+    100% {
+        transform: translate(10vw, -150vh) rotate(-360deg);
+    }
+}
+
+/* Animazione fluttuante da sinistra a destra con andamento a onda */
+@keyframes float-left-to-right {
+    0% {
+        transform: translate(-150vw, 20vh) rotate(0deg);
+    }
+    50% {
+        transform: translate(0vw, -20vh) rotate(180deg);
+    }
+    100% {
+        transform: translate(150vw, 20vh) rotate(360deg);
+    }
+}
+
+/* Animazione fluttuante da destra a sinistra con andamento a onda */
+@keyframes float-right-to-left {
+    0% {
+        transform: translate(150vw, -20vh) rotate(0deg);
+    }
+    50% {
+        transform: translate(0vw, 20vh) rotate(-180deg);
+    }
+    100% {
+        transform: translate(-150vw, -20vh) rotate(-360deg);
+    }
+}
+
+/* NUOVA: Animazione di caduta a zig-zag */
+@keyframes fall-zigzag {
+    0% { transform: translate(0vw, -150vh) rotate(0deg); }
+    25% { transform: translate(30vw, -75vh) rotate(90deg); }
+    50% { transform: translate(-30vw, 0vh) rotate(180deg); }
+    75% { transform: translate(30vw, 75vh) rotate(270deg); }
+    100% { transform: translate(0vw, 150vh) rotate(360deg); }
+}
+
+/* NUOVA: Animazione fluttuante con curva pronunciata */
+@keyframes float-curve {
+    0% {
+        transform: translate(-150vw, -50vh) rotate(0deg);
+    }
+    25% {
+        transform: translate(-75vw, 50vh) rotate(90deg);
+    }
+    50% {
+        transform: translate(0vw, -50vh) rotate(180deg);
+    }
+    75% {
+        transform: translate(75vw, 50vh) rotate(270deg);
+    }
+    100% {
+        transform: translate(150vw, -50vh) rotate(360deg);
+    }
 }
