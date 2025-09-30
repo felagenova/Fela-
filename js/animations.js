@@ -112,7 +112,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // 4. Genera un'animazione casuale e la sua durata
         const trajectory = createRandomTrajectory();
         const duration = getRandom(15, 40); // Durata tra 15 e 40 secondi
-        const delay = getRandom(0, 5); // Ritardo ridotto per un flusso più costante
+
+        // Controlla se siamo sulla pagina eventi (che ha la classe 'inner-page-bg')
+        const isEventsPage = document.body.classList.contains('inner-page-bg');
+        const delay = isEventsPage ? getRandom(0, 1) : getRandom(0, 1); // Ritardo molto più breve per la pagina eventi
 
         // Imposta l'animazione per essere eseguita una sola volta
         asset.style.animation = `${trajectory.name} ${duration}s linear ${delay}s`;
