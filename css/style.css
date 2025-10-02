@@ -42,13 +42,7 @@ body {
     z-index: 10; /* Assicura che il contenuto sia sopra gli asset animati */
     box-sizing: border-box; /* Assicura che il padding non aumenti la dimensione totale */
 
-    /* --- Sfondo Animato --- */
-    background-image: url('../images/backlanding.png');
-    background-color: #1a1a1a; /* Colore di fallback se l'immagine non carica */
-    background-size: cover; /* Copre l'intera area */
-    background-position: center center;
-    background-repeat: repeat-x; /* Ripete l'immagine orizzontalmente */
-    animation: scrollBackground 60s linear infinite;
+    /* Lo sfondo è gestito dal CSS inline in index.html per ottimizzazione */
 }
 
 /* --- Keyframes per l'animazione dello sfondo --- */
