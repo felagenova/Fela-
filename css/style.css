@@ -189,16 +189,36 @@ body {
 
 /* --- Stili per il Footer --- */
 .site-footer {
-    background-color: #ff0403; /* Colore rosso principale */
-    color: #f3f0ce; /* Colore testo chiaro */
-    text-align: center;
-    padding: 30px 20px;
-    font-size: 15px;
+    background-color: #ff0403;
+    color: #f3f0ce;
+    padding: 20px 20px; /* Padding ridotto per mobile */
+    font-size: 13px;   /* Testo più piccolo per mobile */
     line-height: 1.6;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px; /* Spazio ridotto tra le colonne */
+}
+
+.footer-left, .footer-right {
+    text-align: left;
 }
 
 .site-footer p {
-    margin: 5px 0;
+    margin: 0 0 5px 0; /* Margine solo in basso */
+}
+
+.footer-right {
+    text-align: right;
+}
+
+/* Stili per schermi più grandi */
+@media (min-width: 768px) {
+    .site-footer {
+        padding: 25px 40px; /* Aumenta padding su desktop */
+        font-size: 14px;   /* Aumenta testo su desktop */
+        gap: 30px;         /* Aumenta spazio tra colonne su desktop */
+    }
 }
 
 /* === Media Queries per il Responsive Design === */
@@ -231,12 +251,6 @@ body {
     .day-cell {
         aspect-ratio: auto;
         height: auto; /* L'altezza si adatterà per mantenere il rapporto */
-    }
-
-    /* Footer su mobile */
-    .site-footer {
-        padding: 20px 15px; /* Riduciamo lo spazio interno */
-        font-size: 13px; /* Riduciamo la dimensione del testo */
     }
 }
 
@@ -733,7 +747,7 @@ body {
     border-radius: 30px; /* Angoli arrotondati */
     border: 1px solid rgba(255, 255, 255, 0.18); /* Bordo sottile e traslucido */
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); /* Ombra leggera */
-    padding: 40px 30px;
+    padding: 30px 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -742,8 +756,8 @@ body {
 /* Stile base dei bottoni */
 .btn {
     display: block;
-    padding: 15px 30px;
-    min-width: 220px;
+    padding: 12px 25px;
+    min-width: 200px;
     background-color: #f3f0ce; /* Colore di sfondo chiaro */
     color: #ff0403; /* Testo rosso */
     text-decoration: none; /* Rimuove la sottolineatura dei link */
@@ -841,16 +855,40 @@ body {
 
 /* --- Stili per il Footer --- */
 .site-footer {
-    background-color: #ff0403; /* Colore rosso principale */
-    color: #f3f0ce; /* Colore testo chiaro */
-    text-align: center;
-    padding: 30px 20px;
-    font-size: 15px;
+    background-color: #ff0403;
+    color: #f3f0ce;
+    padding: 25px 40px; /* Padding ottimizzato */
+    font-size: 14px;
     line-height: 1.6;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 30px; /* Spazio tra le colonne */
+}
+
+.footer-left, .footer-right {
+    text-align: left;
+}
+
+.footer-right {
+    text-align: right;
 }
 
 .site-footer p {
-    margin: 5px 0;
+    margin: 0 0 5px 0; /* Margine solo in basso */
+}
+
+/* Footer su mobile */
+@media (max-width: 767px) {
+    .site-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px 15px;
+    }
+    .footer-left, .footer-right {
+        text-align: center;
+    }
 }
 
 /* === Media Queries per il Responsive Design === */
@@ -883,12 +921,6 @@ body {
     .day-cell {
         aspect-ratio: auto;
         height: auto; /* L'altezza si adatterà per mantenere il rapporto */
-    }
-
-    /* Footer su mobile */
-    .site-footer {
-        padding: 20px 15px; /* Riduciamo lo spazio interno */
-        font-size: 13px; /* Riduciamo la dimensione del testo */
     }
 }
 
