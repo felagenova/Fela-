@@ -9,12 +9,153 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Stili per la Navbar (copiati da eventi.html) -->
+    <style>
+        /* --- Stili per la Navbar --- */
+        .site-header-nav {
+            background-color: #f3f0ce;
+            border-bottom: 3px solid #ff0403;
+            padding: 10px 20px; /* Ridotto padding per mobile */
+            position: sticky; /* Rende la navbar fissa in cima */
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-logo img {
+            height: 45px; /* Altezza del logo */
+            width: auto;
+        }
+
+        .main-nav a {
+            color: #ff0403;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            margin-left: 20px;
+            transition: opacity 0.3s; /* Cambiata transizione per l'opacità */
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            /* Rimuoviamo la sottolineatura e usiamo l'opacità per l'effetto */
+            opacity: 0.7;
+        }
+
+        /* Responsive per schermi più grandi */
+        @media (min-width: 768px) {
+            .site-header-nav {
+                padding: 10px 40px;
+            }
+            .main-nav a {
+                font-size: 18px;
+                margin-left: 30px;
+            }
+        }
+
+        /* --- Stili per Hamburger Menu (Mobile) --- */
+        .hamburger-menu {
+            display: none; /* Nascosto su desktop */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 101; /* Sopra la navbar */
+        }
+
+        .hamburger-line {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #ff0403;
+            margin: 5px 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        @media (max-width: 767px) {
+            /* --- Riduzione altezza navbar su mobile --- */
+            .site-header-nav {
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+            .nav-logo img {
+                height: 35px;
+            }
+            /* ----------------------------------------- */
+
+            .hamburger-menu {
+                display: block; /* Visibile solo su mobile */
+            }
+
+            .main-nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: #f3f0ce;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                transform: translateX(100%); /* Nascosto fuori schermo */
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .main-nav.nav-open {
+                transform: translateX(0); /* Visibile */
+            }
+
+            .main-nav a {
+                margin-left: 0;
+                font-size: 24px;
+            }
+
+            /* Animazione hamburger -> X */
+            .nav-open .hamburger-line:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            .nav-open .hamburger-line:nth-child(2) {
+                opacity: 0;
+            }
+            .nav-open .hamburger-line:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+        }
+    </style>
 </head>
 <body>
-
     <!-- Contenitore per le animazioni -->
     <div id="animation-container"></div>
     
+    <header class="site-header-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/f!_logo.png" alt="Fela! Logo">
+            </a>
+            <button class="hamburger-menu" aria-label="Apri menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="menu.html" class="active">Menu</a>
+                <a href="eventi.html">Eventi</a>
+            </nav>
+        </div>
+    </header>
+
     <div class="page-container">
         <h1>Il Nostro Menu</h1>
 
@@ -382,7 +523,6 @@
             <p>** Tutti i formaggi sono a latte crudo.</p>
         </div>
 
-        <a href="index.html" class="back-link">Torna alla Home</a>
     </div>
 
     <footer class="site-footer">
@@ -404,7 +544,22 @@
     <script src="js/animations.js"></script>
     
     <!-- Script per funzionalità comuni (es. "Torna su") -->
-    <script src="js/main.js"></script>
+    <script>
+        // Script per il bottone "Torna su"
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { backToTopButton.classList.add('show'); } 
+            else { backToTopButton.classList.remove('show'); }
+        });
+
+        // Script per il menu Hamburger
+        const hamburgerBtn = document.querySelector('.hamburger-menu');
+        const navMenu = document.querySelector('.main-nav');
+        hamburgerBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('nav-open');
+            hamburgerBtn.classList.toggle('nav-open');
+        });
+    </script>
 
 </body>
 </html>

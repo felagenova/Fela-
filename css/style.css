@@ -43,9 +43,653 @@ body {
     box-sizing: border-box; /* Assicura che il padding non aumenti la dimensione totale */
 
     /* --- Sfondo Animato --- */
-    /* Sostituisci 'background.jpg' con il nome della tua immagine */
     background-image: url('../images/backlanding.png');
     background-color: #1a1a1a; /* Colore di fallback se l'immagine non carica */
+    background-size: cover; /* Copre l'intera area */
+    background-position: center center;
+    background-repeat: repeat-x; /* Ripete l'immagine orizzontalmente */
+    animation: scrollBackground 60s linear infinite;
+}
+
+/* --- Keyframes per l'animazione dello sfondo --- */
+@keyframes scrollBackground {
+    from { background-position-x: 0; }
+    to { background-position-x: -1920px; } /* Scorrimento verso sinistra */
+}
+
+/* Stile per il logo */
+.logo {
+    max-width: 180px; /* Imposta una larghezza massima per il logo */
+    height: auto; /* Mantiene le proporzioni */
+}
+
+/* Stile per il claim sotto il logo */
+.claim {
+    color: #333; /* Colore nero/scuro */
+    font-size: 12px; /* Dimensione ridotta */
+    font-weight: 500;
+    margin: 10px 0 30px 0; /* Margine sopra e sotto il claim */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Contenitore per i bottoni */
+.button-container {
+    display: flex;
+    flex-direction: column; /* Assicura che i bottoni rimangano in colonna */
+    gap: 15px; /* Aggiunge spazio tra i bottoni */
+}
+
+.glass-container {
+    background: rgba(244, 190, 190, 0.066); /* Sfondo semi-trasparente */
+    backdrop-filter: blur(4px); /* Effetto sfocatura */
+    -webkit-backdrop-filter: blur(12px); /* Supporto per Safari */
+    border-radius: 30px; /* Angoli arrotondati */
+    border: 1px solid rgba(255, 255, 255, 0.18); /* Bordo sottile e traslucido */
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); /* Ombra leggera */
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Stile base dei bottoni */
+.btn {
+    display: block;
+    padding: 15px 30px;
+    min-width: 220px;
+    background-color: #f3f0ce; /* Colore di sfondo chiaro */
+    color: #ff0403; /* Testo rosso */
+    text-decoration: none; /* Rimuove la sottolineatura dei link */
+    border-radius: 8px; /* Angoli arrotondati */
+    border: 2px solid #ff0403; /* Bordo rosso */
+    font-size: 18px;
+    font-weight: 700; /* Testo più in grassetto per leggibilità */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
+}
+
+/* Effetto al passaggio del mouse sui bottoni */
+.btn:hover {
+    background-color: #ff0403; /* Sfondo rosso al passaggio */
+    color: #f3f0ce; /* Testo chiaro al passaggio */
+    transform: scale(1.05); /* Ingrandisce leggermente il bottone */
+}
+
+/* Stile per le pagine interne (menu, eventi) */
+.page-container {
+    padding: 40px;
+    max-width: 800px;
+    margin: 40px auto;
+
+    background-color: #f3f0ce;
+    position: relative; /* Necessario per z-index */
+    z-index: 10; /* Assicura che il contenuto sia sopra gli asset animati */
+    margin: 40px auto;    
+    background-color: #f3f0ce; /* Sfondo di default per le altre pagine */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Stile per il contenitore delle pagine con sfondo speciale */
+.inner-page-bg .page-container {
+    background: transparent; /* Rimuoviamo lo sfondo dal contenitore principale */
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+}
+
+.page-container h1 {
+    color: #ff0403;
+    background-color: #f3f0ce; /* Aggiungiamo lo sfondo al box del titolo */
+    border-radius: 8px;
+    padding: 20px; /* Rimosso padding-bottom ridondante */
+    border: 3px solid #ff0403; /* Bordo rosso e più visibile */
+    margin-bottom: 20px;
+    font-size: 36px; /* Aumentata la dimensione del testo */
+    text-transform: uppercase; /* Testo tutto maiuscolo */
+    font-weight: 900; /* Imposta il font in grassetto "heavy" */
+    text-align: center; /* Centra il titolo principale */
+}
+
+.back-link {
+    display: block; /* Lo trasforma in un blocco per poterlo centrare */
+    width: fit-content; /* La sua larghezza si adatta al testo */
+    margin: 30px auto 0 auto; /* Margine sopra e centrato orizzontalmente */
+    color: #ff0403;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* --- Stile per il bottone "Torna su" --- */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(255, 4, 3, 0.7); /* Rosso semi-trasparente */
+    color: #f3f0ce;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 24px;
+    z-index: 1000;
+    opacity: 0; /* Nascosto di default */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.back-to-top-btn.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top-btn:hover {
+    background-color: rgba(255, 4, 3, 1); /* Rosso pieno al passaggio */
+}
+
+/* --- Stili per il Footer --- */
+.site-footer {
+    background-color: #ff0403; /* Colore rosso principale */
+    color: #f3f0ce; /* Colore testo chiaro */
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.site-footer p {
+    margin: 5px 0;
+}
+
+/* === Media Queries per il Responsive Design === */
+/* Stili per schermi più piccoli (es. smartphone con larghezza massima di 600px) */
+@media (max-width: 600px) {
+
+    /* Landing Page */
+    .logo {
+        max-width: 150px;
+        margin-bottom: 30px;
+    }
+
+    .button-container {
+        width: 90%; /* Occupa il 90% della larghezza dello schermo */
+    }
+
+    .btn {
+        min-width: auto; /* Rimuove la larghezza minima fissa per adattarsi al container */
+    }
+
+    /* Pagine Interne (Menu, Eventi) */
+    .page-container {
+        margin: 0; /* Occupa tutta la larghezza */
+        padding: 25px; /* Mantiene un po' di padding interno */
+        border-radius: 0; /* Niente angoli arrotondati per un look a schermo intero */
+        box-shadow: none; /* Rimuove l'ombra, più pulito su mobile */
+    }
+
+    /* Calendario su mobile: rende le celle più quadrate */
+    .day-cell {
+        aspect-ratio: auto;
+        height: auto; /* L'altezza si adatterà per mantenere il rapporto */
+    }
+
+    /* Footer su mobile */
+    .site-footer {
+        padding: 20px 15px; /* Riduciamo lo spazio interno */
+        font-size: 13px; /* Riduciamo la dimensione del testo */
+    }
+}
+
+.jump-btn {
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #ff0403;
+    border: 2px solid #ff0403;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.jump-btn:hover {
+    background-color: #ff0403;
+    color: #f3f0ce;
+}
+
+/* --- Stili per i bottoni di navigazione rapida nel menu --- */
+.jump-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap; /* Manda a capo i bottoni su schermi piccoli */
+}
+
+/* --- Stili per la Pagina Menu --- */
+.menu-category {
+    margin-bottom: 60px;
+}
+
+.category-title {
+    background-color: #f3f0ce; /* Colore di sfondo come i bottoni */
+    color: #ff0403; /* Colore testo come i bottoni */
+    border: 5px solid #ff0403; /* Bordo come i bottoni */
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    font-weight: 700; /* Grassetto come i bottoni */
+}
+
+.category-footnote {
+    font-style: italic;
+    font-size: 15px;
+    color: #ff0403;
+    text-align: left;
+}
+
+.menu-section {
+    margin-bottom: 40px;
+}
+
+/* Contenitore per i titoli di sotto-sezione e i loro sottotitoli */
+.menu-section-header {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 25px;
+}
+
+/* Titoli delle sotto-sezioni (es. Bianchi, Rossi, Taglieri...) */
+.menu-section h3 {
+    font-family: "Red Hat Display", sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff0403;
+    margin: 0; /* Rimuoviamo il margine per avvicinarlo al sottotitolo */
+}
+
+.menu-item {
+    margin-bottom: 25px;
+}
+
+.menu-item-header {
+    position: relative; /* Necessario per il posizionamento dello pseudo-elemento */
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+
+/* Crea una linea di puntini che collega il nome al prezzo */
+.menu-item-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4px; /* Allineamento verticale dei puntini */
+    border-bottom: 2px dotted #ccc;
+    z-index: 1; /* Mette la linea dietro al testo */
+}
+
+.menu-item-header h4 {
+    margin: 0;
+    font-size: 20px;
+    color: #ff0403;
+    /* Stili per mettere il testo sopra i puntini */
+    position: relative;
+    z-index: 2;
+    background-color: #f3f0ce;
+    padding-right: 10px; /* Spazio tra testo e puntini */
+}
+
+.price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff0403;
+    white-space: nowrap;
+    /* Stili per mettere il prezzo sopra i puntini */
+    position: relative;
+    z-index: 2;
+    background-color: #f3f0ce;
+    padding-left: 10px; /* Spazio tra puntini e prezzo */
+}
+
+.description {
+    margin: 0;
+    font-size: 16px;
+    color: #ff0403;
+    font-style: italic;
+}
+
+/* Stile per le icone tonde degli allergeni */
+.allergen-icon {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px; /* Centra il numero verticalmente */
+    text-align: center;
+    border-radius: 50%; /* Rende il box un cerchio */
+    background-color: #ff0403;
+    color: #f3f0ce;
+    font-size: 13px;
+    font-weight: 700;
+    margin-left: 4px;
+    vertical-align: middle; /* Allinea le icone con il testo */
+    font-style: normal; /* Rimuove l'italic ereditato */
+}
+
+/* Stili per le note a piè di pagina del menu */
+.menu-footnotes {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
+    color: #ff0403;
+}
+
+/* --- Stili per la Pagina Eventi --- */
+.event-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05); /* Sfondo leggermente traslucido */
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff0403;
+    color: #f3f0ce; /* Colore testo che riprende lo sfondo della card menu */
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-right: 20px;
+    font-weight: bold;
+    text-align: center;
+    flex-shrink: 0; /* Evita che la data si rimpicciolisca */
+}
+
+.event-date .weekday {
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.event-date .day {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.event-date .month {
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.event-details h3 {
+    margin: 0 0 8px 0;
+    color: #ff0403;
+    font-size: 22px;
+}
+
+.event-details h2 {
+    margin: 0 0 8px 0;
+    color: #ff0403;
+    font-size: 19px;
+}
+
+.event-details p {
+    font-size: medium;
+    margin: 0;
+    color: #ff0403;
+    font-style: normal; /* Rimuove l'italic delle descrizioni del menu */
+}
+
+.event-details .event-time {
+    margin-top: 10px; /* Aggiunge un po' di spazio sopra l'orario */
+    font-weight: 700; /* Rende il testo in grassetto */
+}
+
+/* Stile per il placeholder quando non ci sono eventi */
+.event-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+    margin-bottom: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.event-placeholder p {
+    color: #ff0403;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Stile per i giorni di chiusura */
+.event-card.closing-day {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.event-card.closing-day h3 {
+    color: #888;
+}
+
+/* --- Stili per il Calendario Interattivo --- */
+.calendar-container {
+    background: #f3f0ce; /* Sfondo chiaro per il box del calendario */
+    border-radius: 12px;
+    padding: 25px;
+    position: relative; /* Necessario per z-index */
+    z-index: 10; /* Assicura che il calendario sia sopra gli asset animati */
+    border: 3px solid #ff0403; /* Corretto l'errore di battitura */
+}
+
+.calendar-container:not(.active) {
+    display: none;
+}
+
+.calendar-header {
+    display: none; /* Nasconde il titolo del mese dentro il calendario */
+}
+
+.calendar-header h2 {
+    color: #ff0403;
+    font-size: 28px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.weekday-header {
+    text-align: center;
+    font-weight: 700;
+    color: #ff0403;
+    padding-bottom: 10px;
+    font-size: 14px;
+}
+
+.day-cell {
+    position: relative;
+    height: 90px;
+    background-color: #f3f0ce;
+    border: 1px solid #ff0403;
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #aaa;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.day-cell.in-month {
+    color: #ff0403;
+}
+
+.day-cell.has-event {
+    background-color: rgba(255, 4, 3, 0.1);
+    cursor: pointer;
+    color: #ff0403;    
+}
+
+/* Aggiunge un pallino rosso per indicare un evento */
+.day-cell.has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #ff0403;
+    border-radius: 50%;
+}
+
+.day-cell.has-event:hover {
+    background-color: rgba(255, 4, 3, 0.2);
+    transform: scale(1.05);
+}
+
+.day-cell.closing-day {
+    background-color: rgba(0, 0, 0, 0.08);
+    color: #999;
+    cursor: default;
+}
+
+.day-cell.closing-day:hover {
+    transform: none;
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Nasconde il testo di anteprima dell'evento */
+.day-cell .event-marker {
+    display: none;
+}
+
+.day-cell .event-details-content {
+    display: none; /* Nascosto di default */
+}
+
+/* Area per mostrare i dettagli dell'evento */
+#event-display-area {
+    margin-top: 30px;
+    padding: 25px;
+    background: #f3f0ce; /* Sfondo uguale alla pagina */
+    border: 2px solid #ff0403;
+    border-radius: 12px;
+    display: none; /* Nascosto finché non si clicca un evento */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+#event-display-area.visible {
+    display: block;
+}
+
+#event-display-area h3 {
+    margin: 0 0 10px 0;
+    color: #ff0403;
+    font-size: 24px;
+}
+
+#event-display-area p {
+    margin: 4px 0;
+    color: #ff0403; /* Testo rosso per coerenza */
+    font-size: 16px;
+}
+
+#event-display-area .event-time {
+    margin-top: 15px;
+    font-weight: 700;
+    color: #ff0403; /* Testo rosso per coerenza */
+}
+
+/* --- Stili per la navigazione del calendario --- */
+.calendar-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+    background-color: #f3f0ce; /* Sfondo chiaro per il box di navigazione */
+    padding: 20px;
+    border-radius: 8px;
+    position: relative; /* Necessario per z-index */
+    z-index: 10; /* Assicura che la navigazione sia sopra gli asset animati */
+    border: 3px solid #ff0403; /* Bordo rosso e più visibile */
+}
+
+.nav-arrow {
+    background: transparent;
+    border: 2px solid #ff0403;
+    color: #ff0403;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-arrow:hover:not(:disabled) {
+    background-color: #ff0403;
+    color: #f3f0ce;
+}
+
+.nav-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+#current-month-display {
+    font-family: "Red Hat Display", sans-serif;
+    font-size: 36px; /* Aumentata la dimensione del testo */
+    font-weight: 700;
+    color: #ff0403;
+    text-transform: uppercase;
+}
+
+/* --- Stili per l'animazione degli asset --- */
+#animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Permette di cliccare attraverso il contenitore */
+    overflow: hidden;
+    z-index: 0; /* Lo mettiamo a un livello base, gli asset avranno z-index positivo o negativo */
+}
+
+.animated-asset {
+    position: absolute;
+    display: block;
+    will-change: transform, opacity; /* Ottimizzazione per le performance */
+    image-rendering: -webkit-optimize-contrast; /* Per browser Webkit */
+    image-rendering: crisp-edges; /* Standard moderno */
+}
     background-size: cover; /* Copre l'intera area */
     background-position: center center;
     background-repeat: repeat-x; /* Ripete l'immagine orizzontalmente */
@@ -697,6 +1341,102 @@ body {
     will-change: transform, opacity; /* Ottimizzazione per le performance */
     image-rendering: -webkit-optimize-contrast; /* Per browser Webkit */
     image-rendering: crisp-edges; /* Standard moderno */
+}
+
+/* --- Stili per la Navbar --- */
+.site-header-nav {
+    background-color: #f3f0ce;
+    border-bottom: 3px solid #ff0403;
+    padding: 10px 20px; /* Ridotto padding per mobile */
+    position: sticky; /* Rende la navbar fissa in cima */
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-logo img {
+    height: 45px; /* Altezza del logo */
+    width: auto;
+}
+
+.main-nav a {
+    color: #ff0403;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    margin-left: 20px;
+    transition: opacity 0.3s; /* Cambiata transizione per l'opacità */
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    /* Rimuoviamo la sottolineatura e usiamo l'opacità per l'effetto */
+    opacity: 0.7;
+}
+
+/* --- Stili per Hamburger Menu (Mobile) --- */
+.hamburger-menu {
+    display: none; /* Nascosto su desktop */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 101; /* Sopra la navbar */
+}
+
+.hamburger-line {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #ff0403;
+    margin: 5px 0;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+/* --- Media Queries per Navbar e Hamburger --- */
+@media (min-width: 768px) {
+    .site-header-nav {
+        padding: 10px 40px;
+    }
+    .main-nav a {
+        font-size: 18px;
+        margin-left: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .site-header-nav {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .nav-logo img {
+        height: 35px;
+    }
+    .hamburger-menu {
+        display: block;
+    }
+    .main-nav {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+        background-color: #f3f0ce;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        gap: 30px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    .main-nav.nav-open { transform: translateX(0); }
+    .main-nav a { margin-left: 0; font-size: 24px; }
+    .nav-open .hamburger-line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .nav-open .hamburger-line:nth-child(2) { opacity: 0; }
+    .nav-open .hamburger-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 }
 
 /* --- Keyframes per le traiettorie degli asset --- */

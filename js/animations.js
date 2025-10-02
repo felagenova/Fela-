@@ -10,25 +10,49 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- CONFIGURAZIONE ---
-    // Aggiungi qui i nomi dei file dei tuoi asset
-    const assetImages = [
-        // ... (l'elenco delle immagini rimane invariato)
-        'images/vicoli_g295.webp',
-        'images/bere_path1-0.webp',
-        'images/bussola_g301.webp',
-        'images/corde_g127.webp',
-        'images/croce_g300.webp',
-        'images/disco_path1-7.webp',
-        'images/drago_g36.webp',
-        'images/mappa_g293.webp',
-        'images/pescevesc_g298.webp'
-        // Aggiungi altri asset se necessario
-    ];
+    const CONFIG = {
+        assetImages: [
+            'images/vicoli_g295.webp',
+            'images/bere_path1-0.webp',
+            'images/bussola_g301.webp',
+            'images/corde_g127.webp',
+            'images/croce_g300.webp',
+            'images/disco_path1-7.webp',
+            'images/drago_g36.webp',
+            'images/mappa_g293.webp',
+            'images/pescevesc_g298.webp'
+            // Aggiungi altri asset se necessario
+        ],
+        // --- MIGLIORAMENTO 3: Centralizzazione delle costanti ---
+        size: { min: 30, max: 150 }, // px
+        duration: { min: 15, max: 40 }, // secondi
+        initialDelay: { main: { min: 0, max: 15 }, events: { min: 0, max: 2 } }, // secondi
+        // --- NUOVA CONFIGURAZIONE PER PAGINA EVENTI ---
+        eventsPage: {
+            initialAssets: 4
+        },
+        mobile: {
+            initialAssets: 5,
+            newAssetInterval: 4000 // ms
+        },
+        desktop: {
+            initialAssets: 15,
+            newAssetInterval: 2000 // ms
+        }
+    };
 
     // --- OTTIMIZZAZIONE 2: Riduci il numero di asset su schermi piccoli ---
+    const isEventsPage = document.body.classList.contains('inner-page-bg');
     const isMobile = window.innerWidth < 768;
-    const initialAssets = isMobile ? 5 : 15; // Meno asset all'avvio su mobile
-    const newAssetInterval = isMobile ? 4000 : 2000; // Intervallo più lungo su mobile
+
+    // --- Logica aggiornata per il numero di asset iniziali ---
+    let initialAssets;
+    if (isEventsPage) {
+        initialAssets = CONFIG.eventsPage.initialAssets; // Usa il valore per la pagina eventi
+    } else {
+        initialAssets = isMobile ? CONFIG.mobile.initialAssets : CONFIG.desktop.initialAssets; // Comportamento standard per la home
+    }
+    const newAssetInterval = isMobile ? CONFIG.mobile.newAssetInterval : CONFIG.desktop.newAssetInterval;
 
     let lastTimestamp = 0;
 
@@ -98,24 +122,25 @@ document.addEventListener('DOMContentLoaded', function() {
         asset.classList.add('animated-asset');
 
         // 1. Scegli un'immagine casuale
-        const randomImage = assetImages[Math.floor(Math.random() * assetImages.length)];
+        const randomImage = CONFIG.assetImages[Math.floor(Math.random() * CONFIG.assetImages.length)];
         asset.src = randomImage; // Usa direttamente il percorso dall'array
 
         // 2. Imposta una dimensione casuale
-        const size = getRandom(30, 150); // Dimensione tra 30px e 150px
+        const size = getRandom(CONFIG.size.min, CONFIG.size.max);
         asset.style.width = `${size}px`;
         asset.style.height = 'auto';
 
         // Imposta l'opacità iniziale a 0 per nascondere l'asset prima che l'animazione parta
         asset.style.opacity = '0';
 
-        // 4. Genera un'animazione casuale e la sua durata
+        // 4. Genera un'animazione casuale, durata e ritardo
         const trajectory = createRandomTrajectory();
-        const duration = getRandom(15, 40); // Durata tra 15 e 40 secondi
+        const duration = getRandom(CONFIG.duration.min, CONFIG.duration.max);
 
         // Controlla se siamo sulla pagina eventi (che ha la classe 'inner-page-bg')
-        const isEventsPage = document.body.classList.contains('inner-page-bg');
-        const delay = isEventsPage ? getRandom(0, 1) : getRandom(0, 1); // Ritardo molto più breve per la pagina eventi
+        // --- MIGLIORAMENTO 2: Logica del ritardo corretta ---
+        const delayConfig = isEventsPage ? CONFIG.initialDelay.events : CONFIG.initialDelay.main;
+        const delay = getRandom(delayConfig.min, delayConfig.max);
 
         // Imposta l'animazione per essere eseguita una sola volta
         asset.style.animation = `${trajectory.name} ${duration}s linear ${delay}s`;
@@ -151,14 +176,36 @@ document.addEventListener('DOMContentLoaded', function() {
         requestAnimationFrame(animationLoop);
     }
 
+    // --- MIGLIORAMENTO 1: Precaricamento delle immagini ---
+    function preloadImages(urls, callback) {
+        let loadedCount = 0;
+        const totalImages = urls.length;
+        if (totalImages === 0) {
+            callback();
+            return;
+        }
+        urls.forEach(url => {
+            const img = new Image();
+            img.src = url;
+            img.onload = img.onerror = () => {
+                loadedCount++;
+                if (loadedCount === totalImages) {
+                    callback();
+                }
+            };
+        });
+    }
+
     // --- Avvio ---
     function startAnimations() {
-        // Crea un numero iniziale di asset
-        for (let i = 0; i < initialAssets; i++) {
-            createAsset();
-        }
-        // Avvia il loop di animazione
-        requestAnimationFrame(animationLoop);
+        console.log("Precaricamento immagini...");
+        preloadImages(CONFIG.assetImages, () => {
+            console.log("Immagini caricate. Avvio animazioni.");
+            for (let i = 0; i < initialAssets; i++) {
+                createAsset();
+            }
+            requestAnimationFrame(animationLoop);
+        });
     }
 
     startAnimations();

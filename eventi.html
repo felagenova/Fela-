@@ -9,17 +9,65 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Stili per il box data evento -->
+    <style>
+        .event-header-with-date {
+            display: flex;
+            align-items: flex-start; /* Allinea gli elementi all'inizio */
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+        .date-box {
+            border: 2px solid #ff0403; /* Usa il colore rosso corretto */
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            flex-shrink: 0;
+            color: #ff0403; /* Imposta il colore del testo a rosso */
+            font-family: "Red Hat Display", sans-serif; /* Usa il font corretto */
+        }
+        .date-box .day {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .date-box .month { display: block; font-size: 0.8rem; font-weight: 700; }
+
+        /* Nuovo contenitore per i dettagli dell'evento */
+        .event-details-column {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body class="inner-page-bg">
     <div id="animation-container"></div>
-
+    <header class="site-header-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <!-- Usa il logo in formato SVG per qualità e leggerezza -->
+                <img src="images/f!_logo.png" alt="Fela! Logo">
+            </a>
+            <button class="hamburger-menu" aria-label="Apri menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="eventi.html" class="active">Eventi</a>
+            </nav>
+        </div>
+    </header>
     <div class="page-container">
         <h1>I Nostri Eventi</h1>
 
         <div class="calendar-nav">
-            <button id="prev-month" class="nav-arrow">‹</button>
+            <button id="prev-month" class="nav-arrow" aria-label="Mese precedente">‹</button>
             <span id="current-month-display"></span>
-            <button id="next-month" class="nav-arrow">›</button>
+            <button id="next-month" class="nav-arrow" aria-label="Mese successivo">›</button>
         </div>
 
         <div id="calendar-october" class="calendar-container active" data-year="2025" data-month="9"> <!-- Mese 9 = Ottobre (0-indexed) -->
@@ -178,7 +226,6 @@
             <!-- I dettagli dell'evento verranno inseriti qui da JavaScript -->
         </div>
 
-        <a href="index.html" class="back-link">Torna alla Home</a>
     </div>
 
     <footer class="site-footer">
@@ -200,18 +247,58 @@
             const displayArea = document.getElementById('event-display-area');
 
             const calendars = document.querySelectorAll('.calendar-container');
+            const monthNames = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
+            const dayNames = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
 
             eventCells.forEach(cell => {
                 cell.addEventListener('click', function() {
-                    // Prende il contenuto HTML dei dettagli dell'evento dalla cella cliccata
                     const eventDetailsContent = this.querySelector('.event-details-content');
-
                     if (eventDetailsContent) {
-                        // Inserisce il contenuto nell'area di visualizzazione
-                        displayArea.innerHTML = eventDetailsContent.innerHTML;
-                        // Rende visibile l'area
+                        // --- NUOVA LOGICA PER LA DATA ---
+                        const calendar = this.closest('.calendar-container');
+                        const dayNumber = parseInt(this.firstChild.textContent.trim(), 10);
+                        
+                        let year = parseInt(calendar.dataset.year, 10);
+                        let month = parseInt(calendar.dataset.month, 10);
+
+                        // Gestisce i giorni che non appartengono al mese corrente
+                        if (!this.classList.contains('in-month')) {
+                            if (dayNumber > 20) { // Giorno del mese precedente
+                                month = month - 1;
+                                if (month < 0) {
+                                    month = 11;
+                                    year = year - 1;
+                                }
+                            } else { // Giorno del mese successivo
+                                month = month + 1;
+                                if (month > 11) {
+                                    month = 0;
+                                    year = year + 1;
+                                }
+                            }
+                        }
+
+                        // --- NUOVA LOGICA PER IL BOX DATA ---
+                        const day = dayNumber;
+                        const monthAbbr = monthNames[month].substring(0, 3).toUpperCase();
+
+                        // Crea l'HTML per il quadratino della data
+                        const dateBoxHtml = `
+                            <div class="date-box">
+                                <span class="day">${day}</span>
+                                <span class="month">${monthAbbr}</span>
+                            </div>`;
+
+                        // Assembla il nuovo layout con il box data e una colonna per i dettagli
+                        displayArea.innerHTML = `
+                            <div class="event-header-with-date">
+                                ${dateBoxHtml}
+                                <div class="event-details-column">
+                                    ${eventDetailsContent.innerHTML}
+                                </div>
+                            </div>`;
+
                         displayArea.classList.add('visible');
-                        // Scorre la pagina per rendere visibile l'area dei dettagli
                         displayArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 });
@@ -290,6 +377,17 @@
                 }
             }
             showTodaysEvent(); // Esegui la funzione al caricamento della pagina
+
+            // --- Logica per il menu Hamburger ---
+            const hamburgerBtn = document.querySelector('.hamburger-menu');
+            const navMenu = document.querySelector('.main-nav');
+
+            hamburgerBtn.addEventListener('click', () => {
+                const isNavOpen = navMenu.classList.contains('nav-open');
+                navMenu.classList.toggle('nav-open');
+                hamburgerBtn.classList.toggle('nav-open');
+                hamburgerBtn.setAttribute('aria-expanded', !isNavOpen);
+            });
         });
     </script>
 </body>

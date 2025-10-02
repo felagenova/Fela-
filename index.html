@@ -8,8 +8,56 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Collega il file CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- 1. Precarica il file CSS completo in background -->
+    <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+
+    <!-- 2. Inserisci qui il CSS Critico per il caricamento immediato -->
+    <style>
+        body { margin: 0; padding: 0; height: 100%; font-family: "Red Hat Display", sans-serif; background-color: #1a1a1a; }
+        .landing-container {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 100vh; text-align: center; padding: 20px; position: relative; z-index: 10;
+            box-sizing: border-box;
+            background-image: url('../images/backlanding.png');
+            background-color: #1a1a1a;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: repeat-x;
+            animation: scrollBackground 60s linear infinite;
+        }
+        @keyframes scrollBackground {
+            from { background-position-x: 0; }
+            to { background-position-x: -1920px; }
+        }
+        .glass-container {
+            background: rgba(244, 190, 190, 0.066);
+            backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(12px);
+            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            padding: 40px 30px; display: flex; flex-direction: column; align-items: center;
+        }
+        .logo { max-width: 180px; height: auto; }
+        .claim { color: #333; font-size: 12px; font-weight: 500; margin: 10px 0 30px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .button-container { display: flex; flex-direction: column; gap: 15px; }
+        .btn {
+            display: block; padding: 15px 30px; min-width: 220px;
+            background-color: #f3f0ce; color: #ff0403;
+            text-decoration: none; border-radius: 8px; border: 2px solid #ff0403;
+            font-size: 18px; font-weight: 700;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+        .btn:hover { background-color: #ff0403; color: #f3f0ce; transform: scale(1.05); }
+        /* Stili footer essenziali */
+        .site-footer { background-color: #ff0403; color: #f3f0ce; text-align: center; padding: 30px 20px; font-size: 15px; line-height: 1.6; }
+        .site-footer p { margin: 5px 0; }
+        @media (max-width: 600px) {
+            .logo { max-width: 150px; margin-bottom: 30px; }
+            .button-container { width: 90%; }
+            .btn { min-width: auto; }
+        }
+    </style>
 </head>
 <body>
 
@@ -50,7 +98,7 @@
         </p>
     </footer>
 
-    <!-- Script per le animazioni -->
-    <script src="js/animations.js"></script>
+    <!-- 3. Carica lo script in modo differito per non bloccare il rendering -->
+    <script src="js/animations.js" defer></script>
 </body>
 </html>
