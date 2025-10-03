@@ -1546,3 +1546,78 @@ body {
         transform: translate(150vw, -50vh) rotate(360deg);
     }
 }
+
+/* --- Stili per il Pop-up Promozionale --- */
+.promo-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.promo-popup-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.promo-popup-content {
+    background-color: #f3f0ce;
+    color: #ff0403;
+    padding: 30px;
+    border-radius: 12px;
+    border: 3px solid #ff0403;
+    text-align: center;
+    max-width: 90%;
+    width: 450px;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.promo-popup-content h3 {
+    margin: 0 0 15px 0;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.promo-popup-content p {
+    margin: 0 0 20px 0;
+    font-size: 18px;
+}
+
+.promo-popup-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #ff0403;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* --- Responsive per il Pop-up --- */
+@media (max-width: 600px) {
+    .promo-popup-content {
+        padding: 25px 20px; /* Riduciamo gli spazi interni */
+    }
+    .promo-popup-content h3 {
+        font-size: 22px; /* Riduciamo la dimensione del titolo */
+    }
+    .promo-popup-content p {
+        font-size: 16px; /* Riduciamo la dimensione del testo */
+        text-align: left; /* Allineiamo a sinistra per migliore leggibilità */
+    }
+}
+}
