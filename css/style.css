@@ -697,7 +697,6 @@ body {
     will-change: transform, opacity; /* Ottimizzazione per le performance */
     image-rendering: -webkit-optimize-contrast; /* Per browser Webkit */
     image-rendering: crisp-edges; /* Standard moderno */
-}
     background-size: cover; /* Copre l'intera area */
     background-position: center center;
     background-repeat: repeat-x; /* Ripete l'immagine orizzontalmente */
@@ -1619,5 +1618,4 @@ body {
         font-size: 16px; /* Riduciamo la dimensione del testo */
         text-align: left; /* Allineiamo a sinistra per migliore leggibilità */
     }
-}
 }
