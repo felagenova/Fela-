@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Imposta qui la data del prossimo brunch.
     // NOTA: i mesi in JavaScript partono da 0 (Gennaio=0, Febbraio=1, ..., Ottobre=9, etc.)
     const BRUNCH_DATE = {
-        day: 19,
+        day: 9,
         month: 9, // 9 = Ottobre
         year: 2025
     };
@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Funzione per controllare se oggi è il giorno del brunch
     function isBrunchDay() {
         const today = new Date();
-        // Confronta solo giorno, mese e anno, ignorando l'orario.
+        // Confronta semplicemente anno, mese e giorno della data odierna (basata sul dispositivo dell'utente)
+        // con i valori che abbiamo impostato. Questo è il metodo più diretto e affidabile.
         return today.getDate() === BRUNCH_DATE.day &&
                today.getMonth() === BRUNCH_DATE.month &&
                today.getFullYear() === BRUNCH_DATE.year;

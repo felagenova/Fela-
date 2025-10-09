@@ -26,7 +26,7 @@
             <nav class="main-nav">
                 <a href="index.html">Home</a>
                 <a href="menu.html">Menu</a>
-                <a href="brunch.html">Il Brunch</a>
+                <a href="brunch.html" id="brunch-nav-link">Il Brunch</a>
                 <a href="eventi.html" class="active">Eventi</a>
             </nav>
         </div>
@@ -214,6 +214,14 @@
         </div>
     </footer>
 
+    <!-- Pop-up per il bottone Brunch (copiato da index.html) -->
+    <div id="brunch-popup" class="brunch-popup-overlay">
+        <div class="brunch-popup-content">
+            <button id="brunch-close-btn" class="brunch-popup-close" aria-label="Chiudi">&times;</button>
+            <p>Il bottone sarà disponibile al prossimo brunch, rimani aggiornato nella sezione <a href="eventi.html">Eventi</a> o sulla nostra pagina <a href="https://www.instagram.com/fela.genova/" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
+        </div>
+    </div>
+
     <script src="js/animations.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -364,5 +372,7 @@
             });
         });
     </script>
+    <script src="js/brunch-logic.js" defer></script>
+
 </body>
 </html>

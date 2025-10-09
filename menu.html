@@ -27,7 +27,7 @@
             <nav class="main-nav">
                 <a href="index.html">Home</a>
                 <a href="menu.html" class="active">Menu</a>
-                <a href="brunch.html">Il Brunch</a>
+                <a href="brunch.html" id="brunch-nav-link">Il Brunch</a>
                 <a href="eventi.html">Eventi</a>
             </nav>
         </div>
@@ -418,6 +418,14 @@
         </div>
     </footer>
 
+    <!-- Pop-up per il bottone Brunch (copiato da index.html) -->
+    <div id="brunch-popup" class="brunch-popup-overlay">
+        <div class="brunch-popup-content">
+            <button id="brunch-close-btn" class="brunch-popup-close" aria-label="Chiudi">&times;</button>
+            <p>Il bottone sarà disponibile al prossimo brunch, rimani aggiornato nella sezione <a href="eventi.html">Eventi</a> o sulla nostra pagina <a href="https://www.instagram.com/fela.genova/" target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
+        </div>
+    </div>
+
     <!-- HTML per il Pop-up Promozionale -->
     <div id="promo-popup" class="promo-popup-overlay">
         <div class="promo-popup-content">
@@ -445,6 +453,7 @@
     <!-- Script per le animazioni -->
     <script src="js/animations.js"></script>
     <script src="js/promo.js" defer></script>
+    <script src="js/brunch-logic.js" defer></script>
 
     <!-- Script per funzionalità comuni (es. "Torna su") -->
     <script>

@@ -1678,18 +1678,8 @@ body {
     cursor: pointer;
     line-height: 1;
 }
-
-/* --- Stile per il bottone Brunch quando non è attivo --- */
-.btn-inactive {
-    background-color: #888888; /* Sfondo grigio scuro, opaco */
-    color: #cccccc;            /* Testo grigio chiaro per contrasto */
-    border-color: #888888;     /* Bordo dello stesso colore dello sfondo */
+/* Stile per il link del brunch nella navbar quando non è attivo */
+.nav-link-inactive {
+    opacity: 0.4;
     cursor: not-allowed;
-}
-
-/* Disabilita l'effetto hover per il bottone inattivo */
-.btn-inactive:hover {
-    background-color: #888888; /* Mantiene lo stesso sfondo */
-    color: #cccccc;            /* Mantiene lo stesso colore del testo */
-    transform: none;
 }

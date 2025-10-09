@@ -49,6 +49,18 @@
             transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
         }
         .btn:hover { background-color: #ff0403; color: #f3f0ce; transform: scale(1.05); }
+        /* Stili per il bottone Brunch quando non è attivo (spostati qui per priorità) */
+        .btn-inactive {
+            background-color: #888888ce;
+            color: #5e5e5eeb;
+            border-color: #888888;
+            cursor: not-allowed;
+        }
+        .btn-inactive:hover {
+            background-color: #888888;
+            color: #cccccc;
+            transform: none;
+        }
         /* Stili footer essenziali */
         .site-footer { background-color: #ff0403; color: #f3f0ce; text-align: center; padding: 30px 20px; font-size: 15px; line-height: 1.6; }
         .site-footer p { margin: 5px 0; }
@@ -115,6 +127,6 @@
 
     <!-- 3. Carica lo script in modo differito per non bloccare il rendering -->
     <script src="js/animations.js" defer></script>
-    <script src="js/brunch-button.js" defer></script>
+    <script src="js/brunch-logic.js" defer></script>
 </body>
 </html>
