@@ -59,12 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Se non è il giorno del brunch, disabilita gli elementi
     if (!isBrunchDay()) {
-        if (brunchHomeBtn) {
-            brunchHomeBtn.classList.add('btn-inactive');
-        }
-        if (brunchNavlink) {
-            brunchNavlink.classList.add('nav-link-inactive');
-        }
     }
 
     // Aggiungi l'evento di click agli elementi del brunch, se esistono

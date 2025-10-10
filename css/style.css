@@ -208,6 +208,15 @@ body {
     margin: 0 0 5px 0; /* Margine solo in basso */
 }
 
+.site-footer a {
+    color: inherit; /* Eredita il colore del testo dal footer */
+    text-decoration: none; /* Rimuove la sottolineatura di default */
+}
+
+.site-footer a:hover {
+    text-decoration: underline; /* Aggiunge la sottolineatura al passaggio del mouse */
+}
+
 .footer-right {
     text-align: right;
 }
