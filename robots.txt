@@ -1,0 +1,5 @@
+# Permetti a tutti i motori di ricerca di scansionare l'intero sito.
+User-agent: *
+Allow: /
+
+Sitemap: https://felagenova.github.io/Fela-/sitemap.xml
