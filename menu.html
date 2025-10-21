@@ -444,46 +444,35 @@
     <!-- HTML per il Pop-up Promozionale -->
     <div id="promo-popup" class="promo-popup-overlay">
         <div class="promo-popup-content">
+            <!-- Il contenuto del popup viene gestito da promo.js, ma lo script è rimosso. Lasciamo il contenitore vuoto o lo rimuoviamo del tutto. -->
             <button id="promo-close-btn" class="promo-popup-close" aria-label="Chiudi">&times;</button>
-            <h3>ERNESTO VIEN DA FELA!</h3>
-            <p>
-                <strong>Vini:</strong><br>
-                - Bitornino Bianco “azienda agricola Frascole”<br>
-                - Briscola e Tresette “Podere San Biagio“<br>
-                - Terre Rosse “Alain Cavailles”<br><br>
-                <strong>Food:</strong><br>
-                Mezze Sberle con pan brioches artigianale:<br>
-                - Lingua, salsa verde, indivia<br>
-                - Gorgonzola, peperoni, arrosto, acciuga<br>
-                - Salsiccia di Bra, formaggio Bra duro e insalata belga piastrata<br><br>
-                <strong>Mezza Sberla + 1 calice: 10€</strong><br>
-                <strong>3 calici + 3 mezze sberle: 25€</strong>
-            </p>
         </div>
     </div>
 
     <!-- Bottone "Torna su" -->
     <a href="#" id="back-to-top" class="back-to-top-btn" title="Torna su">↑</a>
 
-    <!-- Script per le animazioni -->
+    <!-- Script specifici per la pagina menu -->
     <script src="js/promo.js" defer></script>
     <script src="js/brunch-logic.js" defer></script>
 
     <!-- Script per funzionalità comuni (es. "Torna su") -->
     <script>
-        // Script per il bottone "Torna su"
-        const backToTopButton = document.getElementById('back-to-top');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) { backToTopButton.classList.add('show'); } 
-            else { backToTopButton.classList.remove('show'); }
-        });
-
         // Script per il menu Hamburger
         const hamburgerBtn = document.querySelector('.hamburger-menu');
         const navMenu = document.querySelector('.main-nav');
         hamburgerBtn.addEventListener('click', () => {
             navMenu.classList.toggle('nav-open');
             hamburgerBtn.classList.toggle('nav-open');
+            // Aggiungi/rimuovi classe al body per bloccare lo scroll
+            document.body.classList.toggle('no-scroll');
+        });
+
+        // Script per il bottone "Torna su"
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { backToTopButton.classList.add('show'); } 
+            else { backToTopButton.classList.remove('show'); }
         });
     </script>
 

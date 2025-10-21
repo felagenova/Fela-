@@ -61,6 +61,19 @@ body {
     background-color: #f3f0ce;
 }
 
+/* Classe per nascondere elementi visivamente ma mantenerli accessibili per screen reader e SEO */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* --- Keyframes per l'animazione dello sfondo --- */
 @keyframes scrollBackground {
     from { background-position-x: 0; }
@@ -75,7 +88,7 @@ body {
     left: 0;
     width: 100%;
     height: 100vh;
-    background-image: url('../images/backlanding.png');
+    background-image: url('../images/backlanding.webp');
     background-color: #1a1a1a;
     background-size: cover;
     background-position: center center;
@@ -99,7 +112,7 @@ body {
     box-sizing: border-box; /* Assicura che il padding non aumenti la dimensione totale */
     
     /* Stili per lo sfondo animato */
-    background-image: url('../images/backlanding.png');
+    background-image: url('../images/backlanding.webp');
     background-color: #1a1a1a;
     background-size: cover;
     background-position: center center;
@@ -169,7 +182,7 @@ body {
     margin-top: 30px;
     padding: 10px 20px;
     background: #f3f0ce; /* Colore panna */
-    border-radius: 50px; /* Forma a pillola */
+    border-radius: 100px; /* Forma a pillola */
     border: 2px solid #ff0403; /* Bordo rosso per coerenza */
     width: auto;
     max-width: 350px; /* Aumentata larghezza per il testo */
@@ -615,11 +628,13 @@ body {
 }
 
 .event-date .day {
+    color: #ff0403;
     font-size: 28px;
     line-height: 1;
 }
 
 .event-date .month {
+    color: #ff0403;
     font-size: 14px;
     text-transform: uppercase;
 }
