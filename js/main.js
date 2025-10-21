@@ -1,19 +1,33 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // --- Logica per il pulsante "Torna su" ---
-    const backToTopButton = document.getElementById("back-to-top");
+    // Funzione per gestire il pulsante "Torna su"
+    function handleBackToTop() {
+        const backToTopButton = document.getElementById("back-to-top");
+        if (!backToTopButton) return;
 
-    // Se il pulsante non esiste nella pagina, non fare nulla
-    if (!backToTopButton) return;
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 200) {
+                backToTopButton.classList.add("show");
+            } else {
+                backToTopButton.classList.remove("show");
+            }
+        });
+    }
 
-    // Aggiunge un listener per l'evento di scroll della finestra
-    window.addEventListener("scroll", () => {
-        // Se l'utente ha scrollato più di 200px verso il basso
-        if (window.scrollY > 200) {
-            // Mostra il bottone aggiungendo la classe 'show'
-            backToTopButton.classList.add("show");
-        } else {
-            // Altrimenti, nascondi il bottone rimuovendo la classe 'show'
-            backToTopButton.classList.remove("show");
-        }
-    });
+    // Funzione per gestire il menu Hamburger
+    function handleHamburgerMenu() {
+        const hamburgerBtn = document.querySelector('.hamburger-menu');
+        const navMenu = document.querySelector('.main-nav');
+
+        if (!hamburgerBtn || !navMenu) return;
+
+        hamburgerBtn.addEventListener('click', () => {
+            const isNavOpen = navMenu.classList.contains('nav-open');
+            navMenu.classList.toggle('nav-open');
+            hamburgerBtn.classList.toggle('nav-open');
+            hamburgerBtn.setAttribute('aria-expanded', String(!isNavOpen));
+        });
+    }
+
+    handleBackToTop();
+    handleHamburgerMenu();
 });

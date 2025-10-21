@@ -213,7 +213,6 @@
         </div>
 
     </div>
-
     <footer class="site-footer">
         <div class="footer-left">
             <p><strong>Fela! - Music Bar - Social Hub</strong></p>            
@@ -232,156 +231,11 @@
         </div>
     </footer>
 
+    <script src="js/main.js" defer></script>
     <script src="js/animations.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const eventCells = document.querySelectorAll('.day-cell.has-event');
-            const displayArea = document.getElementById('event-display-area');
-
-            const calendars = document.querySelectorAll('.calendar-container');
-            const monthNames = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
-            const dayNames = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
-
-            eventCells.forEach(cell => {
-                cell.addEventListener('click', function() {
-                    const eventDetailsContent = this.querySelector('.event-details-content');
-                    if (eventDetailsContent) {
-                        // --- NUOVA LOGICA PER LA DATA ---
-                        const calendar = this.closest('.calendar-container');
-                        const dayNumber = parseInt(this.firstChild.textContent.trim(), 10);
-                        
-                        let year = parseInt(calendar.dataset.year, 10);
-                        let month = parseInt(calendar.dataset.month, 10);
-
-                        // Gestisce i giorni che non appartengono al mese corrente
-                        if (!this.classList.contains('in-month')) {
-                            if (dayNumber > 20) { // Giorno del mese precedente
-                                month = month - 1;
-                                if (month < 0) {
-                                    month = 11;
-                                    year = year - 1;
-                                }
-                            } else { // Giorno del mese successivo
-                                month = month + 1;
-                                if (month > 11) {
-                                    month = 0;
-                                    year = year + 1;
-                                }
-                            }
-                        }
-
-                        // --- NUOVA LOGICA PER IL BOX DATA ---
-                        const day = dayNumber;
-                        const monthAbbr = monthNames[month].substring(0, 3).toUpperCase();
-
-                        // Crea l'HTML per il quadratino della data
-                        const dateBoxHtml = `
-                            <div class="date-box">
-                                <span class="day">${day}</span>
-                                <span class="month">${monthAbbr}</span>
-                            </div>`;
-
-                        // Assembla il nuovo layout con il box data e una colonna per i dettagli
-                        displayArea.innerHTML = `
-                            <div class="event-header-with-date">
-                                ${dateBoxHtml}
-                                <div class="event-details-column">
-                                    ${eventDetailsContent.innerHTML}
-                                </div>
-                            </div>`;
-
-                        displayArea.classList.add('visible');
-                        displayArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                });
-            });
-
-            // --- Logica di navigazione del calendario ---
-            const prevMonthBtn = document.getElementById('prev-month');
-            const nextMonthBtn = document.getElementById('next-month');
-            const monthDisplay = document.getElementById('current-month-display');
-            let currentCalendarIndex = 0;
-
-            function showCalendar(index) {
-                calendars.forEach((cal, i) => {
-                    cal.classList.toggle('active', i === index);
-                });
-                const activeCalendar = calendars[index];
-                const fullHeaderText = activeCalendar.querySelector('.calendar-header h2').textContent;
-                const headerText = fullHeaderText.split(' ')[0]; // Prende solo il nome del mese
-                monthDisplay.textContent = headerText;
-
-                prevMonthBtn.disabled = index === 0;
-                nextMonthBtn.disabled = index === calendars.length - 1;
-                currentCalendarIndex = index;
-            }
-
-            prevMonthBtn.addEventListener('click', () => {
-                if (currentCalendarIndex > 0) {
-                    showCalendar(currentCalendarIndex - 1);
-                }
-            });
-
-            nextMonthBtn.addEventListener('click', () => {
-                if (currentCalendarIndex < calendars.length - 1) {
-                    showCalendar(currentCalendarIndex + 1);
-                }
-            });
-
-            // --- Funzione per mostrare l'evento del giorno ---
-            function showTodaysEvent() {
-                const today = new Date();
-                const currentDay = today.getDate();
-                const currentMonth = today.getMonth();
-                const currentYear = today.getFullYear();
-                let foundTodaysCalendar = false;
-
-                // Itera per trovare il calendario e l'evento di oggi
-                calendars.forEach((calendar, index) => {
-                    const calendarYear = parseInt(calendar.dataset.year, 10);
-                    const calendarMonth = parseInt(calendar.dataset.month, 10);
-
-                    calendar.querySelectorAll('.day-cell.has-event').forEach(cell => {
-                        const dayNumber = parseInt(cell.innerText.trim(), 10);
-                        let cellMonth = calendarMonth;
-                        let cellYear = calendarYear;
-
-                        if (!cell.classList.contains('in-month')) {
-                            if (dayNumber > 20) {
-                                cellMonth = (calendarMonth === 0) ? 11 : calendarMonth - 1;
-                                if (cellMonth === 11) cellYear--;
-                            } else {
-                                cellMonth = (calendarMonth === 11) ? 0 : calendarMonth + 1;
-                                if (cellMonth === 0) cellYear++;
-                            }
-                        }
-
-                        if (dayNumber === currentDay && cellMonth === currentMonth && cellYear === currentYear) {
-                            showCalendar(index);
-                            foundTodaysCalendar = true;
-                            setTimeout(() => cell.click(), 100);
-                        }
-                    });
-                });
-
-                if (!foundTodaysCalendar) {
-                    showCalendar(0); // Mostra il primo calendario se non troviamo quello di oggi
-                }
-            }
-            showTodaysEvent(); // Esegui la funzione al caricamento della pagina
-
-            // --- Logica per il menu Hamburger ---
-            const hamburgerBtn = document.querySelector('.hamburger-menu');
-            const navMenu = document.querySelector('.main-nav');
-
-            hamburgerBtn.addEventListener('click', () => {
-                const isNavOpen = navMenu.classList.contains('nav-open');
-                navMenu.classList.toggle('nav-open');
-                hamburgerBtn.classList.toggle('nav-open');
-                hamburgerBtn.setAttribute('aria-expanded', !isNavOpen);
-            });
-        });
-    </script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script src="js/spotify-player.js" defer></script>
+    <script src="js/events.js" defer></script>
     <script src="js/brunch-logic.js" defer></script>
 
 </body>

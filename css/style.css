@@ -5,20 +5,26 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #1a1a1aff; /* Modificato: Sfondo nero come richiesto */
+    background-color: #1a1a1aff; /* Sfondo nero come richiesto */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999; /* Assicura che sia sopra tutto il resto */
     transition: opacity 0.7s ease, visibility 0.7s ease; /* Transizione più morbida */
 }
+
+/* Regola per nascondere immediatamente il loader se l'html ha la classe 'loader-hidden' */
+html.loader-hidden #loader-wrapper {
+    opacity: 0;
+    visibility: hidden;
+    transition: none; /* Nessuna transizione quando è nascosto di default */
+}
+
 .loader-logo {
     width: 100px;
     height: auto;
-    /* Sostituiamo 'pulse' con la nuova animazione 'wobble' */
-    filter: invert(1); /* Rende il logo nero bianco */
-    /* Applica l'animazione di wobble e la nuova animazione di rivelazione */
     animation: wobble 1.8s ease-in-out infinite, reveal-bottom-to-top 1s ease-out forwards;
+    filter: invert(1); /* Rende il logo nero bianco */
     clip-path: inset(100% 0 0 0); /* Inizialmente nascosto dal basso */
 }
 
@@ -55,6 +61,12 @@ body {
     background-color: #f3f0ce;
 }
 
+/* --- Keyframes per l'animazione dello sfondo --- */
+@keyframes scrollBackground {
+    from { background-position-x: 0; }
+    to { background-position-x: -1920px; } /* Scorrimento verso sinistra */
+}
+
 /* Sfondo sfocato per le pagine interne */
 .inner-page-bg::before {
     content: '';
@@ -73,7 +85,7 @@ body {
     display: none;
 }
 
-/* Contenitore principale della landing page */
+/* --- Stili per la Landing Page --- */
 .landing-container {
     display: flex; /* Attiva Flexbox per un allineamento facile */
     flex-direction: column; /* Dispone gli elementi in colonna (verticalmente) */
@@ -85,38 +97,14 @@ body {
     position: relative; /* Necessario per z-index */
     z-index: 10; /* Assicura che il contenuto sia sopra gli asset animati */
     box-sizing: border-box; /* Assicura che il padding non aumenti la dimensione totale */
-
+    
+    /* Stili per lo sfondo animato */
+    background-image: url('../images/backlanding.png');
     background-color: #1a1a1a;
-    /* Lo sfondo è gestito dal CSS inline in index.html per ottimizzazione */
-}
-
-/* --- Keyframes per l'animazione dello sfondo --- */
-@keyframes scrollBackground {
-    from { background-position-x: 0; }
-    to { background-position-x: -1920px; } /* Scorrimento verso sinistra */
-}
-
-/* Stile per il logo */
-.logo {
-    max-width: 180px; /* Imposta una larghezza massima per il logo */
-    height: auto; /* Mantiene le proporzioni */
-}
-
-/* Stile per il claim sotto il logo */
-.claim {
-    color: #333; /* Colore nero/scuro */
-    font-size: 12px; /* Dimensione ridotta */
-    font-weight: 500;
-    margin: 10px 0 30px 0; /* Margine sopra e sotto il claim */
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Contenitore per i bottoni */
-.button-container {
-    display: flex;
-    flex-direction: column; /* Assicura che i bottoni rimangano in colonna */
-    gap: 15px; /* Aggiunge spazio tra i bottoni */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: repeat-x;
+    animation: scrollBackground 60s linear infinite;
 }
 
 .glass-container {
@@ -126,17 +114,37 @@ body {
     border-radius: 30px; /* Angoli arrotondati */
     border: 1px solid rgba(255, 255, 255, 0.18); /* Bordo sottile e traslucido */
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); /* Ombra leggera */
-    padding: 40px 30px;
+    padding: 30px 25px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Stile base dei bottoni */
+.logo {
+    max-width: 180px; /* Imposta una larghezza massima per il logo */
+    height: auto; /* Mantiene le proporzioni */
+}
+
+.claim {
+    color: #333; /* Colore nero/scuro */
+    font-size: 12px; /* Dimensione ridotta */
+    font-weight: 500;
+    margin: 15px 0 30px 0; /* Margine sopra e sotto il claim */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column; /* Assicura che i bottoni rimangano in colonna */
+    gap: 15px; /* Aggiunge spazio tra i bottoni */
+}
+
 .btn {
     display: block;
-    padding: 15px 30px;
-    min-width: 220px;
+    padding: 12px 25px;
+    min-width: 200px;
+    background-color: #f3f0ce;
     color: #ff0403; /* Testo rosso */
     text-decoration: none; /* Rimuove la sottolineatura dei link */
     border-radius: 8px; /* Angoli arrotondati */
@@ -146,29 +154,24 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
 }
 
-/* Effetto al passaggio del mouse sui bottoni */
 .btn:hover {
     background-color: #ff0403; /* Sfondo rosso al passaggio */
     color: #f3f0ce; /* Testo chiaro al passaggio */
     transform: scale(1.05); /* Ingrandisce leggermente il bottone */
 }
 
-/* Stile per le pagine interne (menu, eventi) */
+/* --- Stili per le Pagine Interne (menu, eventi, etc.) --- */
 .page-container {
     padding: 40px;
     max-width: 800px;
     margin: 40px auto;
-
     background-color: #f3f0ce;
     position: relative; /* Necessario per z-index */
     z-index: 10; /* Assicura che il contenuto sia sopra gli asset animati */
-    margin: 40px auto;    
-    background-color: #f3f0ce; /* Sfondo di default per le altre pagine */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* Stile per il contenitore delle pagine con sfondo speciale */
 .inner-page-bg .page-container {
     background: transparent; /* Rimuoviamo lo sfondo dal contenitore principale */
     backdrop-filter: none;
@@ -180,7 +183,7 @@ body {
     color: #ff0403;
     background-color: #f3f0ce; /* Aggiungiamo lo sfondo al box del titolo */
     border-radius: 8px;
-    padding: 20px; /* Rimosso padding-bottom ridondante */
+    padding: 20px;
     border: 3px solid #ff0403; /* Bordo rosso e più visibile */
     margin-bottom: 20px;
     font-size: 36px; /* Aumentata la dimensione del testo */
@@ -235,17 +238,21 @@ body {
 .site-footer {
     background-color: #ff0403;
     color: #f3f0ce;
-    padding: 20px 20px; /* Padding ridotto per mobile */
-    font-size: 13px;   /* Testo più piccolo per mobile */
+    padding: 25px 40px; /* Padding ottimizzato */
+    font-size: 14px;
     line-height: 1.6;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 20px; /* Spazio ridotto tra le colonne */
+    gap: 30px; /* Spazio tra le colonne */
 }
 
 .footer-left, .footer-right {
     text-align: left;
+}
+
+.footer-right {
+    text-align: right;
 }
 
 .site-footer p {
@@ -261,27 +268,24 @@ body {
     text-decoration: underline; /* Aggiunge la sottolineatura al passaggio del mouse */
 }
 
-.footer-right {
-    text-align: right;
-}
-
-/* Stili per schermi più grandi */
-@media (min-width: 768px) {
-    .site-footer { /* Aumenta padding su desktop */
-        padding: 25px 40px; /* Aumenta padding su desktop */
-        font-size: 14px;
-        gap: 30px;
+/* === Media Queries per il Responsive Design === */
+@media (max-width: 767px) {
+    .site-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px 15px;
+    }
+    .footer-left, .footer-right {
+        text-align: center;
     }
 }
 
-/* === Media Queries per il Responsive Design === */
-/* Stili per schermi più piccoli (es. smartphone con larghezza massima di 600px) */
 @media (max-width: 600px) {
-
     /* Landing Page */
     .logo {
         max-width: 150px;
-        margin-bottom: 30px;
+        margin-bottom: 0;
     }
 
     .button-container {
@@ -307,6 +311,15 @@ body {
     }
 }
 
+/* --- Stili per i bottoni di navigazione rapida nel menu --- */
+.jump-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+    flex-wrap: wrap; /* Manda a capo i bottoni su schermi piccoli */
+}
+
 .jump-btn {
     padding: 10px 20px;
     background-color: transparent;
@@ -321,15 +334,6 @@ body {
 .jump-btn:hover {
     background-color: #ff0403;
     color: #f3f0ce;
-}
-
-/* --- Stili per i bottoni di navigazione rapida nel menu --- */
-.jump-links {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 40px;
-    flex-wrap: wrap; /* Manda a capo i bottoni su schermi piccoli */
 }
 
 /* --- Stili per la Pagina Menu --- */
@@ -361,14 +365,12 @@ body {
     margin-bottom: 40px;
 }
 
-/* Contenitore per i titoli di sotto-sezione e i loro sottotitoli */
 .menu-section-header {
     padding-bottom: 10px;
     border-bottom: 2px solid #eee;
     margin-bottom: 25px;
 }
 
-/* Titoli delle sotto-sezioni (es. Bianchi, Rossi, Taglieri...) */
 .menu-section h3 {
     font-family: "Red Hat Display", sans-serif;
     font-size: 28px;
@@ -389,7 +391,6 @@ body {
     margin-bottom: 8px;
 }
 
-/* Crea una linea di puntini che collega il nome al prezzo */
 .menu-item-header::after {
     content: '';
     position: absolute;
@@ -404,7 +405,6 @@ body {
     margin: 0;
     font-size: 20px;
     color: #ff0403;
-    /* Stili per mettere il testo sopra i puntini */
     position: relative;
     z-index: 2;
     background-color: #f3f0ce;
@@ -416,7 +416,6 @@ body {
     font-weight: bold;
     color: #ff0403;
     white-space: nowrap;
-    /* Stili per mettere il prezzo sopra i puntini */
     position: relative;
     z-index: 2;
     background-color: #f3f0ce;
@@ -430,7 +429,6 @@ body {
     font-style: italic;
 }
 
-/* Stile per le icone tonde degli allergeni */
 .allergen-icon {
     display: inline-block;
     width: 22px;
@@ -447,7 +445,6 @@ body {
     font-style: normal; /* Rimuove l'italic ereditato */
 }
 
-/* Stili per le note a piè di pagina del menu */
 .menu-footnotes {
     margin-top: 40px;
     padding-top: 20px;
@@ -527,7 +524,6 @@ body {
     font-weight: 700; /* Rende il testo in grassetto */
 }
 
-/* Stile per il placeholder quando non ci sono eventi */
 .event-placeholder {
     text-align: center;
     padding: 40px 20px;
@@ -543,7 +539,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* Stile per i giorni di chiusura */
 .event-card.closing-day {
     background: rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.1);
@@ -560,7 +555,7 @@ body {
     padding: 25px;
     position: relative; /* Necessario per z-index */
     z-index: 10; /* Assicura che il calendario sia sopra gli asset animati */
-    border: 3px solid #ff0403; /* Corretto l'errore di battitura */
+    border: 3px solid #ff0403;
 }
 
 .calendar-container:not(.active) {
@@ -615,7 +610,6 @@ body {
     color: #ff0403;    
 }
 
-/* Aggiunge un pallino rosso per indicare un evento */
 .day-cell.has-event::after {
     content: '';
     position: absolute;
@@ -644,7 +638,6 @@ body {
     background-color: rgba(0, 0, 0, 0.08);
 }
 
-/* Nasconde il testo di anteprima dell'evento */
 .day-cell .event-marker {
     display: none;
 }
@@ -653,7 +646,6 @@ body {
     display: none; /* Nascosto di default */
 }
 
-/* Area per mostrare i dettagli dell'evento */
 #event-display-area {
     margin-top: 30px;
     padding: 25px;
@@ -686,7 +678,6 @@ body {
     color: #ff0403; /* Testo rosso per coerenza */
 }
 
-/* --- Stili per la navigazione del calendario --- */
 .calendar-nav {
     display: flex;
     justify-content: center;
@@ -750,674 +741,6 @@ body {
     will-change: transform, opacity; /* Ottimizzazione per le performance */
     image-rendering: -webkit-optimize-contrast; /* Per browser Webkit */
     image-rendering: crisp-edges; /* Standard moderno */
-    background-size: cover; /* Copre l'intera area */
-    background-position: center center;
-    background-repeat: repeat-x; /* Ripete l'immagine orizzontalmente */
-    animation: scrollBackground 60s linear infinite;
-
-}
-
-/* Stile per il logo */
-.logo {
-    max-width: 180px; /* Imposta una larghezza massima per il logo */
-    height: auto; /* Mantiene le proporzioni */
-}
-
-/* Stile per il claim sotto il logo */
-.claim {
-    color: #333; /* Colore nero/scuro */
-    font-size: 12px; /* Dimensione ridotta */
-    font-weight: 500;
-    margin: 10px 0 30px 0; /* Margine sopra e sotto il claim */
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Contenitore per i bottoni */
-.button-container {
-    display: flex;
-    flex-direction: column; /* Assicura che i bottoni rimangano in colonna */
-    gap: 15px; /* Aggiunge spazio tra i bottoni */
-}
-
-/* --- Keyframes per l'animazione dello sfondo --- */
-@keyframes scrollBackground {
-    from {
-        background-position-x: 0;
-    }
-    to {
-        /* Usa una larghezza grande per un movimento continuo.
-           Se la tua immagine è larga 1920px, questo valore la farà scorrere completamente. */
-        background-position-x: -1920px;
-    }
-}
-
-.glass-container {
-    background: rgba(244, 190, 190, 0.066); /* Sfondo semi-trasparente */
-    backdrop-filter: blur(4px); /* Effetto sfocatura */
-    -webkit-backdrop-filter: blur(12px); /* Supporto per Safari */
-    border-radius: 30px; /* Angoli arrotondati */
-    border: 1px solid rgba(255, 255, 255, 0.18); /* Bordo sottile e traslucido */
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); /* Ombra leggera */
-    padding: 30px 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Stile base dei bottoni */
-.btn {
-    display: block;
-    padding: 12px 25px;
-    min-width: 200px;
-    background-color: #f3f0ce; /* Colore di sfondo chiaro */
-    color: #ff0403; /* Testo rosso */
-    text-decoration: none; /* Rimuove la sottolineatura dei link */
-    border-radius: 8px; /* Angoli arrotondati */
-    border: 2px solid #ff0403; /* Bordo rosso */
-    font-size: 18px;
-    font-weight: 700; /* Testo più in grassetto per leggibilità */
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
-    background-color: #f3f0ce;
-}
-
-/* Effetto al passaggio del mouse sui bottoni */
-.btn:hover {
-    background-color: #ff0403; /* Sfondo rosso al passaggio */
-    color: #f3f0ce; /* Testo chiaro al passaggio */
-    transform: scale(1.05); /* Ingrandisce leggermente il bottone */
-}
-
-/* Stile per le pagine interne (menu, eventi) */
-.page-container {
-    padding: 40px;
-    max-width: 800px;
-    margin: 40px auto;
-    position: relative; /* Necessario per z-index */
-    z-index: 10; /* Assicura che il contenuto sia sopra gli asset animati */
-    margin: 40px auto;
-    background-color: #f3f0ce;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-/* Stile per il contenitore delle pagine con sfondo speciale */
-.inner-page-bg .page-container {
-    background: transparent; /* Rimuoviamo lo sfondo dal contenitore principale */
-    backdrop-filter: none;
-    border: none;
-    box-shadow: none;
-}
-
-.page-container h1 {
-    color: #ff0403;
-    background-color: #f3f0ce;
-    border-radius: 8px;
-    padding: 20px;
-    border: 3px solid #ff0403;
-    margin-bottom: 20px;
-    font-size: 36px;
-    text-transform: uppercase;
-    font-weight: 900;
-    text-align: center;
-}
-
-.back-link {
-    display: block; /* Lo trasforma in un blocco per poterlo centrare */
-    width: fit-content; /* La sua larghezza si adatta al testo */
-    margin: 30px auto 0 auto; /* Margine sopra e centrato orizzontalmente */
-    color: #ff0403;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.back-link:hover {
-    text-decoration: underline;
-}
-
-/* --- Stile per il bottone "Torna su" --- */
-.back-to-top-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px; /* Rosso semi-trasparente */
-    background-color: rgba(255, 4, 3, 0.7); /* Rosso semi-trasparente */
-    color: #f3f0ce;
-    width: 45px;
-    height: 45px;
-    line-height: 45px;
-    text-align: center;
-    border-radius: 50%;
-    text-decoration: none;
-    font-size: 24px;
-    z-index: 1000;
-    opacity: 0; /* Nascosto di default */
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.back-to-top-btn.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.back-to-top-btn:hover {
-    background-color: rgb(255, 4, 3);
-}
-
-/* --- Stili per il Footer --- */
-.site-footer {
-    background-color: #ff0403;
-    color: #f3f0ce;
-    padding: 25px 40px; /* Padding ottimizzato */
-    font-size: 14px;
-    line-height: 1.6;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 30px; /* Spazio tra le colonne */
-}
-
-.footer-left, .footer-right {
-    text-align: left;
-}
-
-.footer-right {
-    text-align: right;
-}
-
-.site-footer p {
-    margin: 0 0 5px 0; /* Margine solo in basso */
-}
-
-/* Footer su mobile */
-@media (max-width: 767px) {
-    .site-footer {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 20px 15px;
-    }
-    .footer-left, .footer-right {
-        text-align: center;
-    }
-}
-
-/* === Media Queries per il Responsive Design === */
-/* Stili per schermi più piccoli (es. smartphone con larghezza massima di 600px) */
-@media (max-width: 600px) {
-
-    /* Landing Page */
-    .logo {
-        max-width: 150px;
-        margin-bottom: 30px;
-    }
-
-    .button-container {
-        width: 90%; /* Occupa il 90% della larghezza dello schermo */
-    }
-
-    .btn {
-        min-width: auto; /* Rimuove la larghezza minima fissa per adattarsi al container */
-    }
-
-    /* Pagine Interne (Menu, Eventi) */
-    .page-container {
-        margin: 0;
-        padding: 25px;
-        border-radius: 0;
-        box-shadow: none;
-    }
-
-    /* Calendario su mobile: rende le celle più quadrate */
-    .day-cell {
-        aspect-ratio: auto;
-        height: auto; /* L'altezza si adatterà per mantenere il rapporto */
-    }
-}
-
-.jump-btn {
-    padding: 10px 20px;
-    background-color: transparent;
-    color: #ff0403;
-    border: 2px solid #ff0403;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 700;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.jump-btn:hover {
-    background-color: #ff0403;
-    color: #f3f0ce;
-}
-
-/* --- Stili per i bottoni di navigazione rapida nel menu --- */
-.jump-links {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
-}
-
-/* --- Stili per la Pagina Menu --- */
-.menu-category {
-    margin-bottom: 60px;
-}
-
-.category-title {
-    background-color: #f3f0ce;
-    color: #ff0403;
-    border: 5px solid #ff0403;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-align: center;
-    font-size: 32px;
-    margin-bottom: 40px;
-    text-transform: uppercase; /* Grassetto come i bottoni */
-    font-weight: 700; /* Grassetto come i bottoni */
-}
-
-.category-footnote {
-    font-style: italic;
-    font-size: 15px;
-    color: #ff0403;
-    text-align: left;
-}
-
-.menu-section {
-    margin-bottom: 40px;
-}
-
-/* Contenitore per i titoli di sotto-sezione e i loro sottotitoli */
-.menu-section-header {
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
-    margin-bottom: 25px;
-}
-
-/* Titoli delle sotto-sezioni (es. Bianchi, Rossi, Taglieri...) */
-.menu-section h3 {
-    font-family: "Red Hat Display", sans-serif;
-    font-size: 28px;
-    font-weight: bold;
-    color: #ff0403;
-    margin: 0;
-}
-
-.menu-item {
-    margin-bottom: 25px;
-}
-
-.menu-item-header {
-    position: relative; /* Necessario per il posizionamento dello pseudo-elemento */
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 8px;
-}
-
-/* Crea una linea di puntini che collega il nome al prezzo */
-.menu-item-header::after { /* Allineamento verticale dei puntini */
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 4px;
-    border-bottom: 2px dotted #ccc; /* Mette la linea dietro al testo */
-    z-index: 1; /* Mette la linea dietro al testo */
-}
-
-.menu-item-header h4 {
-    margin: 0;
-    font-size: 20px;
-    color: #ff0403;
-    /* Stili per mettere il testo sopra i puntini */ /* Spazio tra testo e puntini */
-    position: relative;
-    z-index: 2;
-    background-color: #f3f0ce;
-    padding-right: 10px;
-}
-
-.price {
-    font-size: 18px;
-    font-weight: bold;
-    color: #ff0403;
-    white-space: nowrap;
-    /* Stili per mettere il prezzo sopra i puntini */ /* Spazio tra puntini e prezzo */
-    position: relative;
-    z-index: 2;
-    background-color: #f3f0ce;
-    padding-left: 10px;
-}
-
-.description {
-    margin: 0;
-    font-size: 16px;
-    color: #ff0403;
-    font-style: italic;
-}
-
-/* Stile per le icone tonde degli allergeni */
-.allergen-icon {
-    display: inline-block;
-    width: 22px;
-    height: 22px; /* Centra il numero verticalmente */
-    line-height: 22px; /* Centra il numero verticalmente */
-    text-align: center;
-    border-radius: 50%;
-    background-color: #ff0403;
-    color: #f3f0ce;
-    font-size: 13px;
-    font-weight: 700;
-    margin-left: 4px; /* Allinea le icone con il testo */
-    vertical-align: middle; /* Allinea le icone con il testo */
-    font-style: normal; /* Rimuove l'italic ereditato */
-}
-
-/* Stili per le note a piè di pagina del menu */
-.menu-footnotes {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid #ddd;
-    font-size: 14px;
-    color: #ff0403;
-}
-
-/* --- Stili per la Pagina Eventi --- */
-.event-card {
-    display: flex;
-    align-items: center; /* Sfondo leggermente traslucido */
-    background: rgba(255, 255, 255, 0.05); /* Sfondo leggermente traslucido */
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.event-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-}
-
-.event-date {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #ff0403; /* Colore testo che riprende lo sfondo della card menu */
-    color: #f3f0ce; /* Colore testo che riprende lo sfondo della card menu */
-    border-radius: 8px;
-    padding: 10px 15px;
-    margin-right: 20px;
-    font-weight: bold; /* Evita che la data si rimpicciolisca */
-    text-align: center;
-    flex-shrink: 0; /* Evita che la data si rimpicciolisca */
-}
-
-.event-date .weekday {
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
-.event-date .day {
-    font-size: 28px;
-    line-height: 1;
-}
-
-.event-date .month {
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
-.event-details h3 {
-    margin: 0 0 8px 0;
-    color: #ff0403;
-    font-size: 22px;
-}
-
-.event-details h2 {
-    margin: 0 0 8px 0;
-    color: #ff0403;
-    font-size: 19px;
-}
-
-.event-details p {
-    font-size: medium;
-    margin: 0;
-    color: #ff0403;
-    font-style: normal; /* Rimuove l'italic delle descrizioni del menu */
-}
-
-.event-details .event-time {
-    margin-top: 10px;
-    font-weight: 700; /* Rende il testo in grassetto */
-}
-
-/* Stile per il placeholder quando non ci sono eventi */
-.event-placeholder {
-    text-align: center;
-    padding: 40px 20px;
-    margin-bottom: 25px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.event-placeholder p {
-    color: #ff0403;
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-/* Stile per i giorni di chiusura */
-.event-card.closing-day {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.1);
-}
-
-.event-card.closing-day h3 {
-    color: #888;
-}
-
-/* --- Stili per il Calendario Interattivo --- */
-.calendar-container {
-    background: #f3f0ce;
-    border-radius: 12px;
-    padding: 25px; /* Necessario per z-index */
-    position: relative; /* Necessario per z-index */
-    z-index: 10;
-    border: 3px solid #ff0403; /* Corretto l'errore di battitura */
-}
-
-.calendar-container:not(.active) {
-    display: none;
-}
-
-.calendar-header {
-    display: none; /* Nasconde il titolo del mese dentro il calendario */
-}
-
-.calendar-header h2 {
-    color: #ff0403;
-    font-size: 28px;
-    text-transform: uppercase;
-    margin: 0;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-}
-
-.weekday-header {
-    text-align: center;
-    font-weight: 700;
-    color: #ff0403;
-    padding-bottom: 10px;
-    font-size: 14px;
-}
-
-.day-cell {
-    position: relative;
-    height: 90px;
-    background-color: #f3f0ce;
-    border: 1px solid #ff0403;
-    border-radius: 10px;
-    padding: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    color: #aaa;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.day-cell.in-month {
-    color: #ff0403;
-}
-
-.day-cell.has-event {
-    background-color: rgba(255, 4, 3, 0.1);
-    cursor: pointer;
-    color: #ff0403;    
-}
-
-/* Aggiunge un pallino rosso per indicare un evento */
-.day-cell.has-event::after {
-    content: '';
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
-    background-color: #ff0403;
-    border-radius: 50%;
-}
-
-.day-cell.has-event:hover {
-    background-color: rgba(255, 4, 3, 0.2);
-    transform: scale(1.05);
-}
-
-.day-cell.closing-day {
-    background-color: rgba(0, 0, 0, 0.08);
-    color: #999;
-    cursor: default;
-}
-
-.day-cell.closing-day:hover {
-    transform: none;
-    background-color: rgba(0, 0, 0, 0.08);
-}
-
-/* Nasconde il testo di anteprima dell'evento */
-.day-cell .event-marker {
-    display: none;
-}
-
-.day-cell .event-details-content {
-    display: none; /* Nascosto di default */
-}
-
-/* Area per mostrare i dettagli dell'evento */
-#event-display-area {
-    margin-top: 30px;
-    padding: 25px;
-    background: #f3f0ce;
-    border: 2px solid #ff0403;
-    border-radius: 12px; /* Nascosto finché non si clicca un evento */
-    display: none; /* Nascosto finché non si clicca un evento */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-#event-display-area.visible {
-    display: block;
-}
-
-#event-display-area h3 {
-    margin: 0 0 10px 0;
-    color: #ff0403;
-    font-size: 24px;
-}
-
-#event-display-area p {
-    margin: 4px 0;
-    color: #ff0403;
-    font-size: 16px;
-}
-
-#event-display-area .event-time {
-    margin-top: 15px; /* Testo rosso per coerenza */
-    font-weight: 700;
-    color: #ff0403; /* Testo rosso per coerenza */
-}
-
-/* --- Stili per la navigazione del calendario --- */
-.calendar-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    gap: 20px; /* Sfondo chiaro per il box di navigazione */
-    background-color: #f3f0ce; /* Sfondo chiaro per il box di navigazione */
-    padding: 20px; /* Necessario per z-index */
-    border-radius: 8px;
-    position: relative;
-    z-index: 10; /* Assicura che la navigazione sia sopra gli asset animati */
-    border: 3px solid #ff0403; /* Bordo rosso e più visibile */
-}
-
-.nav-arrow {
-    background: transparent;
-    border: 2px solid #ff0403;
-    color: #ff0403;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.nav-arrow:hover:not(:disabled) {
-    background-color: #ff0403;
-    color: #f3f0ce;
-}
-
-.nav-arrow:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
-#current-month-display {
-    font-family: "Red Hat Display", sans-serif;
-    font-size: 36px;
-    font-weight: 700; /* Aumentata la dimensione del testo */
-    color: #ff0403;
-    text-transform: uppercase;
-}
-
-/* --- Stili per l'animazione degli asset --- */
-#animation-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* Permette di cliccare attraverso il contenitore */
-    overflow: hidden;
-    z-index: 0; /* Lo mettiamo a un livello base, gli asset avranno z-index positivo o negativo */
-}
-
-.animated-asset {
-    position: absolute;
-    display: block;
-    will-change: transform, opacity; /* Ottimizzazione per le performance */
-    image-rendering: -webkit-optimize-contrast; /* Per browser Webkit */
-    image-rendering: crisp-edges; /* Standard moderno */
 }
 
 /* --- Stili per la Navbar --- */
@@ -1456,7 +779,6 @@ body {
 
 .main-nav a:hover,
 .main-nav a.active { /* Rimuoviamo la sottolineatura e usiamo l'opacità per l'effetto */
-    /* Rimuoviamo la sottolineatura e usiamo l'opacità per l'effetto */
     opacity: 0.7;
 }
 
@@ -1479,7 +801,6 @@ body {
     transition: transform 0.3s, opacity 0.3s;
 }
 
-/* --- Media Queries per Navbar e Hamburger --- */
 @media (min-width: 768px) {
     .site-header-nav {
         padding: 10px 40px;
@@ -1517,60 +838,26 @@ body {
 }
 
 /* --- Keyframes per le traiettorie degli asset --- */
-
-/* Animazione di caduta con una leggera curva */
 @keyframes fall {
-    0% {
-        transform: translate(-20vw, -150vh) rotate(0deg);
-    }
-    50% {
-        transform: translate(10vw, 0vh) rotate(180deg);
-    }
-    100% {
-        transform: translate(-10vw, 150vh) rotate(360deg);
-    }
+    0% { transform: translate(-20vw, -150vh) rotate(0deg); }
+    50% { transform: translate(10vw, 0vh) rotate(180deg); }
+    100% { transform: translate(-10vw, 150vh) rotate(360deg); }
 }
-
-/* Animazione di risalita con una leggera curva. */
 @keyframes rise {
-    0% {
-        transform: translate(20vw, 150vh) rotate(0deg);
-    }
-    50% {
-        transform: translate(-10vw, 0vh) rotate(-180deg);
-    }
-    100% {
-        transform: translate(10vw, -150vh) rotate(-360deg);
-    }
+    0% { transform: translate(20vw, 150vh) rotate(0deg); }
+    50% { transform: translate(-10vw, 0vh) rotate(-180deg); }
+    100% { transform: translate(10vw, -150vh) rotate(-360deg); }
 }
-
-/* Animazione fluttuante da sinistra a destra con andamento a onda. */
 @keyframes float-left-to-right {
-    0% {
-        transform: translate(-150vw, 20vh) rotate(0deg);
-    }
-    50% {
-        transform: translate(0vw, -20vh) rotate(180deg);
-    }
-    100% {
-        transform: translate(150vw, 20vh) rotate(360deg);
-    }
+    0% { transform: translate(-150vw, 20vh) rotate(0deg); }
+    50% { transform: translate(0vw, -20vh) rotate(180deg); }
+    100% { transform: translate(150vw, 20vh) rotate(360deg); }
 }
-
-/* Animazione fluttuante da destra a sinistra con andamento a onda. */
 @keyframes float-right-to-left {
-    0% {
-        transform: translate(150vw, -20vh) rotate(0deg);
-    }
-    50% {
-        transform: translate(0vw, 20vh) rotate(-180deg);
-    }
-    100% {
-        transform: translate(-150vw, -20vh) rotate(-360deg);
-    }
+    0% { transform: translate(150vw, -20vh) rotate(0deg); }
+    50% { transform: translate(0vw, 20vh) rotate(-180deg); }
+    100% { transform: translate(-150vw, -20vh) rotate(-360deg); }
 }
-
-/* Animazione di caduta a zig-zag. */
 @keyframes fall-zigzag {
     0% { transform: translate(0vw, -150vh) rotate(0deg); }
     25% { transform: translate(30vw, -75vh) rotate(90deg); }
@@ -1578,24 +865,12 @@ body {
     75% { transform: translate(30vw, 75vh) rotate(270deg); }
     100% { transform: translate(0vw, 150vh) rotate(360deg); }
 }
-
-/* Animazione fluttuante con curva pronunciata. */
 @keyframes float-curve {
-    0% {
-        transform: translate(-150vw, -50vh) rotate(0deg);
-    }
-    25% {
-        transform: translate(-75vw, 50vh) rotate(90deg);
-    }
-    50% {
-        transform: translate(0vw, -50vh) rotate(180deg);
-    }
-    75% {
-        transform: translate(75vw, 50vh) rotate(270deg);
-    }
-    100% {
-        transform: translate(150vw, -50vh) rotate(360deg);
-    }
+    0% { transform: translate(-150vw, -50vh) rotate(0deg); }
+    25% { transform: translate(-75vw, 50vh) rotate(90deg); }
+    50% { transform: translate(0vw, -50vh) rotate(180deg); }
+    75% { transform: translate(75vw, 50vh) rotate(270deg); }
+    100% { transform: translate(150vw, -50vh) rotate(360deg); }
 }
 
 /* --- Stili per il Pop-up Promozionale --- */
@@ -1658,21 +933,20 @@ body {
     line-height: 1;
 }
 
-/* --- Responsive per il Pop-up --- */
 @media (max-width: 600px) {
-    .promo-popup-content { /* Riduciamo gli spazi interni */
-        padding: 25px 20px; /* Riduciamo gli spazi interni */
+    .promo-popup-content {
+        padding: 25px 20px;
     }
     .promo-popup-content h3 {
         font-size: 22px;
     }
-    .promo-popup-content p { /* Riduciamo la dimensione del testo */
-        font-size: 16px; /* Riduciamo la dimensione del testo */
-        text-align: left; /* Allineiamo a sinistra per migliore leggibilità */
+    .promo-popup-content p {
+        font-size: 16px;
+        text-align: left;
     }
 }
 
-/* --- Stili per il Pop-up del Brunch (simili a .promo-popup) --- */
+/* --- Stili per il Pop-up del Brunch --- */
 .brunch-popup-overlay {
     position: fixed;
     top: 0;
@@ -1731,7 +1005,7 @@ body {
     cursor: pointer;
     line-height: 1;
 }
-/* Stile per il link del brunch nella navbar quando non è attivo */
+
 .nav-link-inactive {
     opacity: 0.4;
     cursor: not-allowed;

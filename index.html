@@ -17,52 +17,7 @@
     <!-- 1. Precarica il file CSS completo in background -->
     <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/style.css"></noscript>
-
-    <!-- 2. Inserisci qui il CSS Critico per il caricamento immediato -->
-    <style>
-        body { margin: 0; padding: 0; height: 100%; font-family: "Red Hat Display", sans-serif; background-color: #1a1a1a; }
-        .landing-container {
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            height: 100vh; text-align: center; padding: 20px; position: relative; z-index: 10;
-            box-sizing: border-box;
-            background-image: url('images/backlanding.png');
-            background-color: #1a1a1a;
-            background-size: cover;
-            background-position: center center;
-            background-repeat: repeat-x;
-            animation: scrollBackground 60s linear infinite;
-        }
-        @keyframes scrollBackground {
-            from { background-position-x: 0; }
-            to { background-position-x: -1920px; }
-        }
-        .glass-container {
-            background: rgba(244, 190, 190, 0.066);
-            backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(12px);
-            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            padding: 30px 25px; display: flex; flex-direction: column; align-items: center;
-        }
-        .logo { max-width: 180px; height: auto; }
-        .claim { color: #333; font-size: 12px; font-weight: 500; margin: 15px 0 30px 0; text-transform: uppercase; letter-spacing: 1px; }
-        .button-container { display: flex; flex-direction: column; gap: 15px; }
-        .btn {
-            display: block; padding: 12px 25px; min-width: 200px;
-            background-color: #f3f0ce; color: #ff0403;
-            text-decoration: none; border-radius: 8px; border: 2px solid #ff0403;
-            font-size: 18px; font-weight: 700;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-        }
-        .btn:hover { background-color: #ff0403; color: #f3f0ce; transform: scale(1.05); }        
-        /* Stili footer essenziali */
-        .site-footer { background-color: #ff0403; color: #f3f0ce; text-align: center; padding: 30px 20px; font-size: 15px; line-height: 1.6; }
-        .site-footer p { margin: 5px 0; }
-        @media (max-width: 600px) {
-            .logo { max-width: 150px; margin-bottom: 0; }
-            .button-container { width: 90%; }
-            .btn { min-width: auto; }
-        }
-    </style>
+    
     <!-- Google tag (gtag.js) - INCOLLA QUI IL TUO CODICE GOOGLE ANALYTICS -->
     <!-- Sostituisci G-XXXXXXXXXX con il tuo ID di misurazione reale -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-79CC36NDY9"></script>
@@ -73,6 +28,14 @@
 
         gtag('config', 'G-79CC36NDY9');
     </script>
+
+    <!-- Script bloccante per prevenire il "flash" del loader (FOUC) -->
+    <script>
+        // Questo script viene eseguito immediatamente. Se l'utente ha già visitato la homepage
+        // in questa sessione, aggiunge una classe all'elemento <html> per nascondere
+        // il loader tramite CSS prima ancora che il body venga renderizzato.
+        if (sessionStorage.getItem('hasVisitedHomepage') === 'true') { document.documentElement.classList.add('loader-hidden'); }
+    </script>
 </head>
 <body>
 
@@ -80,9 +43,6 @@
     <div id="loader-wrapper">
         <img src="images/logoblack.png" alt="Caricamento..." class="loader-logo">
     </div>
-
-    <!-- Contenitore per le animazioni -->
-    <div id="animation-container"></div>
 
     <main id="landing-background" class="landing-container">
         
@@ -128,8 +88,6 @@
 
 
     <!-- 3. Carica lo script in modo differito per non bloccare il rendering -->
-    <script src="js/animations.js" defer></script>
     <script src="js/loader.js" defer></script>
-    <script src="js/brunch-logic.js" defer></script>
 </body>
 </html>
