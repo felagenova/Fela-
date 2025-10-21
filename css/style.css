@@ -160,6 +160,109 @@ body {
     transform: scale(1.05); /* Ingrandisce leggermente il bottone */
 }
 
+/* --- Stili per il Music Player --- */
+#music-player-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background: #f3f0ce; /* Colore panna */
+    border-radius: 50px; /* Forma a pillola */
+    border: 2px solid #ff0403; /* Bordo rosso per coerenza */
+    width: auto;
+    max-width: 350px; /* Aumentata larghezza per il testo */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.player-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 5px 0 0; /* Aggiunto spazio a destra */
+    width: 30px;
+    height: 30px;
+    color: #ff0403; /* Colore rosso */
+}
+
+.player-btn svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+}
+
+.player-btn:hover {
+    transform: scale(1.1);
+}
+
+#track-info {
+    flex-grow: 1;
+    text-align: left;
+    color: #ff0403;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.track-title {
+    font-weight: 700;
+    /* Rimuoviamo text-overflow e overflow per permettere l'animazione */
+}
+
+/* Stile per l'animazione di scorrimento (marquee) */
+.track-title.scrolling span {
+    display: inline-block; /* Necessario per la trasformazione */
+    padding-left: 100%; /* Inizia fuori dallo schermo a destra */
+    animation: scroll-text 15s linear infinite;
+}
+
+@keyframes scroll-text {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Sposta il testo completamente a sinistra, inclusa la sua lunghezza e il padding iniziale */
+        transform: translateX(-200%); 
+    }
+}
+
+.track-title:not(.scrolling) {
+    text-overflow: ellipsis; /* Applica i puntini solo se non sta scorrendo */
+    overflow: hidden; /* Nasconde il testo in eccesso solo se non sta scorrendo */
+}
+
+.track-artist {
+    font-size: 12px;
+    opacity: 0.8;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.volume-icon {
+    width: 22px;
+    height: 22px;
+    fill: #ff0403; /* Colore rosso */
+    opacity: 1;
+}
+
+#volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100px;
+    height: 4px;
+    background: rgba(255, 4, 3, 0.3); /* Sfondo rosso traslucido */
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
 /* --- Stili per le Pagine Interne (menu, eventi, etc.) --- */
 .page-container {
     padding: 40px;
@@ -295,6 +398,27 @@ body {
     .btn {
         min-width: auto; /* Rimuove la larghezza minima fissa per adattarsi al container */
     }
+
+    /* Music Player su mobile */
+    #music-player-container {
+        max-width: 90%; /* Occupa il 90% della larghezza, come i bottoni */
+        padding: 8px 15px;
+        gap: 10px;
+        margin-top: 25px;
+    }
+
+    #track-info {
+        font-size: 12px; /* Riduciamo la dimensione del font base */
+    }
+
+    .track-artist {
+        font-size: 10px; /* Riduciamo anche l'artista */
+    }
+
+    #volume-slider {
+        width: 60px; /* Riduciamo la larghezza della barra del volume */
+    }
+
 
     /* Pagine Interne (Menu, Eventi) */
     .page-container {
