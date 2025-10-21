@@ -9,6 +9,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
     
     <!-- 1. Precarica il file CSS completo in background -->
     <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -71,6 +75,11 @@
     </script>
 </head>
 <body>
+
+    <!-- Loading Screen -->
+    <div id="loader-wrapper">
+        <img src="images/logoblack.png" alt="Caricamento..." class="loader-logo">
+    </div>
 
     <!-- Contenitore per le animazioni -->
     <div id="animation-container"></div>
