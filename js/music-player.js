@@ -74,6 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Per le dirette streaming, è meglio ricaricare la sorgente
             // per evitare problemi di buffer o disconnessione.
             player.load();
+            // Sincronizza il volume del player con lo slider dopo l'avvio della riproduzione.
+            // Questo è cruciale per la compatibilità con i browser mobile.
+            player.volume = parseFloat(volumeSlider.value);
             player.play().catch(error => console.error("Errore durante la riproduzione:", error));
             // Inizia a controllare le info della traccia quando parte la musica
             fetchTrackInfo(); // Chiamata immediata
@@ -96,8 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Gestione del volume
     volumeSlider.addEventListener('input', (e) => {
         player.volume = parseFloat(e.target.value);
+        console.log('Volume slider changed. Player volume set to:', player.volume); // Aggiunto per debug
     });
 
     // Imposta il volume iniziale
-    player.volume = parseFloat(volumeSlider.value);
+    // Su molti browser mobile, il volume può essere impostato solo dopo un'interazione utente.
+    // Lo imposteremo al primo play (vedi listener del playPauseBtn).
 });
