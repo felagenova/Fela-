@@ -226,18 +226,19 @@ body {
 
 /* Stile per l'animazione di scorrimento (marquee) */
 .track-title.scrolling span {
-    display: inline-block; /* Necessario per la trasformazione */
-    padding-left: 100%; /* Inizia fuori dallo schermo a destra */
+    /* Sposta il testo a destra del contenitore per iniziare l'animazione fuori schermo */
+    transform: translateX(100%);
     animation: scroll-text 15s linear infinite;
+    display: inline-block; /* Necessario per applicare la trasformazione */
+    white-space: nowrap; /* Impedisce al testo di andare a capo */
 }
 
 @keyframes scroll-text {
     0% {
-        transform: translateX(0);
+        transform: translateX(100%); /* Parte da destra */
     }
     100% {
-        /* Sposta il testo completamente a sinistra, inclusa la sua lunghezza e il padding iniziale */
-        transform: translateX(-200%); 
+        transform: translateX(-100%); /* Si sposta completamente a sinistra */
     }
 }
 

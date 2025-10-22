@@ -36,8 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Controlla se il testo è più largo del suo contenitore
                     if (trackTitleEl.scrollWidth > trackTitleEl.clientWidth) {
-                        // Se è troppo lungo, attiva l'animazione di scorrimento
-                        trackTitleEl.innerHTML = `<span>${song.title}</span>`;
+                        // Se è troppo lungo, duplica il testo per un'animazione in loop
+                        // e attiva l'animazione di scorrimento.
+                        trackTitleEl.innerHTML = `<span>${song.title} &nbsp;&nbsp;&nbsp; ${song.title}</span>`;
                         trackTitleEl.classList.add('scrolling');
                     } else {
                         // Altrimenti, mostra il testo normalmente
@@ -94,9 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Gestione del volume
     volumeSlider.addEventListener('input', (e) => {
-        player.volume = e.target.value;
+        player.volume = parseFloat(e.target.value);
     });
 
     // Imposta il volume iniziale
-    player.volume = volumeSlider.value;
+    player.volume = parseFloat(volumeSlider.value);
 });
