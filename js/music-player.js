@@ -78,6 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
             // Questo è cruciale per la compatibilità con i browser mobile.
             player.volume = parseFloat(volumeSlider.value);
             player.play().catch(error => console.error("Errore durante la riproduzione:", error));
+
+            // Tracciamento evento Google Analytics per il click su "Play"
+            if (typeof gtag === 'function') {
+                gtag('event', 'play_music', {
+                    'event_category': 'Music Player',
+                    'event_label': 'Click su Play'
+                });
+            }
+
             // Inizia a controllare le info della traccia quando parte la musica
             fetchTrackInfo(); // Chiamata immediata
             trackInfoInterval = setInterval(fetchTrackInfo, 15000); // E poi ogni 15 secondi

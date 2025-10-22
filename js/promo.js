@@ -67,6 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
         promoEventBtn.addEventListener('click', (event) => {
             event.preventDefault(); // Previene il comportamento di default del bottone
             popup.classList.add('visible');
+
+            // Tracciamento evento Google Analytics per il click sul bottone dell'evento
+            if (typeof gtag === 'function') {
+                gtag('event', 'show_popup_bttn', {
+                    'event_category': 'Promotion',
+                    'event_label': 'Click su bottone Fela meets La Pesa'
+                });
+            }
             // Non impostiamo localStorage qui, l'utente vuole vederlo on-demand
         });
     }
