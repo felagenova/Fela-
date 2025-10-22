@@ -465,12 +465,25 @@ body {
     border: 2px solid #ff0403;
     border-radius: 8px;
     text-decoration: none;
+    font-family: "Red Hat Display", sans-serif; /* Assicura l'uso del font desiderato */
+    font-size: 16px; /* Imposta una dimensione esplicita per coerenza con altri elementi di navigazione */
     font-weight: 700;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .jump-btn:hover {
     background-color: #ff0403;
+    color: #f3f0ce;
+}
+
+/* Stile specifico per il bottone dell'evento promozionale */
+#promo-event-btn {
+    color: #019e51ff;
+    border-color: #019e51ff;
+}
+
+#promo-event-btn:hover {
+    background-color: #019e51ff;
     color: #f3f0ce;
 }
 
@@ -1031,29 +1044,46 @@ body {
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-
 .promo-popup-overlay.visible {
     opacity: 1;
     visibility: visible;
 }
-
 .promo-popup-content {
     background-color: #f3f0ce;
-    color: #ff0403;
+    color: #019e51ff;
     padding: 30px;
     border-radius: 12px;
-    border: 3px solid #ff0403;
-    text-align: center;
+    border: 3px solid #019e51ff;
+    text-align: center; /* Centra il testo all'interno del pop-up */
     max-width: 90%;
     width: 450px;
     position: relative;
     box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+
+    /* Stato iniziale per l'animazione di entrata */
+    transform: translateY(50px);
+    opacity: 0;
+    /* Applica la transizione per l'animazione */
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+/* Quando l'overlay è visibile, il contenuto si anima */
+.promo-popup-overlay.visible .promo-popup-content {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .promo-popup-content h3 {
     margin: 0 0 15px 0;
     font-size: 28px;
     font-weight: 900;
+}
+/* Nuovo stile per il titolo dell'evento */
+.promo-popup-content h4.promo-event-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    color: #019e51ff;
 }
 
 .promo-popup-content p {
@@ -1068,21 +1098,51 @@ body {
     background: none;
     border: none;
     font-size: 28px;
-    color: #ff0403;
+    color: #019e51ff;
     cursor: pointer;
     line-height: 1;
 }
 
+.promo-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.promo-menu-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Allinea all'inizio se il testo va a capo */
+    margin-bottom: 15px;
+    gap: 15px; /* Spazio tra piatto e prezzo */
+}
+
+.promo-dish {
+    flex-grow: 1;
+    font-size: 16px;
+}
+
+.promo-price {
+    font-weight: 700;
+    white-space: nowrap; /* Evita che il prezzo vada a capo */
+    font-size: 16px;
+}
+
 @media (max-width: 600px) {
     .promo-popup-content {
-        padding: 25px 20px;
+        padding: 20px 15px;
+        width: 95%;
     }
     .promo-popup-content h3 {
         font-size: 22px;
     }
+    .promo-popup-content h4.promo-event-title { /* Aggiornato per il nuovo nome classe */
+        font-size: 18px;
+    }
     .promo-popup-content p {
         font-size: 16px;
-        text-align: left;
+        margin-bottom: 15px;
     }
 }
 
