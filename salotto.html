@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Benvenuti nel Salotto di Fela! Rilassati e goditi le nostre selezioni musicali e i talk direttamente dal nostro canale YouTube.">
+    <title>Il Salotto di Fela!</title>
+    <!-- Google Fonts: Red Hat Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Abilita le View Transitions per animazioni fluide tra le pagine -->
+    <meta name="view-transition" content="same-origin">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-79CC36NDY9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-79CC36NDY9');
+    </script>
+</head>
+<body class="salotto-page">    
+    
+    <header class="site-header-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/f!_logo_blu.svg" alt="Logo Fela! Music Bar Genova">
+            </a>
+            <button class="hamburger-menu" aria-label="Apri menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <!-- <a href="salotto.html" class="active">Il Salotto di Fela!</a> -->
+                <a href="eventi.html">Eventi</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-container salotto-container">
+        <h1>Il Salotto di Fela!
+            <span class="salotto-subtitle">
+                Fela! si veste d'intimità per "raccontarci" di musica e dare spazio all'ascolto di brani insieme a 
+                <span class="tooltip-trigger">Dalida
+                </span>, che nel corso della stagione invernale, per una volta al mese, ospiterà personaggi di assoluto prestigio della divulgazione e del giornalismo di settore.
+            </span>
+        </h1>
+
+        <p class="salotto-intro">
+            <span class="intro-main">I Dischi che ti hanno salvato la vita...</span>
+            <span class="intro-sub">e potrebbero salvare la vosta</span>
+        </p>
+
+        <div class="video-wrapper">
+            <div class="video-container">
+                <!-- Questo div verrà sostituito dal player di YouTube via API -->
+                <div id="youtube-player"></div>
+            </div>
+            <div class="progress-wrapper">
+                <button id="play-pause-custom-btn" aria-label="Play">
+                    <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg class="pause-icon" style="display: none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                </button>
+                <span id="current-time-custom" class="time-display">00:00</span>
+                <div id="progress-bar-container-custom" class="progress-bar-container">
+                    <div id="progress-bar-filled-custom" class="progress-bar-filled"></div>
+                    <div id="progress-bar-thumb-custom" class="progress-bar-thumb"></div>
+                </div>
+                <span id="duration-custom" class="time-display">00:00</span>
+                <button id="fullscreen-btn-custom" class="player-control-btn" aria-label="Schermo intero">
+                    <svg class="fullscreen-icon" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 2h-2v3h-3v2h5v-5zm-3-4V5h3v2h-3z"/></svg>
+                    <svg class="exit-fullscreen-icon" style="display: none;" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="current-episode-details">
+            <h3 id="current-episode-title">1° Puntata w/ Dalida</h3>
+        </div>
+
+        <div class="episode-list-container">
+            <h2>Le Puntate</h2>
+            <div class="episode-list">
+                <!-- Esempio di puntata. Copia e incolla questo blocco per aggiungerne altre. -->
+                <!-- Sostituisci data-video-id con l'ID del video di YouTube -->
+                <div class="episode-card active" data-video-id="gZ6mLf3p0eY">
+                    <button class="episode-play-btn" aria-label="Riproduci 1° Puntata w/ Dalida">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="episode-text-content">
+                        <h4>1° Puntata w/ Dalida</h4>
+                        <p>Dalida Spunton è una conduttrice radiofonica con oltre dieci anni di esperienza e una passione autentica per la musica. Da undici anni è la voce de “La Cimice”, in onda ogni martedì alle 18 su Radio Skylab, dove alterna curiosità, interviste e tanta buona musica. Sempre sulle stesse frequenze, ogni giovedì o venerdì, ospita artisti di rilievo nella rubrica “Consigli musicali non richiesti”.<br><br>
+
+Da ottobre ha portato la sua energia anche fuori dalla radio, con un nuovo progetto da Fela! di Genova, dedicato a talk e ascolto di vinili. Una volta al mese, trasforma il locale in un salotto musicale, dove condivide storie, aneddoti e dischi selezionati insieme a ospiti d’eccezione.<br><br>
+
+Nei suoi dj set, Dalida esplora le sonorità del rock e della black music, spaziando tra Disco, Boogie, New Wave, Post-Punk e Synth-Pop, fino alle sfumature più contemporanee dell’Indietronica e del Neo-Psychedelic. Che sia in digitale o in vinile, le sue selezioni raccontano sempre un viaggio sonoro ricco di emozione, ritmo e scoperta.<br><br></p>
+                    </div>
+                    <button class="episode-expand-btn" aria-label="Mostra biografia">
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Esempio di puntata 2 -->
+                <div class="episode-card" data-video-id="r_p8I9-t2eA">
+                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 2">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="episode-text-content">
+                        <h4>Titolo della Puntata 2</h4>
+                        <p>Descrizione della seconda puntata. Clicca qui per vedere questo episodio nel player qui sopra.</p>
+                    </div>
+                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Esempio di puntata 3 -->
+                <div class="episode-card" data-video-id="4xDzrQpsaBU">
+                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 3">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="episode-text-content">
+                        <h4>Titolo della Puntata 3</h4>
+                        <p>Un altro fantastico episodio dal Salotto di Fela, tutto da scoprire e ascoltare.</p>
+                    </div>
+                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Esempio di puntata 4 -->
+                <div class="episode-card" data-video-id="ID_VIDEO_4">
+                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 4">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="episode-text-content">
+                        <h4>Titolo della Puntata 4</h4>
+                        <p>Descrizione della quarta puntata. Inserisci qui i dettagli.</p>
+                    </div>
+                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Esempio di puntata 5 -->
+                <div class="episode-card" data-video-id="ID_VIDEO_5">
+                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 5">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="episode-text-content">
+                        <h4>Titolo della Puntata 5</h4>
+                        <p>Descrizione della quinta puntata. Inserisci qui i dettagli.</p>
+                    </div>
+                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Esempio di puntata 6 -->
+                <div class="episode-card" data-video-id="ID_VIDEO_6">
+                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 6">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="episode-text-content">
+                        <h4>Titolo della Puntata 6</h4>
+                        <p>Descrizione della sesta puntata. Inserisci qui i dettagli.</p>
+                    </div>
+                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Esempio di puntata 7 -->
+                <div class="episode-card" data-video-id="ID_VIDEO_7">
+                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 7">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="episode-text-content">
+                        <h4>Titolo della Puntata 7</h4>
+                        <p>Descrizione della settima puntata. Inserisci qui i dettagli.</p>
+                    </div>
+                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Esempio di puntata 8 -->
+                <div class="episode-card" data-video-id="ID_VIDEO_8">
+                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 8">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="episode-text-content">
+                        <h4>Titolo della Puntata 8</h4>
+                        <p>Descrizione della ottava puntata. Inserisci qui i dettagli.</p>
+                    </div>
+                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Esempio di puntata 9 -->
+                <div class="episode-card" data-video-id="ID_VIDEO_9">
+                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 9">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="episode-text-content">
+                        <h4>Titolo della Puntata 9</h4>
+                        <p>Descrizione della nona puntata. Inserisci qui i dettagli.</p>
+                    </div>
+                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Aggiungi altre puntate qui -->
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-left">
+            <p><strong>Fela! - Music Bar - Social Hub</strong></p>            
+            <a href="https://maps.app.goo.gl/zhNrFjCBpWnWwXuP9" target="_blank" rel="noopener noreferrer">
+                <p>Via di S. Cosimo, 6r, 16128 Genova GE</p>
+            </a>
+        </div>
+        <div class="footer-right">
+            <p>
+                <strong>Orari:</strong><br>
+                Mar-Gio: 18:00 - 01:00<br>
+                Ven-Sab: 18:00 - 02:00<br>
+                Dom: 18:00 - 01:00<br>
+                Lun: FELAKIUDI
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/main.js" defer></script>
+    <!-- Carichiamo l'API di YouTube prima del nostro script -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="js/salotto.js" defer></script>
+
+    <!-- Box informativo di Dalida (ora è un modale) -->
+    <div id="dalida-modal-overlay" class="modal-overlay">
+        <div class="modal-box">
+            <button class="modal-close-btn" aria-label="Chiudi">&times;</button>
+            <h3>Chi è Dalida?</h3>
+            <p>
+                Dalida Spunton è una conduttrice radiofonica con oltre dieci anni di esperienza e anima pulsante de “La Cimice” su Radio Skylab, Varazze (SV).
+            </p>
+        </div>
+    </div>
+</body>
+</html>

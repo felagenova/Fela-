@@ -52,6 +52,27 @@ html {
     scroll-behavior: smooth; /* Abilita lo scorrimento fluido */
 }
 
+/* --- Animazioni Personalizzate per il Cambio Pagina (View Transitions) --- */
+
+/* Definiamo le nuove animazioni di scorrimento */
+@keyframes slide-to-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-30%); opacity: 0; }
+}
+
+@keyframes slide-from-right {
+    from { transform: translateX(30%); opacity: 0; }
+    to { transform: translateX(0); }
+}
+
+/* Applichiamo le animazioni al cambio pagina */
+::view-transition-old(root) {
+    animation: 400ms cubic-bezier(0.4, 0, 1, 1) both slide-to-left;
+}
+::view-transition-new(root) {
+    animation: 400ms cubic-bezier(0, 0, 0.2, 1) both slide-from-right;
+}
+
 /* Stili generali per resettare margini e padding */
 body {
     margin: 0;
@@ -171,6 +192,17 @@ body {
     background-color: #ff0403; /* Sfondo rosso al passaggio */
     color: #f3f0ce; /* Testo chiaro al passaggio */
     transform: scale(1.05); /* Ingrandisce leggermente il bottone */
+}
+
+/* Stile specifico per il bottone "Il Salotto" nella homepage */
+.btn.btn-salotto {
+    color: #5b5bffff;
+    border-color: #5b5bffff;
+}
+
+.btn.btn-salotto:hover {
+    background-color: #5b5bffff;
+    color: #f3f0ce;
 }
 
 /* --- Stili per il Music Player --- */
@@ -916,6 +948,12 @@ body {
     margin: 0 auto;
 }
 
+.nav-logo {
+    /* Assegna un nome univoco per la transizione del logo tra le pagine */
+    view-transition-name: main-logo;
+    contain: layout; /* Ottimizzazione per le performance */
+}
+
 .nav-logo img {
     height: 45px; /* Altezza del logo */
     width: auto;
@@ -1209,4 +1247,398 @@ body {
 .nav-link-inactive {
     opacity: 0.4;
     cursor: not-allowed;
+}
+
+/* --- Stili per la Pagina "Il Salotto di Fela" --- */
+.salotto-container {
+    background-color: #f3f0ce;
+}
+
+.salotto-container h1 {
+    color: #5b5bffff;
+    border-color: #5b5bffff;
+    background-color: #f3f0ce;
+}
+
+.salotto-container h1 .salotto-subtitle {
+    display: block;
+    font-size: 16px;
+    font-weight: 400; /* Stile più leggero */
+    font-style: italic; /* Stile corsivo */
+    text-transform: none; /* Rimuove il maiuscolo ereditato */
+    margin-top: 15px;
+    line-height: 1.5;
+}
+
+.salotto-intro {
+    color: #5b5bffff;
+    line-height: 1.4; /* Leggermente ridotto per compattare le due righe */
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+}
+
+.salotto-intro .intro-main {
+    display: block;
+    font-size: 24px; /* Leggermente più piccolo */
+    font-weight: 700; /* Meno pesante */
+    text-transform: uppercase;
+}
+
+.salotto-intro .intro-sub {
+    display: block;
+    font-size: 18px; /* Più piccolo */
+    font-weight: 400; /* Leggero */
+    font-style: normal; /* Rimosso il corsivo */
+    margin-top: 5px;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* Proporzioni 16:9 */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    border: 3px solid #5b5bffff;
+    border-radius: 8px;
+}
+/* Modifica per nascondere la barra del titolo di YouTube */
+.video-container #youtube-player {
+    position: absolute;
+    /* Rendiamo l'iframe più alto del contenitore per nascondere le barre sopra e sotto */
+    top: -60px; 
+    left: 0;
+    width: 100%;
+    height: calc(100% + 120px);
+}
+
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* --- Stili specifici per la Navbar nella pagina Salotto --- */
+.salotto-page .site-header-nav {
+    border-bottom-color: #5b5bffff;
+}
+
+.salotto-page .main-nav a {
+    color: #5b5bffff;
+}
+
+.salotto-page .hamburger-line {
+    background-color: #5b5bffff;
+}
+
+/* --- Stili specifici per il Footer nella pagina Salotto --- */
+.salotto-page .site-footer {
+    background-color: #5b5bffff; /* Blu per lo sfondo del footer */
+    color: #f3f0ce; /* Testo chiaro */
+}
+
+.salotto-page .site-footer a {
+    color: #f3f0ce; /* Link chiari */
+}
+
+/* --- Stili per la lista episodi nella pagina Salotto --- */
+.episode-list-container {
+    margin-top: 50px;
+    border-top: 2px solid #5b5bffff;
+    padding-top: 30px;
+}
+
+.episode-list-container h2 {
+    color: #5b5bffff;
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+
+.episode-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.episode-card {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Permette alla descrizione di andare a capo */
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid #5b5bffff;
+    border-radius: 8px;
+    padding: 15px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.episode-card:hover {
+    background-color: rgba(91, 91, 255, 0.1);
+    transform: scale(1.02);
+}
+
+.episode-card.active {
+    background-color: rgba(91, 91, 255, 0.2);
+    border-width: 3px;
+}
+
+.episode-play-btn,
+.episode-expand-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    flex-shrink: 0;
+}
+
+.episode-play-btn svg,
+.episode-expand-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: #5b5bffff;
+    transition: transform 0.3s ease;
+}
+
+.episode-play-btn:hover svg,
+.episode-expand-btn:hover svg {
+    transform: scale(1.2);
+}
+
+.episode-expand-btn .arrow-icon {
+    transition: transform 0.4s ease;
+}
+
+.episode-card.expanded .episode-expand-btn .arrow-icon {
+    transform: rotate(180deg);
+}
+
+.episode-text-content {
+    flex: 1; /* Occupa lo spazio tra i due bottoni */
+    padding: 0 15px;
+}
+
+.episode-text-content p {
+    /* Stili per la descrizione a comparsa */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, margin-top 0.5s ease-out;
+    margin: 0;
+    width: 100%; /* Occupa tutta la larghezza della card */
+    flex-basis: 100%; /* Forza la descrizione ad andare a capo */
+}
+
+.episode-card.expanded .episode-text-content p {
+    max-height: 1000px; /* Un valore alto per permettere l'espansione completa */
+    margin-top: 15px;
+}
+
+.episode-text-content h4, .episode-text-content p {
+    color: #5b5bffff;
+}
+
+/* --- Wrapper per video e controlli custom --- */
+.video-wrapper {
+    margin-bottom: 20px;
+}
+
+/* Nasconde i nostri controlli custom quando il video è in fullscreen */
+.video-wrapper:fullscreen .progress-wrapper {
+    display: none;
+}
+
+/* --- Stili per i dettagli dell'episodio corrente --- */
+#current-episode-details {
+    padding: 20px 0;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+#current-episode-title {
+    color: #5b5bffff;
+    font-size: 22px;
+    margin: 0 0 10px 0;
+}
+
+#current-episode-description {
+    color: #5b5bffff;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+#play-pause-custom-btn {
+    background-color: transparent;
+    border: 2px solid #5b5bffff;
+    color: #5b5bffff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#play-pause-custom-btn:hover {
+    background-color: #5b5bffff;
+    color: #f3f0ce;
+}
+
+#play-pause-custom-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* --- Wrapper per la barra di avanzamento e il tempo --- */
+.progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.time-display {
+    color: #5b5bffff;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 45px; /* Larghezza fissa per evitare scatti */
+    text-align: center;
+}
+
+/* --- Stili per la barra di avanzamento personalizzata --- */
+.progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: rgba(91, 91, 255, 0.2);
+    cursor: pointer;
+    position: relative;
+    border-radius: 5px;
+}
+
+.progress-bar-filled {
+    width: 0%;
+    height: 100%;
+    background-color: #5b5bffff;
+    border-radius: 5px;
+    transition: width 0.1s linear; /* Transizione fluida */
+}
+
+.progress-bar-thumb {
+    position: absolute;
+    top: 50%;
+    left: 0%; /* La posizione verrà aggiornata da JS */
+    width: 18px;
+    height: 18px;
+    background-color: #f3f0ce;
+    border: 2px solid #5b5bffff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none; /* Non interferisce con il click sulla barra */
+    transition: left 0.1s linear;
+}
+
+.progress-bar-container:hover .progress-bar-thumb {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Stile unificato per i bottoni tondi del player (Play/Pausa e Fullscreen) */
+#play-pause-custom-btn,
+.player-control-btn {
+    background-color: transparent;
+    border: 2px solid #5b5bffff;
+    color: #5b5bffff;
+    width: 40px; /* Larghezza fissa */
+    height: 40px; /* Altezza fissa */
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+    flex-shrink: 0; /* Impedisce al bottone di rimpicciolirsi */
+}
+
+#play-pause-custom-btn:hover,
+.player-control-btn:hover {
+    background-color: #5b5bffff;
+    color: #f3f0ce;
+}
+
+#play-pause-custom-btn svg, .player-control-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* Nasconde temporaneamente le puntate dalla seconda in poi */
+.episode-list .episode-card:not(:first-child) {
+    display: none;
+}
+
+/* --- Stili per il Tooltip su "Dalida" --- */
+.tooltip-trigger {
+    position: relative;
+    cursor: help;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: #5b5bffff;
+}
+ 
+/* --- Stili per il Modale di Dalida --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-box {
+    background-color: #5b5bffff;
+    color: #f3f0ce;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 90%;
+    width: 400px;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.visible .modal-box {
+    transform: scale(1);
+}
+
+.modal-box h3 {
+    margin: 0 0 15px 0;
+    font-size: 24px;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #f3f0ce;
+    cursor: pointer;
 }
