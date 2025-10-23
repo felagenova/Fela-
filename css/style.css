@@ -1309,8 +1309,10 @@ body {
 
 .salotto-container h1 {
     color: #5b5bffff;
-    border-color: #5b5bffff;
     background-color: #f3f0ce;
+    /* Applica la cornice personalizzata blu */
+    border-image-source: url('../images/custom-pattern-blue.svg');
+    border-image-slice: 30;
 }
 
 .salotto-container h1 .salotto-subtitle {
