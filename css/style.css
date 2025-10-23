@@ -351,9 +351,15 @@ body {
 .page-container h1 {
     color: #ff0403;
     background-color: #f3f0ce; /* Aggiungiamo lo sfondo al box del titolo */
-    border-radius: 8px;
     padding: 20px;
-    border: 3px solid #ff0403; /* Bordo rosso e più visibile */
+
+    /* Sostituzione del bordo con la cornice personalizzata rossa */
+    border-style: solid;
+    border-width: 25px;
+    border-image-source: url('../images/custom-pattern-red.svg');
+    border-image-slice: 30;
+    border-image-repeat: round;
+
     margin-bottom: 20px;
     font-size: 36px; /* Aumentata la dimensione del testo */
     text-transform: uppercase; /* Testo tutto maiuscolo */
