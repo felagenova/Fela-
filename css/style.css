@@ -184,6 +184,7 @@ body {
     border-radius: 8px; /* Angoli arrotondati */
     border: 2px solid #ff0403; /* Bordo rosso */
     font-size: 18px;
+    font-family: "Red Hat Display", sans-serif; /* Forza il font corretto anche sui bottoni */
     font-weight: 700; /* Testo più in grassetto per leggibilità */
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
 }
@@ -216,6 +217,11 @@ body {
 .btn.btn-promo-booking:hover {
     background-color: #019e51ff; /* Sfondo verde al passaggio */
     color: #f3f0ce; /* Testo crema al passaggio */
+}
+
+/* Gestione testo bottone per mobile/desktop */
+.btn .mobile-text {
+    display: none;
 }
 
 
@@ -458,6 +464,21 @@ body {
     .btn {
         min-width: auto; /* Rimuove la larghezza minima fissa per adattarsi al container */
     }
+
+    /* Riduci la dimensione del font per il bottone dell'evento su mobile */
+    #promo-event-btn {
+        font-size: 16px;
+    }
+
+    /* Nasconde il testo desktop e mostra quello mobile nel bottone */
+    .btn .desktop-text {
+        display: none;
+    }
+
+    .btn .mobile-text {
+        display: inline;
+    }
+
 
     /* Music Player su mobile */
     #music-player-container {
