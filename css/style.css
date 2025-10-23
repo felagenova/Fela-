@@ -205,6 +205,20 @@ body {
     color: #f3f0ce;
 }
 
+/* Stile specifico per il bottone di prenotazione nel pop-up promo */
+.btn.btn-promo-booking {
+    border-color: #019e51ff;
+    color: #019e51ff;
+    margin-top: 15px;
+}
+
+/* Stile specifico per il bottone di prenotazione nel pop-up promo */
+.btn.btn-promo-booking:hover {
+    background-color: #019e51ff; /* Sfondo verde al passaggio */
+    color: #f3f0ce; /* Testo crema al passaggio */
+}
+
+
 /* --- Stili per il Music Player --- */
 #music-player-container {
     display: flex;
@@ -1090,8 +1104,15 @@ body {
     background-color: #f3f0ce;
     color: #019e51ff;
     padding: 30px;
-    border-radius: 12px;
-    border: 3px solid #019e51ff;
+    border-radius: 0; /* Rimosso il border-radius per angoli squadrati */
+
+    /* Sostituzione del bordo solido con un'immagine personalizzata */
+    border-style: solid;
+    border-width: 25px; /* Aumenta la larghezza per rendere visibile il pattern */
+    border-image-source: url('../images/custom-pattern.svg'); /* <-- SOSTITUISCI CON IL NOME DEL TUO FILE */
+    border-image-slice: 30; /* Valore da aggiustare in base al tuo pattern (indica come tagliare l'immagine) */
+    border-image-repeat: round; /* 'round' ripete il pattern, 'stretch' lo allunga */
+
     text-align: center; /* Centra il testo all'interno del pop-up */
     max-width: 90%;
     width: 450px;
@@ -1181,6 +1202,11 @@ body {
     .promo-popup-content p {
         font-size: 16px;
         margin-bottom: 15px;
+    }
+    /* Rende più piccolo il sottotitolo "Percorso gastronomico..." solo su mobile */
+    .promo-popup-content .promo-event-title + p {
+        font-size: 14px;
+        margin-bottom: 20px;
     }
 }
 
