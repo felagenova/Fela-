@@ -904,6 +904,12 @@ body {
     color: #ff0403; /* Testo rosso per coerenza */
 }
 
+/* Stile per la card quando mostra un giorno di chiusura */
+#event-display-area.is-closing-day * {
+    color: #999; /* Grigio, come il testo nella cella del calendario */
+}
+
+
 .calendar-nav {
     display: flex;
     justify-content: center;

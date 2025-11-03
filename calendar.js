@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const eventCells = document.querySelectorAll('.day-cell.has-event');
+    const eventCells = document.querySelectorAll('.day-cell.has-event, .day-cell.closing-day');
     const displayArea = document.getElementById('event-display-area');
     const calendars = document.querySelectorAll('.calendar-container');
 
@@ -14,6 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (eventDetailsContent) {
                 displayArea.innerHTML = eventDetailsContent.innerHTML;
                 // Rende visibile l'area
+
+                // Aggiunge una classe specifica se è un giorno di chiusura per lo stile
+                if (this.classList.contains('closing-day')) {
+                    displayArea.classList.add('is-closing-day');
+                } else {
+                    displayArea.classList.remove('is-closing-day');
+                }
                 displayArea.classList.add('visible');
                 displayArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
