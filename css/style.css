@@ -206,6 +206,18 @@ body {
     color: #f3f0ce;
 }
 
+/* Stile specifico per il bottone "Il Brunch" nella homepage */
+.btn#brunch-btn {
+    color: #487a7bff;
+    border-color: #487a7bff;
+}
+
+.btn#brunch-btn:hover {
+    background-color: #487a7bff;
+    color: #f3f0ce;
+}
+
+
 /* Stile specifico per il bottone di prenotazione nel pop-up promo */
 .btn.btn-promo-booking {
     border-color: #019e51ff;
@@ -1135,14 +1147,14 @@ body {
 }
 .promo-popup-content {
     background-color: #f3f0ce;
-    color: #019e51ff;
+    color: #487a7bff; /* Colore del brunch */
     padding: 30px;
     border-radius: 0; /* Rimosso il border-radius per angoli squadrati */
 
     /* Sostituzione del bordo solido con un'immagine personalizzata */
     border-style: solid;
     border-width: 25px; /* Aumenta la larghezza per rendere visibile il pattern */
-    border-image-source: url('../images/custom-pattern.svg'); /* <-- SOSTITUISCI CON IL NOME DEL TUO FILE */
+    border-image-source: url('../images/custom-pattern-brunch.svg'); /* Usiamo la cornice del brunch */
     border-image-slice: 30; /* Valore da aggiustare in base al tuo pattern (indica come tagliare l'immagine) */
     border-image-repeat: round; /* 'round' ripete il pattern, 'stretch' lo allunga */
 
@@ -1175,7 +1187,7 @@ body {
     font-size: 22px;
     font-weight: 700;
     margin: 0 0 5px 0;
-    color: #019e51ff;
+    color: #487a7bff; /* Colore del brunch */
 }
 
 .promo-popup-content p {
@@ -1190,9 +1202,39 @@ body {
     background: none;
     border: none;
     font-size: 28px;
-    color: #019e51ff;
+    color: #487a7bff; /* Colore del brunch */
     cursor: pointer;
     line-height: 1;
+}
+
+/* Nuovo stile per il bottone nel pop-up del brunch */
+.btn.btn-brunch-popup {
+    color: #487a7bff;
+    border-color: #487a7bff;
+}
+.btn.btn-brunch-popup:hover {
+    background-color: #487a7bff;
+    color: #f3f0ce;
+}
+
+/* --- Stili per il bottone di prenotazione nella pagina Brunch --- */
+.brunch-booking-container {
+    /* Rende il contenitore largo quanto il titolo h1, allineandolo perfettamente */
+    margin: -10px auto 40px auto; /* Margine negativo sopra e centrato */
+}
+
+.btn.btn-brunch-booking {
+    display: block; /* Occupa tutta la larghezza del suo contenitore */
+    width: 100%; /* Assicura che occupi il 100% della larghezza */
+    box-sizing: border-box; /* Il padding e il bordo non aumentano la larghezza totale */
+    text-align: center; /* Centra il testo all'interno del bottone */
+    color: #487a7bff;
+    border-color: #487a7bff;
+}
+
+.btn.btn-brunch-booking:hover {
+    background-color: #487a7bff;
+    color: #f3f0ce;
 }
 
 .promo-menu-list {
@@ -1307,6 +1349,59 @@ body {
     opacity: 0.4;
     cursor: not-allowed;
 }
+
+/* --- Stili per la Pagina "Il Brunch di Fela" --- */
+.brunch-page .site-header-nav {
+    border-bottom-color: #487a7bff;
+}
+
+.brunch-page .main-nav a {
+    color: #487a7bff;
+}
+
+.brunch-page .hamburger-line {
+    background-color: #487a7bff;
+}
+
+.brunch-page h1,
+.brunch-page .category-title {
+    color: #487a7bff;
+    border-color: #487a7bff;
+}
+
+/* Usa la cornice SVG personalizzata con il colore del brunch */
+.brunch-page h1 {
+    border-style: solid; /* Assicura che il bordo sia visibile */
+    border-width: 25px; /* Imposta la larghezza della cornice */
+    border-image-source: url('../images/custom-pattern-brunch.svg');
+    border-image-slice: 30;
+    border-image-repeat: round;
+}
+
+.brunch-page .menu-item-header h4,
+.brunch-page .price,
+.brunch-page .description {
+    color: #487a7bff;
+}
+
+.brunch-page .site-footer {
+    background-color: #487a7bff;
+    color: #f3f0ce;
+}
+
+.brunch-page .site-footer a {
+    color: #f3f0ce;
+}
+
+/* Colore specifico per il bottone "Torna su" nella pagina brunch */
+.brunch-page .back-to-top-btn {
+    background-color: rgba(72, 122, 123, 0.7); /* Colore brunch semi-trasparente */
+}
+
+.brunch-page .back-to-top-btn:hover {
+    background-color: #487a7bff; /* Colore brunch pieno al passaggio */
+}
+
 
 /* --- Stili per la Pagina "Il Salotto di Fela" --- */
 .salotto-container {

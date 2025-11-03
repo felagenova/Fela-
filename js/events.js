@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const eventCells = document.querySelectorAll('.day-cell.has-event');
+    const eventCells = document.querySelectorAll('.day-cell.has-event, .day-cell.closing-day');
     const displayArea = document.getElementById('event-display-area');
 
     const calendars = document.querySelectorAll('.calendar-container');
@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     eventCells.forEach(cell => {
         cell.addEventListener('click', function() {
+            // Aggiunge una classe specifica se è un giorno di chiusura per lo stile
+            if (this.classList.contains('closing-day')) {
+                displayArea.classList.add('is-closing-day');
+            } else {
+                displayArea.classList.remove('is-closing-day');
+            }
             const eventDetailsContent = this.querySelector('.event-details-content');
             if (eventDetailsContent) {
                 // --- LOGICA PER LA DATA ---
@@ -105,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const currentMonth = today.getMonth();
         const currentYear = today.getFullYear();
 
-        const todaysEventCell = Array.from(calendars).flatMap(calendar => Array.from(calendar.querySelectorAll('.day-cell.has-event'))).find(cell => {
+        const todaysEventCell = Array.from(calendars).flatMap(calendar => Array.from(calendar.querySelectorAll('.day-cell.has-event, .day-cell.closing-day'))).find(cell => {
             const dayNumber = parseInt(cell.firstChild.textContent.trim(), 10);
             const calendarYear = parseInt(cell.closest('.calendar-container').dataset.year, 10);
             let calendarMonth = parseInt(cell.closest('.calendar-container').dataset.month, 10);
@@ -123,12 +129,26 @@ document.addEventListener('DOMContentLoaded', function() {
             return dayNumber === currentDay && calendarMonth === currentMonth && calendarYear === currentYear;
         });
 
+        // Se viene trovata una cella con un evento per il giorno corrente
         if (todaysEventCell) {
             const calendarIndex = Array.from(calendars).indexOf(todaysEventCell.closest('.calendar-container'));
             showCalendar(calendarIndex);
             setTimeout(() => todaysEventCell.click(), 100); // Simula il click per mostrare i dettagli
         } else {
-            showCalendar(0); // Mostra il primo calendario se non c'è un evento per oggi
+            // Se non c'è un evento per oggi, cerca il calendario del mese corrente.
+            const currentMonthCalendarIndex = Array.from(calendars).findIndex(cal => {
+                const calYear = parseInt(cal.dataset.year, 10);
+                const calMonth = parseInt(cal.dataset.month, 10);
+                return calYear === currentYear && calMonth === currentMonth;
+            });
+
+            if (currentMonthCalendarIndex !== -1) {
+                // Se viene trovato il calendario per il mese corrente, mostralo.
+                showCalendar(currentMonthCalendarIndex);
+            } else {
+                // Altrimenti, mostra il primo calendario disponibile (comportamento di fallback).
+                showCalendar(0);
+            }
         }
     }
     

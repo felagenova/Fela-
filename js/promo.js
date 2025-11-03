@@ -17,20 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Funzione per controllare se la data odierna è compresa tra oggi e la data dell'evento
     function isEventDay() {
-        const today = new Date();
-        // Imposta l'ora alla fine della giornata per includere tutto il 28 Ottobre
-        const eventDateObj = new Date(eventDate.year, eventDate.month, eventDate.day, 21, 59, 59); 
-
-        // Confronta le date
-        return today <= eventDateObj;
-
-        /*
-        //Codice originale
-        const today = new Date();
-        return today.getDate() === eventDate.day &&
-               today.getMonth() === eventDate.month &&
-               today.getFullYear() === eventDate.year;
-        */
+        // Per la fase di test, forziamo la visualizzazione del pop-up ignorando la data.
+        // Per ripristinare il comportamento originale (mostra fino alla data dell'evento),
+        // ripristina il codice commentato.
+        return true;
     }
 
     // Funzione per controllare se il pop-up può essere mostrato di nuovo
@@ -43,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
         const timeSinceClosed = Date.now() - parseInt(closedTimestamp, 10);
 
-        return timeSinceClosed > twentyFourHoursInMillis; // Mostralo solo se sono passate più di 24 ore
+        // Mostralo solo se sono passate più di 24 ore
+        return timeSinceClosed > twentyFourHoursInMillis;
     }
 
     // Controlla se mostrare il pop-up

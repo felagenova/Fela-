@@ -60,15 +60,14 @@
             <!-- Contenitore per i bottoni -->
             <div class="button-container">
                 <a href="menu.html" class="btn">Menu</a>
-                <!-- Il link per "Il Brunch" è gestito da JavaScript -->
-                <!-- <a href="#" id="brunch-btn" class="btn">Il Brunch</a> -->
+                <a href="brunch.html" id="brunch-btn" class="btn">Il Brunch</a>
                 <!--
                 <button id="promo-event-btn" class="btn">
                     <span class="desktop-text">Fela! meets La Pesa</span>
                     <span class="mobile-text">Fela! meets<br>La Pesa</span>
                 </button>
                 -->
-                <!--<a href="salotto.html" class="btn btn-salotto">Il Salotto</a> --->
+                <!-- <a href="salotto.html" class="btn btn-salotto">Il Salotto</a> -->
                 <a href="eventi.html" class="btn">Eventi</a>
                 <!--
                     target="_blank" apre il link in una nuova scheda.
@@ -114,43 +113,23 @@
         </div>
     </footer>
 
-    <!--
     <!-- HTML per il Pop-up Promozionale -->
     <div id="promo-popup" class="promo-popup-overlay">
         <div class="promo-popup-content">
-            <h4>Martedì 28 Ottobre</h4>
-            <h2 class="promo-event-title">Fela! meets La Pesa</h2>
-            <p><i>Percorso gastronomico a cura di Davide Pastorino</i></p>
-            <p><strong>Proposta Food</strong></p>
-            <ul class="promo-menu-list">
-                <li>
-                    <span class="promo-dish">Panissa croccante, crema di limone affumicato e za'atar</span>
-                    <span class="promo-price">9 €</span>
-                </li>
-                <li>
-                    <span class="promo-dish">Bistecca di cavolfiore, tahina alla salvia, limone sotto sale e pangrattato al cappero</span>
-                    <span class="promo-price">12 €</span>
-                </li>
-                <li>
-                    <span class="promo-dish">Agnolotti di castagne, dashi di funghi e miso</span>
-                    <span class="promo-price">13 €</span>
-                </li>
-                <li>
-                    <span class="promo-dish">Spiedini di polpo, castagne e sedano rapa, olio al limone affumicato</span>
-                    <span class="promo-price">14 €</span>
-                </li>
-            </ul>
-            <a href="https://forms.gle/eS2J2Z4YGwFfKTB29" target="_blank" rel="noopener noreferrer" class="btn btn-promo-booking">
-                Prenota Qui!
+            <h1 class="promo-event-title">TORNA<br>IL BRUNCH DA FELA!</h1>
+            <p><i>Tutte le Domeniche del mese</i></p>
+            
+            <!-- Il bottone ora rimanda alla pagina del brunch -->
+            <a href="brunch.html" class="btn btn-brunch-popup">
+                Scopri il Menu
             </a>
             <button id="promo-close-btn" class="promo-popup-close" aria-label="Chiudi">&times;</button>
         </div>
     </div>
-    -->
 
     <!-- 3. Carica lo script in modo differito per non bloccare il rendering -->
     <script src="js/loader.js" defer></script>
     <script src="js/music-player.js" defer></script>
-    <!-- <script src="js/promo.js" defer></script> -->
+    <script src="js/promo.js" defer></script>
 </body>
 </html>
