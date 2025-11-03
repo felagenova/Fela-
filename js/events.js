@@ -115,18 +115,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const dayNumber = parseInt(cell.firstChild.textContent.trim(), 10);
             const calendarYear = parseInt(cell.closest('.calendar-container').dataset.year, 10);
             let calendarMonth = parseInt(cell.closest('.calendar-container').dataset.month, 10);
+            let yearToCompare = calendarYear;
 
             if (!cell.classList.contains('in-month')) {
                 if (dayNumber > 20) { // Giorno del mese precedente
                     calendarMonth = (calendarMonth === 0) ? 11 : calendarMonth - 1;
+                    if (calendarMonth === 11) yearToCompare--; // Se passiamo a Dicembre dell'anno prima
                 } else { // Giorno del mese successivo
                     calendarMonth = (calendarMonth === 11) ? 0 : calendarMonth + 1;
+                    if (calendarMonth === 0) yearToCompare++; // Se passiamo a Gennaio dell'anno dopo
                 }
             }
-            // L'anno viene gestito implicitamente dal mese, non serve ricalcolarlo qui
-            // perché i dati del calendario sono per un anno specifico.
             
-            return dayNumber === currentDay && calendarMonth === currentMonth && calendarYear === currentYear;
+            return dayNumber === currentDay && calendarMonth === currentMonth && yearToCompare === currentYear;
         });
 
         // Se viene trovata una cella con un evento per il giorno corrente
@@ -144,9 +145,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (currentMonthCalendarIndex !== -1) {
                 // Se viene trovato il calendario per il mese corrente, mostralo.
+                // Le frecce permetteranno comunque di navigare ai mesi precedenti/successivi.
                 showCalendar(currentMonthCalendarIndex);
             } else {
-                // Altrimenti, mostra il primo calendario disponibile (comportamento di fallback).
+                // Altrimenti, se il mese corrente non è tra i calendari, mostra il primo disponibile.
                 showCalendar(0);
             }
         }
