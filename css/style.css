@@ -176,6 +176,9 @@ body {
 
 .btn {
     display: block;
+    display: flex; /* Usa Flexbox per l'allineamento */
+    justify-content: center; /* Centra orizzontalmente il contenuto */
+    align-items: center; /* Centra verticalmente il contenuto */
     padding: 12px 25px;
     min-width: 200px;
     background-color: #f3f0ce;
@@ -187,6 +190,7 @@ body {
     font-family: "Red Hat Display", sans-serif; /* Forza il font corretto anche sui bottoni */
     font-weight: 700; /* Testo più in grassetto per leggibilità */
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
+    text-align: center; /* Centra il testo all'interno del bottone */
 }
 
 .btn:hover {
@@ -1493,7 +1497,7 @@ body {
 }
 
 .salotto-page .site-footer a {
-    color: #f3f0ce; /* Link chiari */
+    color: inherit; /* Eredita il colore del testo dal footer (#f3f0ce) */
 }
 
 /* --- Stili per la lista episodi nella pagina Salotto --- */
@@ -1797,4 +1801,114 @@ body {
     font-size: 32px;
     color: #f3f0ce;
     cursor: pointer;
+}
+ 
+/* --- Stili per la Pagina Flyer SVG "Transatlantica" --- */
+.svg-flyer-page {
+    background-image: url('../images/back-transa.jpeg');
+    background-image: url('../images/back-transa.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* --- Stili per la Navbar nella pagina Flyer SVG --- */
+.svg-flyer-page .site-header-nav {
+    background-color: transparent;
+    border-bottom-color: #f3f0ce;
+}
+
+.svg-flyer-page .main-nav a {
+    color: #f3f0ce;
+}
+
+.svg-flyer-page .hamburger-line {
+    background-color: #f3f0ce;
+}
+
+/* Aggiunta per ricolorare il logo SVG nella pagina Transatlantica */
+.svg-flyer-page .nav-logo img {
+    /* Applica un filtro per trasformare il rosso (#ff0403) in crema (#f3f0ce) */
+    filter: brightness(0) saturate(100%) invert(93%) sepia(13%) saturate(233%) hue-rotate(359deg) brightness(105%) contrast(94%);
+}
+
+/* Stili specifici per il Footer nella pagina Flyer SVG */
+.svg-flyer-page .site-footer {
+    background-color: #f3f0ce; /* Sfondo crema */
+    color: #1a1a1aff; /* Testo scuro per contrasto */
+}
+
+.svg-flyer-page .site-footer a {
+    color: #1a1a1aff; /* Link scuri per contrasto */
+}
+
+
+
+.svg-flyer-container {
+    /* Rimosso position: relative e padding per consentire il centraggio a schermo intero */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 150px); /* Calcola l'altezza per centrare, considerando header e footer */
+    padding: 40px 0;
+    /* Calcola l'altezza per centrare, considerando header (61px) e footer (115px) */
+    min-height: calc(100vh - 176px); 
+    padding: 40px 20px; /* Aggiunto padding laterale per mobile */
+    box-sizing: border-box;
+}
+
+.svg-content {
+    width: 100%; /* Occupa tutta la larghezza del page-container */
+    max-width: 800px; /* Mantiene la larghezza massima delle altre pagine */
+    width: 100%;
+    max-width: 750px; /* Ridotta la larghezza massima per rimpicciolire l'SVG */
+    height: auto; 
+    /* Aggiunge un'ombra per staccare il flyer dallo sfondo */
+    filter: drop-shadow(0px 5px 15px rgba(0, 0, 0, 0.5));
+    position: relative; /* Necessario per z-index */
+    z-index: 2; /* Assicura che il contenuto sia sopra lo sfondo */
+}
+
+/* Stile per il bottone di chiusura/ritorno */
+.flyer-back-link {
+    /* Rimosso perché la navigazione è gestita dalla navbar */
+    display: none;
+}
+
+/* --- Stili per il bottone di prenotazione nella pagina Transatlantica --- */
+.booking-button-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 40px 40px 40px; /* Spaziatura sopra e sotto */
+    position: relative;
+    z-index: 5; /* Assicura che sia sopra lo sfondo ma sotto la navbar/footer se necessario */
+}
+
+.btn-transatlantica-booking {
+    display: inline-block;
+    padding: 15px 35px;
+    background-color: transparent;
+    color: #f3f0ce; /* Testo color crema */
+    text-decoration: none;
+    font-family: "Red Hat Display", sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+
+    /* Applica la cornice SVG personalizzata */
+    border-style: solid;
+    border-width: 25px; /* Larghezza della cornice */
+    border-image-source: url('../images/cornice-transa.svg');
+    border-image-slice: 30; /* Valore per "tagliare" correttamente la cornice */
+    border-image-repeat: round; /* Ripete il pattern senza deformarlo */
+}
+
+.btn-transatlantica-booking:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+    color: #f3f0ce; /* Mantiene il colore del testo al passaggio del mouse */
 }
