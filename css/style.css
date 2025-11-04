@@ -1087,6 +1087,21 @@ body {
     .main-nav.nav-open { transform: translateX(0); }
     .main-nav a { margin-left: 0; font-size: 24px; }
     .nav-open .hamburger-line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+
+    /* Colori specifici per il menu mobile per garantire la leggibilità */
+    .main-nav.nav-open a {
+        color: #ff0403; /* Rosso Fela! di default */
+    }
+    .brunch-page .main-nav.nav-open a {
+        color: #487a7bff; /* Colore Brunch */
+    }
+    .salotto-page .main-nav.nav-open a {
+        color: #5b5bffff; /* Colore Salotto */
+    }
+    .svg-flyer-page .main-nav.nav-open a {
+        color: #ff0403; /* Colore nero per contrasto su sfondo crema */
+    }
+
     .nav-open .hamburger-line:nth-child(2) { opacity: 0; }
     .nav-open .hamburger-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 }
@@ -1805,12 +1820,22 @@ body {
  
 /* --- Stili per la Pagina Flyer SVG "Transatlantica" --- */
 .svg-flyer-page {
-    background-image: url('../images/back-transa.jpeg');
+    position: relative; /* Necessario per lo z-index dello pseudo-elemento */
+    z-index: 1;
+}
+
+.svg-flyer-page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-image: url('../images/back-transa.jpg');
     background-size: cover;
     background-position: center center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    filter: blur(4px); /* Aggiunto effetto di sfocatura */
+    z-index: -1; /* Posiziona lo sfondo dietro a tutto il contenuto */
 }
 
 /* --- Stili per la Navbar nella pagina Flyer SVG --- */
@@ -1896,8 +1921,7 @@ body {
     font-weight: 900;
     text-transform: uppercase;
     text-align: center;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    transition: opacity 0.3s ease;
+    /* Rimosse le transizioni per annullare ogni animazione */
 
     /* Applica la cornice SVG personalizzata */
     border-style: solid;
@@ -1908,7 +1932,6 @@ body {
 }
 
 .btn-transatlantica-booking:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
-    color: #f3f0ce; /* Mantiene il colore del testo al passaggio del mouse */
+    /* Rimosso l'effetto di opacità per evitare l'effetto "bordo nero" */
+    /* Rimosso anche l'ingrandimento per eliminare ogni animazione */
 }
