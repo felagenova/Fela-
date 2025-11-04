@@ -1905,7 +1905,7 @@ body {
 .booking-button-container {
     display: flex;
     justify-content: center;
-    padding: 20px 40px 40px 40px; /* Spaziatura sopra e sotto */
+    padding: 40px 40px 20px 40px; /* Spaziatura aggiornata per la nuova posizione */
     position: relative;
     z-index: 5; /* Assicura che sia sopra lo sfondo ma sotto la navbar/footer se necessario */
 }
@@ -1925,13 +1925,10 @@ body {
 
     /* Applica la cornice SVG personalizzata */
     border-style: solid;
-    border-width: 25px; /* Larghezza della cornice */
+    border-width: 28px; /* Larghezza della cornice */
     border-image-source: url('../images/cornice-transa.svg');
-    border-image-slice: 30; /* Valore per "tagliare" correttamente la cornice */
+    border-image-slice: 25; /* Valore per "tagliare" correttamente la cornice */
     border-image-repeat: round; /* Ripete il pattern senza deformarlo */
 }
 
-.btn-transatlantica-booking:hover {
-    /* Rimosso l'effetto di opacità per evitare l'effetto "bordo nero" */
-    /* Rimosso anche l'ingrandimento per eliminare ogni animazione */
-}
+
