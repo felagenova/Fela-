@@ -1905,30 +1905,24 @@ body {
 .booking-button-container {
     display: flex;
     justify-content: center;
-    padding: 40px 40px 20px 40px; /* Spaziatura aggiornata per la nuova posizione */
+    padding: 40px 40px 0px 40px; /* Spaziatura aggiornata per la nuova posizione */
     position: relative;
     z-index: 5; /* Assicura che sia sopra lo sfondo ma sotto la navbar/footer se necessario */
 }
 
 .btn-transatlantica-booking {
-    display: inline-block;
-    padding: 15px 35px;
-    background-color: transparent;
-    color: #f3f0ce; /* Testo color crema */
-    text-decoration: none;
-    font-family: "Red Hat Display", sans-serif;
-    font-size: 20px;
-    font-weight: 900;
-    text-transform: uppercase;
-    text-align: center;
-    /* Rimosse le transizioni per annullare ogni animazione */
-
-    /* Applica la cornice SVG personalizzata */
-    border-style: solid;
-    border-width: 28px; /* Larghezza della cornice */
-    border-image-source: url('../images/cornice-transa.svg');
-    border-image-slice: 25; /* Valore per "tagliare" correttamente la cornice */
-    border-image-repeat: round; /* Ripete il pattern senza deformarlo */
+    /* Stile che riprende i bottoni della homepage */
+    background-color: #f3f0ce; /* Sfondo crema */
+    color: #1a1a1aff; /* Testo nero per contrasto */
+    border: 2px solid #1a1a1aff; /* Bordo nero */
+    min-width: 380px; /* Larghezza minima per coerenza */
+    font-size: 18px;
+    font-weight: 700;
 }
 
-
+.btn-transatlantica-booking:hover {
+    background-color: #e4a04eff; /* Colore arancione/ocra al passaggio del mouse */
+    color: #1a1a1aff; /* Mantiene il testo nero */
+    border-color: #e4a04eff; /* Anche il bordo cambia colore */
+    transform: scale(1.05); /* Mantiene l'effetto di ingrandimento */
+}
