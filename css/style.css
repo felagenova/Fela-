@@ -1879,7 +1879,7 @@ body {
     padding: 40px 0;
     /* Calcola l'altezza per centrare, considerando header (61px) e footer (115px) */
     min-height: calc(100vh - 176px); 
-    padding: 40px 20px; /* Aggiunto padding laterale per mobile */
+    padding: 20px 20px; /* Aggiunto padding laterale per mobile */
     box-sizing: border-box;
 }
 
