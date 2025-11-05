@@ -1915,7 +1915,7 @@ body {
     background-color: #f3f0ce; /* Sfondo crema */
     color: #1a1a1aff; /* Testo nero per contrasto */
     border: 2px solid #1a1a1aff; /* Bordo nero */
-    min-width: 380px; /* Larghezza minima per coerenza */
+    min-width: 200px; /* Larghezza minima per coerenza */
     font-size: 18px;
     font-weight: 700;
 }
