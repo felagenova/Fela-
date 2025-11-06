@@ -1184,7 +1184,7 @@ body {
     background-color: #f3f0ce;
     color: #487a7bff; /* Colore del brunch */
     padding: 30px;
-    border-radius: 0; /* Rimosso il border-radius per angoli squadrati */
+    border-radius: 12; /* Rimosso il border-radius per angoli squadrati */
 
     /* Sostituzione del bordo solido con un'immagine personalizzata */
     border-style: solid;
