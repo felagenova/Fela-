@@ -122,7 +122,10 @@
             <p><i>Tutte le Domeniche del mese</i></p>
             
             <!-- Il bottone ora rimanda alla pagina del brunch -->
-            <a href="brunch.html" class="btn btn-brunch-popup">
+            <a href="brunch.html" 
+               class="btn btn-brunch-popup"
+               onclick="gtag('event', 'promo_brunch_click', { 'event_category': 'Promotion', 'event_label': 'Click su Scopri Menu nel Popup' });"
+            >
                 Scopri il Menu
             </a>
             <button id="promo-close-btn" class="promo-popup-close" aria-label="Chiudi">&times;</button>

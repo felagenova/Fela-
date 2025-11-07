@@ -56,7 +56,12 @@
 
         <!-- Bottone di prenotazione -->
         <div class="brunch-booking-container">
-            <a href="https://docs.google.com/forms/d/14OI9TTw0ues-zxQtntreCPC82ShiYDgG8kco34J2wc8/edit?usp=forms_home&ouid=109134419522817771037&ths=true" target="_blank" rel="noopener noreferrer" class="btn btn-brunch-booking">
+            <a href="https://docs.google.com/forms/d/14OI9TTw0ues-zxQtntreCPC82ShiYDgG8kco34J2wc8/edit?usp=forms_home&ouid=109134419522817771037&ths=true" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="btn btn-brunch-booking"
+               onclick="gtag('event', 'brunch_booking_click', { 'event_category': 'Brunch', 'event_label': 'Click su Prenota Brunch' });"
+            >
                 Prenota qui il tuo posto
             </a>
         </div>
