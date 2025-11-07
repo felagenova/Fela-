@@ -221,6 +221,23 @@ body {
     color: #f3f0ce;
 }
 
+/* Stile specifico per il bottone "Cooking Experience" nella homepage */
+.btn#cooking-btn {
+    color: #e67e22ff;
+    border-color: #e67e22ff;
+    /* Forza la data ad andare a capo e stare sotto "Shai Cooking" */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    white-space: nowrap; /* Impedisce al testo di andare a capo */
+}
+
+.btn#cooking-btn:hover {
+    background-color: #e67e22ff;
+    color: #f3f0ce;
+}
+
 
 /* Stile specifico per il bottone di prenotazione nel pop-up promo */
 .btn.btn-promo-booking {
@@ -247,6 +264,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 15px;
+    margin: 30px auto; /* Centra verticalmente e aggiunge margine sopra e sotto */
     margin-top: 30px;
     padding: 10px 20px;
     background: #f3f0ce; /* Colore panna */
@@ -355,8 +373,7 @@ body {
     z-index: 10; /* Assicura che il contenuto sia sopra gli asset animati */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
+    margin-top: 60px; /* 
 .inner-page-bg .page-container {
     background: transparent; /* Rimuoviamo lo sfondo dal contenitore principale */
     backdrop-filter: none;
@@ -466,6 +483,10 @@ body {
         align-items: center;
         text-align: center;
         padding: 20px 15px;
+        font-size: 12px; /* Riduci la dimensione del font */
+    }
+    .site-footer p {
+        margin: 0 0 3px 0; /* Riduci il margine tra i paragrafi */
     }
     .footer-left, .footer-right {
         text-align: center;
@@ -501,6 +522,16 @@ body {
         display: inline;
     }
 
+    /* Riduci la dimensione del sottotitolo nei bottoni su mobile */
+    .btn small {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* Per il bottone Shai Cooking, la data deve rimanere sulla stessa riga */
+    .btn#cooking-btn small {
+        margin-left: 5px; /* Aggiunge un piccolo spazio tra "Shai Cooking" e la data */
+    }
 
     /* Music Player su mobile */
     #music-player-container {
@@ -525,7 +556,9 @@ body {
 
     /* Pagine Interne (Menu, Eventi) */
     .page-container {
-        margin: 0; /* Occupa tutta la larghezza */
+        margin-top: 50;
+        margin-right: 0;
+        margin-bottom: 0;
         padding: 25px; /* Mantiene un po' di padding interno */
         border-radius: 0; /* Niente angoli arrotondati per un look a schermo intero */
         box-shadow: none; /* Rimuove l'ombra, più pulito su mobile */
@@ -1436,6 +1469,63 @@ body {
 .brunch-page .back-to-top-btn:hover {
     background-color: #487a7bff; /* Colore brunch pieno al passaggio */
 }
+
+/* Stile unificato per i bottoni di prenotazione delle pagine speciali (Brunch, Cooking) */
+.btn.btn-brunch-booking,
+.btn.btn-cooking-booking {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Stile specifico per il bottone prenotazione Cooking Experience */
+.btn.btn-cooking-booking {
+    color: #e67e22ff;
+    border-color: #e67e22ff;
+}
+.btn.btn-cooking-booking:hover {
+    background-color: #e67e22ff;
+    color: #f3f0ce;
+}
+
+/* --- Stili per la Pagina "Cooking Experience" --- */
+.cooking-experience-page .site-header-nav {
+    border-bottom-color: #e67e22ff; /* Nuovo colore Cooking */
+}
+
+.cooking-experience-page .main-nav a {
+    color: #e67e22ff; /* Nuovo colore Cooking */
+}
+
+.cooking-experience-page .hamburger-line {
+    background-color: #e67e22ff; /* Nuovo colore Cooking */
+}
+
+.cooking-experience-page h1,
+.cooking-experience-page .category-title {
+    color: #e67e22ff; /* Nuovo colore Cooking */
+    border-color: #e67e22ff; /* Nuovo colore Cooking */
+}
+
+.cooking-experience-page h1 {
+    border-image-source: url('../images/costum-pattern-cooking.svg'); /* Nuova cornice */
+}
+
+.cooking-experience-page .menu-item-header h4,
+.cooking-experience-page .price,
+.cooking-experience-page .description {
+    color: #e67e22ff; /* Nuovo colore Cooking */
+}
+
+/* Colore specifico per il bottone "Torna su" */
+.cooking-experience-page .back-to-top-btn {
+    background-color: rgba(230, 126, 34, 0.7); /* Colore cooking semi-trasparente */
+}
+.cooking-experience-page .back-to-top-btn:hover {
+    background-color: #e67e22ff; /* Colore cooking pieno */
+}
+
 
 
 /* --- Stili per la Pagina "Il Salotto di Fela" --- */
