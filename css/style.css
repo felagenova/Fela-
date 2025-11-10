@@ -1216,6 +1216,7 @@ body {
 .promo-popup-content {
     background-color: #f3f0ce;
     color: #487a7bff; /* Colore del brunch */
+    color: #e67e22ff; /* Colore del cooking */
     padding: 30px;
     border-radius: 12; /* Rimosso il border-radius per angoli squadrati */
 
@@ -1223,6 +1224,7 @@ body {
     border-style: solid;
     border-width: 25px; /* Aumenta la larghezza per rendere visibile il pattern */
     border-image-source: url('../images/custom-pattern-brunch.svg'); /* Usiamo la cornice del brunch */
+    border-image-source: url('../images/costum-pattern-cooking.svg'); /* Usiamo la cornice del cooking */
     border-image-slice: 30; /* Valore da aggiustare in base al tuo pattern (indica come tagliare l'immagine) */
     border-image-repeat: round; /* 'round' ripete il pattern, 'stretch' lo allunga */
 
@@ -1256,6 +1258,7 @@ body {
     font-weight: 700;
     margin: 0 0 5px 0;
     color: #487a7bff; /* Colore del brunch */
+    color: #e67e22ff; /* Colore del cooking */
 }
 
 .promo-popup-content p {
@@ -1271,6 +1274,7 @@ body {
     border: none;
     font-size: 28px;
     color: #487a7bff; /* Colore del brunch */
+    color: #e67e22ff; /* Colore del cooking */
     cursor: pointer;
     line-height: 1;
 }
