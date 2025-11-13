@@ -1216,17 +1216,10 @@ body {
 .promo-popup-content {
     background-color: #f3f0ce;
     color: #487a7bff; /* Colore del brunch */
-    color: #e67e22ff; /* Colore del cooking */
+    color: #ff0403; /* Colore del testo rosso */
     padding: 30px;
-    border-radius: 12; /* Rimosso il border-radius per angoli squadrati */
-
-    /* Sostituzione del bordo solido con un'immagine personalizzata */
-    border-style: solid;
-    border-width: 25px; /* Aumenta la larghezza per rendere visibile il pattern */
-    border-image-source: url('../images/custom-pattern-brunch.svg'); /* Usiamo la cornice del brunch */
-    border-image-source: url('../images/costum-pattern-cooking.svg'); /* Usiamo la cornice del cooking */
-    border-image-slice: 30; /* Valore da aggiustare in base al tuo pattern (indica come tagliare l'immagine) */
-    border-image-repeat: round; /* 'round' ripete il pattern, 'stretch' lo allunga */
+    border-radius: 12px;
+    border: 3px solid #ff0403; /* Bordo rosso semplice */
 
     text-align: center; /* Centra il testo all'interno del pop-up */
     max-width: 90%;
@@ -1257,8 +1250,7 @@ body {
     font-size: 22px;
     font-weight: 700;
     margin: 0 0 5px 0;
-    color: #487a7bff; /* Colore del brunch */
-    color: #e67e22ff; /* Colore del cooking */
+    color: #ff0403; /* Colore del testo rosso */
 }
 
 .promo-popup-content p {
@@ -1273,8 +1265,7 @@ body {
     background: none;
     border: none;
     font-size: 28px;
-    color: #487a7bff; /* Colore del brunch */
-    color: #e67e22ff; /* Colore del cooking */
+    color: #ff0403; /* Colore del testo rosso */
     cursor: pointer;
     line-height: 1;
 }

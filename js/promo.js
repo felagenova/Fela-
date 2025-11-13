@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURAZIONE DEL POP-UP ---
     const eventDate = {
         day: 28,
-        month: 9, // 9 = Ottobre (i mesi partono da 0, quindi 28 Ottobre)
-        year: 2025
+        month: 10, // 10 = Novembre (i mesi partono da 0, quindi 13 Novembre)
+        year: 2025 // Anno corrente
     };
 
     const popup = document.getElementById('promo-popup');
