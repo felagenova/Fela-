@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Controlla se mostrare il pop-up
     // Lo mostra solo se è nel periodo giusto E se sono passate più di 24 ore dall'ultima chiusura
-    if (isEventDay() && canShowPopup()) {
+    if (canShowPopup()) {
         // Mostra il pop-up dopo un breve ritardo per non essere troppo aggressivo
         setTimeout(() => {
             popup.classList.add('visible');
