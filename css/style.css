@@ -1215,12 +1215,17 @@ body {
 }
 .promo-popup-content {
     background-color: #f3f0ce;
-    color: #487a7bff; /* Colore del brunch */
-    color: #ff0403; /* Colore del testo rosso */
+    color: #487a7bff; /* Colore del testo brunch */
     padding: 30px;
     border-radius: 12px;
-    border: 3px solid #ff0403; /* Bordo rosso semplice */
+    border: 3px solid #487a7bff; /* Bordo colore brunch */
 
+    /* Sostituzione del bordo con la cornice SVG personalizzata */
+    border-style: solid;
+    border-width: 15px;
+    border-image-source: url('../images/custom-pattern-brunch.svg');
+    border-image-slice: 30;
+    border-image-repeat: round;
     text-align: center; /* Centra il testo all'interno del pop-up */
     max-width: 90%;
     width: 450px;
@@ -1228,27 +1233,27 @@ body {
     box-shadow: 0 8px 32px rgba(0,0,0,0.2);
 
     /* Stato iniziale per l'animazione di entrata */
-    transform: translateY(50px);
+    transform: scale(0.9);
     opacity: 0;
     /* Applica la transizione per l'animazione */
-    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out;
 }
 
 /* Quando l'overlay è visibile, il contenuto si anima */
 .promo-popup-overlay.visible .promo-popup-content {
-    transform: translateY(0);
+    transform: scale(1);
     opacity: 1;
 }
 
 .promo-popup-content h3 {
     margin: 0 0 15px 0;
     font-size: 28px;
-    font-weight: 900;
+    font-weight: 700;
 }
 /* Nuovo stile per il titolo dell'evento */
 .promo-popup-content h4.promo-event-title {
     font-size: 22px;
-    font-weight: 700;
+    font-weight: 900;
     margin: 0 0 5px 0;
     color: #ff0403; /* Colore del testo rosso */
 }
@@ -1264,8 +1269,8 @@ body {
     right: 15px;
     background: none;
     border: none;
-    font-size: 28px;
-    color: #ff0403; /* Colore del testo rosso */
+    font-size: 32px;
+    color: #487a7bff; /* Colore del testo brunch */
     cursor: pointer;
     line-height: 1;
 }

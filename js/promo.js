@@ -24,27 +24,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Funzione per controllare se il pop-up può essere mostrato di nuovo
-    function canShowPopup() {
-        const closedTimestamp = localStorage.getItem('promoPopupClosedTimestamp');
-        if (!closedTimestamp) {
-            return true; // Non è mai stato chiuso, quindi mostralo
-        }
+//    function canShowPopup() {
+//        const closedTimestamp = localStorage.getItem('promoPopupClosedTimestamp');
+//        if (!closedTimestamp) {
+//            return true; // Non è mai stato chiuso, quindi mostralo
+//        }
 
-        const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
-        const timeSinceClosed = Date.now() - parseInt(closedTimestamp, 10);
+//        const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
+//        const timeSinceClosed = Date.now() - parseInt(closedTimestamp, 10);
 
         // Mostralo solo se sono passate più di 24 ore
-        return timeSinceClosed > twentyFourHoursInMillis;
-    }
+//        return timeSinceClosed > twentyFourHoursInMillis;
+//    }
 
     // Controlla se mostrare il pop-up
     // Lo mostra solo se è nel periodo giusto E se sono passate più di 24 ore dall'ultima chiusura
-    if (isEventDay() && canShowPopup()) {
+//    if (isEventDay() && canShowPopup()) {
         // Mostra il pop-up dopo un breve ritardo per non essere troppo aggressivo
-        setTimeout(() => {
-            popup.classList.add('visible');
-        }, 1500); // 1.5 secondi
-    }
+//        setTimeout(() => {
+//            popup.classList.add('visible');
+//        }, 1500); // 1.5 secondi
+//    }
 
     // Gestisce la chiusura del pop-up
     closeBtn.addEventListener('click', () => {
