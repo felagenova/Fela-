@@ -39,6 +39,33 @@
         // il loader tramite CSS prima ancora che il body venga renderizzato.
         if (sessionStorage.getItem('hasVisitedHomepage') === 'true') { document.documentElement.classList.add('loader-hidden'); }
     </script>
+
+    <!-- Stili specifici per il pop-up Transatlantica -->
+    <style>
+        .promo-popup-transatlantica {
+            /* Applica la cornice SVG */
+            border-image-source: url('images/costum-pattern-transa.svg');
+            border-image-slice: 10; /* Valore per tagliare i bordi dell'SVG */
+            border-image-width: 25px; /* Spessore visibile della cornice */
+            border-image-repeat: round; /* Adatta il pattern senza tagliarlo */
+            border-style: solid;
+            background-color: #FDF5E6; /* Sfondo color crema */
+        }
+        .promo-popup-transatlantica h4,
+        .promo-popup-transatlantica h2,
+        .promo-popup-transatlantica p { color: #28220b !important; }
+
+        /* Stile per il bottone del pop-up Transatlantica */
+        .promo-popup-transatlantica .btn-promo-after-brunch {
+            border: 2px solid #e4a04e; /* Bordo con il colore della cornice */
+            color: #28220b; /* Testo dello stesso colore degli altri testi */
+            background-color: transparent; /* Sfondo trasparente */
+        }
+        .promo-popup-transatlantica .btn-promo-after-brunch:hover {
+            background-color: #e4a04e; /* Sfondo al passaggio del mouse */
+            color: #28220b; /* Mantiene il colore del testo per leggibilità */
+        }
+    </style>
 </head>
 <body>
 
@@ -128,6 +155,20 @@
             </a>
         </div>
     </div>
+
+    <!-- HTML per il Nuovo Pop-up Promozionale (dopo il brunch) -->
+    <div id="after-brunch-promo-popup" class="promo-popup-overlay">
+        <div class="promo-popup-content promo-popup-transatlantica">
+            <button id="after-brunch-promo-close-btn" class="promo-popup-close" aria-label="Chiudi">&times;</button>
+            <h4>Mercoledì 19 Novembre</h4>
+            <h2 class="promo-event-title" style="color: inherit;">TRANSATLANTICA TAKEOVER</h2>
+            <p>Autumn Takeover</p>
+            <a href="transatlantica.html" class="btn btn-promo-after-brunch">
+                Scopri l'evento
+            </a>
+        </div>
+    </div>
+
 
     <!-- 3. Carica lo script in modo differito per non bloccare il rendering -->
     <script src="js/loader.js" defer></script>

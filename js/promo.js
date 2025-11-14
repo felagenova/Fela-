@@ -1,73 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURAZIONE DEL POP-UP ---
-    const eventDate = {
-        day: 28,
-        month: 10, // 10 = Novembre (i mesi partono da 0, quindi 13 Novembre)
-        year: 2025 // Anno corrente
-    };
+    // Data e ora di cutoff: 16 Novembre 2025, ore 17:00:00
+    // I mesi in JavaScript sono 0-indexed (0 = Gennaio, 10 = Novembre)
+    const brunchCutoffDate = new Date(2025, 10, 16, 17, 0, 0); 
 
-    const popup = document.getElementById('promo-popup');
-    const closeBtn = document.getElementById('promo-close-btn');
-    const promoEventBtn = document.getElementById('promo-event-btn'); // Nuovo bottone
+    const brunchPopup = document.getElementById('promo-popup'); // Il pop-up esistente per il brunch
+    const closeBtnBrunch = document.getElementById('promo-close-btn'); // Bottone chiusura per il brunch pop-up
 
-    // Se non c'è un pop-up in questa pagina, non fare nulla
-    if (!popup || !closeBtn) {
-        return;
-    }
+    const afterBrunchPopup = document.getElementById('after-brunch-promo-popup'); // Il nuovo pop-up promozionale
+    const closeBtnAfterBrunch = document.getElementById('after-brunch-promo-close-btn'); // Bottone chiusura per il nuovo pop-up
 
-    // Funzione per controllare se la data odierna è compresa tra oggi e la data dell'evento
-    function isEventDay() {
-        const today = new Date();
-        const event = new Date(eventDate.year, eventDate.month, eventDate.day);
-        // Imposta l'ora dell'evento alla fine della giornata per includere tutto il giorno
-        event.setHours(23, 59, 59, 999);
-        // Mostra il popup se oggi è prima della fine del giorno dell'evento
-        return today <= event;
-    }
+    const now = new Date();
 
-    // Funzione per controllare se il pop-up può essere mostrato di nuovo
-    function canShowPopup() {
-        // Per la fase di test, forziamo la visualizzazione del pop-up ignorando il timestamp.
-        // Per ripristinare il comportamento originale (mostra solo dopo 24h),
-        // ripristina il codice commentato.
-        return true; 
-        // const closedTimestamp = localStorage.getItem('promoPopupClosedTimestamp');
-        // if (!closedTimestamp) { return true; }
-        // const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
-        // const timeSinceClosed = Date.now() - parseInt(closedTimestamp, 10);
-        // return timeSinceClosed > twentyFourHoursInMillis;
-    }
+    // Funzione per mostrare un pop-up specifico e configurare il suo bottone di chiusura
+    function showSpecificPopup(popupElement, closeButtonElement) {
+        // Controlla se gli elementi esistono prima di procedere
+        if (!popupElement || !closeButtonElement) {
+            console.warn("Elementi pop-up o bottone di chiusura non trovati per il pop-up da mostrare.");
+            return;
+        }
 
-    // Controlla se mostrare il pop-up
-    // Lo mostra solo se è nel periodo giusto E se sono passate più di 24 ore dall'ultima chiusura
-    if (canShowPopup()) {
         // Mostra il pop-up dopo un breve ritardo per non essere troppo aggressivo
         setTimeout(() => {
-            popup.classList.add('visible');
+            popupElement.classList.add('visible');
         }, 1500); // 1.5 secondi
-    }
-
-    // Gestisce la chiusura del pop-up
-    closeBtn.addEventListener('click', () => {
-        popup.classList.remove('visible');
-        // Memorizza il timestamp esatto della chiusura
-        localStorage.setItem('promoPopupClosedTimestamp', Date.now().toString());
-    });
-
-    // Gestisce il click sul nuovo bottone per mostrare il pop-up
-    if (promoEventBtn) {
-        promoEventBtn.addEventListener('click', (event) => {
-            event.preventDefault(); // Previene il comportamento di default del bottone
-            popup.classList.add('visible');
-
-            // Tracciamento evento Google Analytics per il click sul bottone dell'evento
-            if (typeof gtag === 'function') {
-                gtag('event', 'show_popup_bttn', {
-                    'event_category': 'Promotion',
-                    'event_label': 'Click su bottone Fela meets La Pesa'
-                });
-            }
-            // Non impostiamo localStorage qui, l'utente vuole vederlo on-demand
+        
+        // Gestisce la chiusura del pop-up
+        closeButtonElement.addEventListener('click', () => {
+            popupElement.classList.remove('visible');
+            // Non memorizziamo il timestamp, dato che il pop-up attivo deve apparire sempre.
         });
     }
+
+    // Decide quale pop-up mostrare in base alla data e ora corrente
+    if (now < brunchCutoffDate) {
+        // Se siamo prima del cutoff, mostra il pop-up del brunch
+        showSpecificPopup(brunchPopup, closeBtnBrunch);
+        // Assicurati che l'altro pop-up non sia visibile se per qualche motivo lo fosse
+        if (afterBrunchPopup) afterBrunchPopup.classList.remove('visible');
+    } else {
+        // Se siamo dopo o al cutoff, mostra il nuovo pop-up promozionale
+        showSpecificPopup(afterBrunchPopup, closeBtnAfterBrunch);
+        // Assicurati che l'altro pop-up non sia visibile se per qualche motivo lo fosse
+        if (brunchPopup) brunchPopup.classList.remove('visible');
+    }
+
+    // La logica per 'promoEventBtn' è stata rimossa in quanto il bottone è commentato nell'HTML
+    // e non è stata richiesta una sua gestione specifica per questo scenario.
 });
