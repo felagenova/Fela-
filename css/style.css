@@ -238,6 +238,17 @@ body {
     color: #f3f0ce;
 }
 
+/* Stile specifico per il bottone "Transatlantica" nella homepage */
+.btn#transatlantica-btn {
+    color: #28220bff;
+    border-color: #e4a04eff;
+}
+
+.btn#transatlantica-btn:hover {
+    background-color: #e4a04eff;
+    border-color: #e4a04eff;
+    color: #f3f0ce;
+}
 
 /* Stile specifico per il bottone di prenotazione nel pop-up promo */
 .btn.btn-promo-booking {
