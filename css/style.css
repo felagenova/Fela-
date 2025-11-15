@@ -1043,6 +1043,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
+    z-index: 1001; /* Aumentato per stare sopra il popup */
     width: 100%;
     box-sizing: border-box;
 }
