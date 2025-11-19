@@ -1,33 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Funzione per gestire il pulsante "Torna su"
-    function handleBackToTop() {
-        const backToTopButton = document.getElementById("back-to-top");
-        if (!backToTopButton) return;
+document.addEventListener('DOMContentLoaded', () => {
+    // Script per il menu Hamburger
+    const hamburgerBtn = document.querySelector('.hamburger-menu');
+    const navMenu = document.querySelector('.main-nav');
 
-        window.addEventListener("scroll", () => {
-            if (window.scrollY > 200) {
-                backToTopButton.classList.add("show");
-            } else {
-                backToTopButton.classList.remove("show");
-            }
-        });
-    }
-
-    // Funzione per gestire il menu Hamburger
-    function handleHamburgerMenu() {
-        const hamburgerBtn = document.querySelector('.hamburger-menu');
-        const navMenu = document.querySelector('.main-nav');
-
-        if (!hamburgerBtn || !navMenu) return;
-
+    if (hamburgerBtn && navMenu) {
         hamburgerBtn.addEventListener('click', () => {
-            const isNavOpen = navMenu.classList.contains('nav-open');
             navMenu.classList.toggle('nav-open');
             hamburgerBtn.classList.toggle('nav-open');
-            hamburgerBtn.setAttribute('aria-expanded', String(!isNavOpen));
+            // Aggiungi/rimuovi classe al body per bloccare lo scroll quando il menu è aperto
+            document.body.classList.toggle('no-scroll');
         });
     }
-
-    handleBackToTop();
-    handleHamburgerMenu();
 });

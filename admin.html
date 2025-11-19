@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pannello Amministrazione Prenotazioni - Fela!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
+    <meta name="view-transition" content="same-origin">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/prenotazione.css"> <!-- Puoi riutilizzare questo CSS o crearne uno specifico per l'admin -->
+</head>
+<body class="admin-page">
+
+    <header class="site-header-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/f!_logo_rosso.svg" alt="Logo Fela! Music Bar Genova">
+            </a>
+            <button class="hamburger-menu" aria-label="Apri menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="brunch.html">Il Brunch</a>
+                <a href="eventi.html">Eventi</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="booking-wrapper">
+            <h1>Pannello Prenotazioni</h1>
+            <p class="subtitle">Inserisci la password per visualizzare le prenotazioni.</p>
+
+            <form id="admin-login-form" class="admin-login-form">
+                <div class="form-group">
+                    <label for="admin_password">Password Amministratore</label>
+                    <input type="password" id="admin_password" name="admin_password" required>
+                </div>
+                <button type="submit" class="btn btn-submit">Accedi</button>
+            </form>
+
+            <div id="admin-message" style="margin-top: 15px;"></div>
+
+            <div id="bookings-list" style="margin-top: 30px; display: none;">
+                <!-- Sezione per la gestione manuale degli eventi -->
+                <h2>Gestione Eventi Speciali</h2>
+                <form id="add-special-event-form" class="admin-login-form">
+                    <div class="form-group">
+                        <label for="event_display_name">Nome Evento (es. "Fela! meets La Pesa")</label>
+                        <input type="text" id="event_display_name" name="event_display_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_date">Data Evento</label>
+                        <input type="date" id="event_date" name="event_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_time">Ora Evento (opzionale, es. 20:00)</label>
+                        <input type="time" id="event_time" name="event_time">
+                    </div>
+                    <button type="submit" class="btn btn-submit">Aggiungi Evento</button>
+                </form>
+                <div id="special-events-message" style="margin-top: 15px;"></div>
+                <h3>Eventi Speciali Attivi</h3>
+                <ul id="special-events-list" style="list-style-type: none; padding: 0;">
+                    <!-- Gli eventi speciali verranno inseriti qui dal JavaScript -->
+                </ul>
+                <hr style="margin: 30px 0;">
+
+                <div class="admin-controls">
+                    <div class="filter-group">
+                        <label for="event-filter">Filtra per evento:</label>
+                        <select id="event-filter">
+                            <option value="all">Tutti gli eventi</option>
+                            <!-- Opzioni caricate da JS -->
+                        </select>
+                    </div>
+                    <button id="load-bookings-btn" class="btn">Carica Tutte le Prenotazioni</button>
+                    <button id="export-pdf" class="btn">Esporta in PDF</button>
+                </div>
+                <h2>Tutte le Prenotazioni</h2>
+                <table id="bookings-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefono</th>
+                            <th>Data</th>
+                            <th>Ora</th>
+                            <th>Ospiti</th>
+                            <th>Note</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Le prenotazioni verranno inserite qui dal JavaScript -->
+                    </tbody>
+                </table>
+                <p id="no-bookings-message" style="display: none; text-align: center; margin-top: 20px;">Nessuna prenotazione trovata.</p>
+            </div>
+
+            <!-- Controlli per la paginazione -->
+            <div id="pagination-controls" style="margin-top: 20px; text-align: center; display: none;">
+                <button id="prev-page" class="btn" disabled>Precedente</button>
+                <button id="next-page" class="btn">Successivo</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-left">
+            <p><strong>Fela!<br>Music Bar - Social Hub</strong></p>
+            <a href="https://maps.app.goo.gl/zhNrFjCBpWnWwXuP9" target="_blank" rel="noopener noreferrer">
+                <p>Via di S. Cosimo, 6r, 16128 Genova GE</p>
+            </a>
+        </div>
+        <div class="footer-right">
+            <p>
+                <strong>Orari:</strong><br>
+                Mer-Gio: 18:00 - 01:00<br>
+                Ven-Sab: 18:00 - 02:00<br>
+                Dom: 12:00 - 21:00<br>
+                Lun-Mar: FELAKIUDI
+            </p>
+        </div>
+    </footer>
+
+    <!-- Librerie per la generazione del PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="js/admin.js"></script>
+    <script src="js/main.js" defer></script>
+
+</body>
+</html>

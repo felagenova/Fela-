@@ -1,0 +1,269 @@
+/* css/prenotazione.css */
+
+/* Stile per il contenitore principale del modulo di prenotazione */
+.booking-wrapper {
+    max-width: 600px; /* Limita la larghezza per una migliore leggibilità */
+    margin: 0 auto; /* Centra il contenitore */
+    padding: 20px;
+    text-align: center;
+}
+
+.booking-wrapper h1 {
+    margin-bottom: 10px; /* Riduce lo spazio sotto l'H1 */
+}
+
+.booking-wrapper .subtitle {
+    font-size: 18px;
+    color: #ff0403;
+    margin-bottom: 40px;
+}
+
+/* Stile per il form */
+#booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Spazio tra i gruppi del form */
+    text-align: left;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 700;
+    color: #ff0403;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+/* Stile unificato per tutti i campi di input e select */
+#booking-form input[type="text"],
+#booking-form input[type="email"],
+#booking-form input[type="tel"],
+#booking-form input[type="date"],
+#booking-form input[type="number"],
+#booking-form select,
+#booking-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ff0403;
+    border-radius: 8px;
+    background-color: #fdfdfd; /* Sfondo leggermente diverso per staccare */
+    font-family: "Red Hat Display", sans-serif;
+    font-size: 16px;
+    color: #333;
+    box-sizing: border-box; /* Assicura che padding e border non alterino la larghezza */
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+/* Stile per il focus sui campi, per migliorare l'accessibilità */
+#booking-form input:focus,
+#booking-form select:focus,
+#booking-form textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 4, 3, 0.3);
+}
+
+/* Stile per il pulsante di invio */
+.btn-submit {
+    margin-top: 20px; /* Aggiunge spazio sopra il pulsante */
+    padding: 15px; /* Pulsante leggermente più grande */
+    font-size: 18px;
+}
+
+/* Stile per il messaggio di feedback (conferma/errore) */
+#form-message {
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: 700;
+    min-height: 25px; /* Altezza minima per evitare "salti" nel layout */
+}
+
+/* Stile per l'header nelle pagine interne */
+.site-header-internal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: #f3f0ce;
+    border-bottom: 3px solid #ff0403;
+}
+
+.header-logo {
+    height: 45px;
+    width: auto;
+}
+
+/* Stile per il pulsante di cancellazione nella pagina admin */
+.btn-delete {
+    padding: 5px 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+/* Stili specifici per il form di login nella pagina admin */
+.admin-login-form {
+    max-width: 350px; /* Riduce la larghezza massima del form */
+    margin: 0 auto; /* Centra il form orizzontalmente */
+    display: flex; /* Abilita Flexbox */
+    flex-direction: column; /* Dispone gli elementi in colonna */
+    align-items: center; /* Centra gli elementi sull'asse trasversale (orizzontalmente) */
+}
+
+.admin-login-form .form-group {
+    text-align: center; /* Centra anche l'etichetta */
+}
+
+.admin-login-form .btn-submit {
+    width: auto; /* Permette al pulsante di adattarsi al suo contenuto */
+    min-width: 150px; /* Imposta una larghezza minima per il pulsante */
+}
+
+/* Stili per i controlli admin (filtro ed esporta) */
+.admin-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-group label {
+    font-weight: 700;
+    color: #333;
+}
+
+
+/* Stili per i controlli di paginazione */
+#pagination-controls {
+    display: flex !important; /* Forza display flex per sovrascrivere lo stile inline */
+    justify-content: space-between; /* Spinge i pulsanti agli estremi */
+    width: 100%; /* Assicura che occupi tutta la larghezza disponibile */
+}
+
+/* Stili specifici per la pagina admin */
+.admin-page .booking-wrapper {
+    max-width: 100%; /* Permette al wrapper di occupare più spazio */
+    padding: 0; /* Rimuove il padding per dare più respiro alla tabella */
+}
+
+#bookings-table th,
+#bookings-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Stili per la tabella delle prenotazioni nell'admin */
+#bookings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fdfdfd;
+    border-radius: 8px;
+    overflow: hidden; /* Assicura che i bordi arrotondati funzionino */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#bookings-table th {
+    background-color: #ff0403;
+    color: #f3f0ce;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#bookings-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#bookings-table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Responsive Table per schermi più piccoli */
+@media (max-width: 768px) {
+    /* Centra i controlli admin su mobile */
+    .admin-controls {
+        flex-direction: column;
+        align-items: stretch; /* Fa in modo che gli elementi occupino tutta la larghezza */
+    }
+
+    .filter-group {
+        flex-direction: column; /* Mette l'etichetta sopra il select */
+        text-align: center; /* Centra l'etichetta */
+    }
+
+    #bookings-table {
+        border: 0;
+        box-shadow: none;
+    }
+
+    #bookings-table thead {
+        display: none; /* Nasconde l'intestazione della tabella */
+    }
+
+    #bookings-table,
+    #bookings-table tbody,
+    #bookings-table tr,
+    #bookings-table td {
+        display: block; /* Trasforma gli elementi della tabella in blocchi */
+        width: 100%;
+    }
+
+    #bookings-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border: none;
+        background-color: #fdfdfd;
+        box-shadow: none; /* Rimuove l'ombra dalle "card" su mobile */
+        padding: 10px;
+    }
+
+    #bookings-table td {
+        display: flex; /* Usa flexbox per allineare etichetta e valore */
+        justify-content: space-between; /* Spinge l'etichetta a sinistra e il valore a destra */
+        align-items: center; /* Centra verticalmente */
+        padding: 8px 15px; /* Padding uniforme per la cella */
+        border: none; /* Rimuove i bordi tra le celle */
+    }
+
+    #bookings-table td::before {
+        content: attr(data-label); /* Usa l'attributo data-label per l'intestazione */
+        flex-shrink: 0; /* Impedisce all'etichetta di rimpicciolirsi */
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 700;
+        color: #ff0403;
+        padding-right: 10px;
+    }
+
+    /* Assegna i data-label a ogni cella */
+    #bookings-table td:nth-of-type(1)::before { content: "ID"; }
+    #bookings-table td:nth-of-type(2)::before { content: "Nome"; }
+    #bookings-table td:nth-of-type(3)::before { content: "Email"; }
+    #bookings-table td:nth-of-type(4)::before { content: "Telefono"; }
+    #bookings-table td:nth-of-type(5)::before { content: "Data"; }
+    #bookings-table td:nth-of-type(6)::before { content: "Ora"; }
+    #bookings-table td:nth-of-type(7)::before { content: "Ospiti"; }
+    #bookings-table td:nth-of-type(8)::before { content: "Note"; }
+    #bookings-table td:nth-of-type(9)::before { content: "Azioni"; }
+}

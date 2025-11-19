@@ -1,0 +1,9 @@
+AVVIO UVICORN
+
+ATTIVARE VENV
+
+ENTRARE NELLA CARTELLA BACKEND
+
+ED ESEGUIRE
+
+uvicorn app.main:app --reload
