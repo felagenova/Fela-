@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let allBookableEvents = []; // Array per memorizzare TUTTI gli eventi dal backend
     let displayedEvents = [];   // Array per memorizzare gli eventi filtrati (mese corrente) e mostrati all'utente
     
-    const backendBaseUrl = 'https://fela-backend.onrender.com';
+    const backendBaseUrl = 'https://felabackend.onrender.com';
 
     // --- Carica e filtra gli eventi prenotabili ---
     try {

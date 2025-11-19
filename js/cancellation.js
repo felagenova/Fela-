@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    const backendBaseUrl = 'https://fela-backend.onrender.com';
+    const backendBaseUrl = 'https://felabackend.onrender.com';
     const backendUrl = `${backendBaseUrl}/api/bookings/cancel/${token}`;
 
     try {

@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalBookings = 0;
     const bookingsPerPage = 10;
 
-    const backendBaseUrl = 'https://fela-backend.onrender.com';
+    const backendBaseUrl = 'https://felabackend.onrender.com';
 
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
