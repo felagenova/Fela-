@@ -19,8 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalBookings = 0;
     const bookingsPerPage = 10;
 
-    const adminBackendUrl = 'http://127.0.0.1:8000/api/admin/bookings';
-    const eventsBackendUrl = 'http://127.0.0.1:8000/api/bookable-events';
+    const backendBaseUrl = 'https://fela-backend.onrender.com';
 
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Codifica le credenziali per l'autenticazione Basic (Base64)
             const encodedCredentials = btoa(`${username}:${password}`);
 
-            const response = await fetch(adminBackendUrl, { // Test iniziale di autenticazione
+            const response = await fetch(`${backendBaseUrl}/api/admin/bookings`, { // Test iniziale di autenticazione
                 method: 'GET',
                 headers: {
                     'Authorization': `Basic ${encodedCredentials}`,
@@ -66,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Popola il filtro degli eventi ---
     async function populateEventFilter() {
         try {
-            const response = await fetch(eventsBackendUrl);
+            const response = await fetch(`${backendBaseUrl}/api/bookable-events`);
             if (!response.ok) throw new Error('Errore caricamento eventi');
             bookableEvents = await response.json();
 
@@ -86,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Funzione per caricare le prenotazioni con paginazione ---
     async function loadBookings(page) {
         const skip = page * bookingsPerPage;
-        let urlWithParams = `${adminBackendUrl}?skip=${skip}&limit=${bookingsPerPage}`;
+        let urlWithParams = `${backendBaseUrl}/api/admin/bookings?skip=${skip}&limit=${bookingsPerPage}`;
 
         const filterValue = eventFilter.value;
         if (filterValue !== 'all') {
@@ -177,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const deleteUrl = `http://127.0.0.1:8000/api/bookings/cancel/${token}`;
+        const deleteUrl = `${backendBaseUrl}/api/bookings/cancel/${token}`;
         const response = await fetch(deleteUrl, { method: 'GET' }); // Usiamo GET come definito nel backend
 
         if (response.ok) {
@@ -194,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Esporta in PDF ---
     async function exportToPDF() {
         const filterValue = eventFilter.value;
-        let urlToFetch = 'http://127.0.0.1:8000/api/bookings/pdf?limit=1000'; // URL base
+        let urlToFetch = `${backendBaseUrl}/api/bookings/pdf?limit=1000`; // URL base
 
         if (filterValue !== 'all') {
             if (filterValue.startsWith('special_')) {
@@ -262,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
-            const response = await fetch('http://127.0.0.1:8000/api/admin/special-events', {
+            const response = await fetch(`${backendBaseUrl}/api/admin/special-events`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Basic ${encodedCredentials}`,
@@ -297,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
         specialEventsList.innerHTML = ''; // Pulisce la lista
         try {
             const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
-            const response = await fetch('http://127.0.0.1:8000/api/admin/special-events', {
+            const response = await fetch(`${backendBaseUrl}/api/admin/special-events`, {
                 headers: { 'Authorization': `Basic ${encodedCredentials}` }
             });
             if (!response.ok) throw new Error('Errore nel caricamento degli eventi speciali.');
@@ -333,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
-            const response = await fetch(`http://127.0.0.1:8000/api/admin/special-events/${eventId}`, {
+            const response = await fetch(`${backendBaseUrl}/api/admin/special-events/${eventId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Basic ${encodedCredentials}`,

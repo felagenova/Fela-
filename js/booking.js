@@ -7,10 +7,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     let allBookableEvents = []; // Array per memorizzare TUTTI gli eventi dal backend
     let displayedEvents = [];   // Array per memorizzare gli eventi filtrati (mese corrente) e mostrati all'utente
+    
+    const backendBaseUrl = 'https://fela-backend.onrender.com';
 
     // --- Carica e filtra gli eventi prenotabili ---
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/bookable-events');
+        const response = await fetch(`${backendBaseUrl}/api/bookable-events`);
         if (!response.ok) throw new Error('Errore nel caricamento degli eventi.');
         
         allBookableEvents = await response.json();
@@ -99,13 +101,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             notes: document.getElementById('notes').value,
         };
 
-        const backendUrl = 'http://127.0.0.1:8000/api/bookings';
-
         messageDiv.textContent = 'Invio in corso...';
         messageDiv.style.color = '#333';
 
         try {
-            const response = await fetch(backendUrl, {
+            const response = await fetch(`${backendBaseUrl}/api/bookings`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
