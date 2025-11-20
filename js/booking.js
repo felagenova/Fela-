@@ -115,7 +115,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (response.ok) {
                 const result = await response.json();
-                messageDiv.textContent = 'Prenotazione confermata! Controlla la tua email.';
+                // Modifichiamo il messaggio di successo per includere il suggerimento sulla cartella spam
+                messageDiv.innerHTML = `
+                    <p style="font-size: 1.1em; margin-bottom: 10px;">Prenotazione confermata!</p>
+                    <p>Riceverai un'email di riepilogo entro pochi minuti.<br>
+                    <strong style="font-size: 0.9em;">Se non la vedi, controlla la cartella Posta Indesiderata o Spam.</strong></p>
+                `;
                 messageDiv.style.color = 'green';
                 form.reset();
                 brunchSlotGroup.style.display = 'none'; // Nasconde di nuovo il selettore del brunch
