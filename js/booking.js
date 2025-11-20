@@ -4,17 +4,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const eventSelector = document.getElementById('event-selector');
     const brunchSlotGroup = document.getElementById('brunch-slot-group');
     const brunchSlotSelector = document.getElementById('brunch-slot-selector');
-    
+
     let allBookableEvents = []; // Array per memorizzare TUTTI gli eventi dal backend
     let displayedEvents = [];   // Array per memorizzare gli eventi filtrati (mese corrente) e mostrati all'utente
-    
+
     const backendBaseUrl = 'https://felabackend.onrender.com';
 
     // --- Carica e filtra gli eventi prenotabili ---
     try {
         const response = await fetch(`${backendBaseUrl}/api/bookable-events`);
         if (!response.ok) throw new Error('Errore nel caricamento degli eventi.');
-        
+
         allBookableEvents = await response.json();
 
         // --- Logica di filtraggio per mese corrente ---
