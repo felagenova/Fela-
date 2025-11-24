@@ -153,7 +153,7 @@
 
 /* Stili per i controlli di paginazione */
 #pagination-controls {
-    display: flex !important; /* Forza display flex per sovrascrivere lo stile inline */
+    display: flex;
     justify-content: space-between; /* Spinge i pulsanti agli estremi */
     width: 100%; /* Assicura che occupi tutta la larghezza disponibile */
 }
@@ -244,6 +244,12 @@
         align-items: center; /* Centra verticalmente */
         padding: 8px 15px; /* Padding uniforme per la cella */
         border: none; /* Rimuove i bordi tra le celle */
+    }
+
+    /* Stile per il contenitore del valore della cella su mobile */
+    .admin-table td .cell-value {
+        flex-grow: 1; /* Occupa lo spazio rimanente */
+        text-align: left; /* Allinea TUTTI i dati a sinistra per coerenza */
     }
 
     #bookings-table td::before {

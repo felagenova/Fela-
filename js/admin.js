@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addSpecialEventForm = document.getElementById('add-special-event-form');
     const specialEventsMessageDiv = document.getElementById('special-events-message');
-    const specialEventsList = document.getElementById('special-events-list');
+    const specialEventsTableBody = document.getElementById('special-events-table-body');
     const loadBookingsBtn = document.getElementById('load-bookings-btn');
     let bookableEvents = [];
     let totalBookings = 0;
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 totalBookings = data.total;
                 displayBookings(data.bookings);
-                paginationControls.style.display = 'block'; // Mostra i controlli
+                paginationControls.style.display = 'flex'; // Mostra i controlli usando flex per il corretto allineamento
                 prevPageButton.disabled = page === 0; // Disabilita "Precedente" se siamo alla prima pagina
                 // Disabilita "Successivo" se non ci sono altre pagine
                 nextPageButton.disabled = (page + 1) * bookingsPerPage >= totalBookings;
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 cellsData.forEach((data, index) => {
                     const cell = row.insertCell();
-                    cell.textContent = data;
+                    cell.innerHTML = `<span class="cell-value">${data}</span>`; // Avvolge il dato in uno span
                     cell.setAttribute('data-label', headers[index]); // Aggiunge il data-label
                 });
 
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function loadSpecialEvents() {
-        specialEventsList.innerHTML = ''; // Pulisce la lista
+        specialEventsTableBody.innerHTML = ''; // Pulisce il corpo della tabella
         try {
             const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
             const response = await fetch(`${backendBaseUrl}/api/admin/special-events`, {
@@ -301,28 +301,62 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!response.ok) throw new Error('Errore nel caricamento degli eventi speciali.');
             const events = await response.json();
-
+    
             if (events.length === 0) {
-                specialEventsList.innerHTML = '<li>Nessun evento speciale aggiunto.</li>';
+                const row = specialEventsTableBody.insertRow();
+                const cell = row.insertCell();
+                cell.colSpan = 5; // Occupa tutte le colonne
+                cell.textContent = 'Nessun evento speciale aggiunto.';
+                cell.style.textAlign = 'center';
                 return;
             }
-
+    
             events.forEach(event => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${event.display_name} (${event.booking_date}${event.booking_time ? ' ' + event.booking_time.substring(0, 5) : ''})`;
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Elimina';
-                deleteButton.className = 'btn-delete';
-                deleteButton.style.marginLeft = '10px';
-                deleteButton.onclick = () => deleteSpecialEvent(event.id);
-                listItem.appendChild(deleteButton);
-                specialEventsList.appendChild(listItem);
+                const row = specialEventsTableBody.insertRow();
+    
+                const statusText = event.is_closed ? 'Chiuso' : 'Aperto';
+                const statusClass = event.is_closed ? 'status-closed' : 'status-open';
+                const toggleButtonText = event.is_closed ? 'Apri' : 'Chiudi';
+                const toggleButtonClass = event.is_closed ? 'btn-open' : 'btn-close';
+    
+                row.innerHTML = `
+                    <td>${event.display_name}</td>
+                    <td>${new Date(event.booking_date).toLocaleDateString()}</td>
+                    <td>${event.booking_time ? event.booking_time.substring(0, 5) : 'N/D'}</td>
+                    <td><span class="status ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="action-btn ${toggleButtonClass}" data-event-id="${event.id}">${toggleButtonText}</button>
+                        <button class="action-btn btn-delete" data-event-id="${event.id}">Elimina</button>
+                    </td>
+                `;
             });
+    
+            // Aggiungi i listener per i pulsanti dopo aver creato la tabella
+            attachSpecialEventsListeners();
+
         } catch (error) {
             console.error('Errore nel caricamento degli eventi speciali:', error);
             specialEventsMessageDiv.textContent = 'Errore nel caricamento degli eventi speciali.';
             specialEventsMessageDiv.style.color = 'red';
         }
+    }
+    
+    function attachSpecialEventsListeners() {
+        // Listener per i pulsanti "Apri/Chiudi"
+        document.querySelectorAll('.btn-open, .btn-close').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const eventId = e.target.dataset.eventId;
+                toggleEventStatus(eventId);
+            });
+        });
+    
+        // Listener per i pulsanti "Elimina"
+        document.querySelectorAll('#special-events-table .btn-delete').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const eventId = e.target.dataset.eventId;
+                deleteSpecialEvent(eventId);
+            });
+        });
     }
 
     async function deleteSpecialEvent(eventId) {
@@ -353,6 +387,36 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Errore di rete durante l\'eliminazione dell\'evento:', error);
             specialEventsMessageDiv.textContent = 'Errore di connessione con il server.';
+            specialEventsMessageDiv.style.color = 'red';
+        }
+    }
+
+    async function toggleEventStatus(eventId) {
+        const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
+        try {
+            const response = await fetch(`${backendBaseUrl}/api/admin/special-events/${eventId}/toggle-status`, {
+                method: 'PATCH', // Usiamo PATCH come definito nel backend
+                headers: {
+                    'Authorization': `Basic ${encodedCredentials}`
+                }
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || 'Errore durante l\'aggiornamento dello stato.');
+            }
+
+            // Se l'aggiornamento ha successo, ricarica la lista per vedere il cambiamento
+            await loadSpecialEvents();
+            // Ricarica anche il filtro principale per le prenotazioni, perché un evento chiuso non sarà più "bookable"
+            await populateEventFilter();
+
+            specialEventsMessageDiv.textContent = 'Stato evento aggiornato con successo.';
+            specialEventsMessageDiv.style.color = 'green';
+
+        } catch (error) {
+            console.error('Errore:', error);
+            specialEventsMessageDiv.textContent = `Errore: ${error.message}`;
             specialEventsMessageDiv.style.color = 'red';
         }
     }

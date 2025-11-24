@@ -13,6 +13,69 @@
     <meta name="view-transition" content="same-origin">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/prenotazione.css"> <!-- Puoi riutilizzare questo CSS o crearne uno specifico per l'admin -->
+    <style>
+        /* Stili per i badge di stato degli eventi */
+        .status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+        .status-open {
+            background-color: #28a745; /* Verde */
+        }
+        .status-closed {
+            background-color: #dc3545; /* Rosso */
+        }
+        /* Stile base per i pulsanti di azione nella tabella */
+        .action-btn {
+            cursor: pointer;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            transition: opacity 0.2s ease;
+        }
+        .action-btn:hover {
+            opacity: 0.85;
+        }
+        /* Colori specifici per i pulsanti */
+        .btn-close {
+            background-color: #dc3545; /* Rosso per "Chiudi" */
+        }
+        .btn-open {
+            background-color: #28a745; /* Verde per "Apri" */
+        }
+        .btn-delete {
+            background-color: #6c757d; /* Grigio scuro per "Elimina" */
+        }
+        /* Allineamento di default per le tabelle admin */
+        .admin-table th { text-align: left; } /* Intestazioni a sinistra */
+        .admin-table td { text-align: right; } /* Dati a destra */
+
+
+
+        /* Allinea a destra il contenuto della colonna Azioni per entrambe le tabelle */
+        .admin-table th:last-child,
+        .admin-table td:last-child {
+            text-align: right;
+        }
+
+        /* Centra il contenuto della colonna Stato */
+        .admin-table th:nth-child(4),
+        .admin-table td:nth-child(4) {
+            text-align: center;
+        }
+
+        /* Allinea a sinistra il primo dato della tabella eventi speciali (Nome Evento) */
+        #special-events-table tbody tr td:first-child {
+            text-align: left;
+        }
+    </style>
 </head>
 <body class="admin-page">
 
@@ -70,9 +133,20 @@
                 </form>
                 <div id="special-events-message" style="margin-top: 15px;"></div>
                 <h3>Eventi Speciali Attivi</h3>
-                <ul id="special-events-list" style="list-style-type: none; padding: 0;">
-                    <!-- Gli eventi speciali verranno inseriti qui dal JavaScript -->
-                </ul>
+                <table id="special-events-table" class="admin-table">
+                    <thead>
+                        <tr>
+                            <th data-label="Nome Evento">Nome Evento</th>
+                            <th data-label="Data">Data</th>
+                            <th data-label="Ora">Ora</th>
+                            <th data-label="Stato">Stato</th>
+                            <th data-label="Azione">Azione</th>
+                        </tr>
+                    </thead>
+                    <tbody id="special-events-table-body">
+                        <!-- Le righe degli eventi speciali verranno inserite qui dal JavaScript -->
+                    </tbody>
+                </table>
                 <hr style="margin: 30px 0;">
 
                 <div class="admin-controls">
@@ -87,18 +161,18 @@
                     <button id="export-pdf" class="btn">Esporta in PDF</button>
                 </div>
                 <h2>Tutte le Prenotazioni</h2>
-                <table id="bookings-table">
+                <table id="bookings-table" class="admin-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Email</th>
-                            <th>Telefono</th>
-                            <th>Data</th>
-                            <th>Ora</th>
-                            <th>Ospiti</th>
-                            <th>Note</th>
-                            <th>Azioni</th>
+                            <th data-label="ID">ID</th>
+                            <th data-label="Nome">Nome</th>
+                            <th data-label="Email">Email</th>
+                            <th data-label="Telefono">Telefono</th>
+                            <th data-label="Data">Data</th>
+                            <th data-label="Ora">Ora</th>
+                            <th data-label="Ospiti">Ospiti</th>
+                            <th data-label="Note">Note</th>
+                            <th data-label="Azioni">Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
