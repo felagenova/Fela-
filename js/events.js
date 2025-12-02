@@ -10,64 +10,57 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    // Funzione centralizzata per mostrare i dettagli di un evento e attivare lo scroll
+    function showEventDetails(cell) {
+        // Aggiunge una classe specifica se è un giorno di chiusura per lo stile
+        if (cell.classList.contains('closing-day')) {
+            displayArea.classList.add('is-closing-day');
+        } else {
+            displayArea.classList.remove('is-closing-day');
+        }
+
+        const eventDetailsContent = cell.querySelector('.event-details-content');
+        if (!eventDetailsContent) return;
+
+        // --- LOGICA PER LA DATA ---
+        const calendar = cell.closest('.calendar-container');
+        const dayNumber = parseInt(cell.firstChild.textContent.trim(), 10);
+        
+        let year = parseInt(calendar.dataset.year, 10);
+        let month = parseInt(calendar.dataset.month, 10);
+
+        // Gestisce i giorni che non appartengono al mese corrente
+        if (!cell.classList.contains('in-month')) {
+            if (dayNumber > 20) { // Giorno del mese precedente
+                month = (month === 0) ? 11 : month - 1;
+                if (month === 11) year--;
+            } else { // Giorno del mese successivo
+                month = (month === 11) ? 0 : month + 1;
+                if (month === 0) year++;
+            }
+        }
+
+        // --- LOGICA PER IL BOX DATA ---
+        const monthAbbr = monthNames[month].substring(0, 3).toUpperCase();
+        const dateBoxHtml = `
+            <div class="date-box">
+                <span class="day">${dayNumber}</span>
+                <span class="month">${monthAbbr}</span>
+            </div>`;
+
+        // Assembla il nuovo layout
+        displayArea.innerHTML = `
+            <div class="event-header-with-date">
+                ${dateBoxHtml}
+                <div class="event-details-column">${eventDetailsContent.innerHTML}</div>
+            </div>`;
+
+        displayArea.classList.add('visible');
+        displayArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     eventCells.forEach(cell => {
-        cell.addEventListener('click', function() {
-            // Aggiunge una classe specifica se è un giorno di chiusura per lo stile
-            if (this.classList.contains('closing-day')) {
-                displayArea.classList.add('is-closing-day');
-            } else {
-                displayArea.classList.remove('is-closing-day');
-            }
-            const eventDetailsContent = this.querySelector('.event-details-content');
-            if (eventDetailsContent) {
-                // --- LOGICA PER LA DATA ---
-                const calendar = this.closest('.calendar-container');
-                const dayNumber = parseInt(this.firstChild.textContent.trim(), 10);
-                
-                let year = parseInt(calendar.dataset.year, 10);
-                let month = parseInt(calendar.dataset.month, 10);
-
-                // Gestisce i giorni che non appartengono al mese corrente
-                if (!this.classList.contains('in-month')) {
-                    if (dayNumber > 20) { // Giorno del mese precedente
-                        month = month - 1;
-                        if (month < 0) {
-                            month = 11;
-                            year = year - 1;
-                        }
-                    } else { // Giorno del mese successivo
-                        month = month + 1;
-                        if (month > 11) {
-                            month = 0;
-                            year = year + 1;
-                        }
-                    }
-                }
-
-                // --- LOGICA PER IL BOX DATA ---
-                const day = dayNumber;
-                const monthAbbr = monthNames[month].substring(0, 3).toUpperCase();
-
-                // Crea l'HTML per il quadratino della data
-                const dateBoxHtml = `
-                    <div class="date-box">
-                        <span class="day">${day}</span>
-                        <span class="month">${monthAbbr}</span>
-                    </div>`;
-
-                // Assembla il nuovo layout con il box data e una colonna per i dettagli
-                displayArea.innerHTML = `
-                    <div class="event-header-with-date">
-                        ${dateBoxHtml}
-                        <div class="event-details-column">
-                            ${eventDetailsContent.innerHTML}
-                        </div>
-                    </div>`;
-
-                displayArea.classList.add('visible');
-                displayArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        });
+        cell.addEventListener('click', () => showEventDetails(cell));
     });
 
     // --- Logica di navigazione del calendario ---
@@ -134,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (todaysEventCell) {
             const calendarIndex = Array.from(calendars).indexOf(todaysEventCell.closest('.calendar-container'));
             showCalendar(calendarIndex);
-            setTimeout(() => todaysEventCell.click(), 100); // Simula il click per mostrare i dettagli
+            setTimeout(() => showEventDetails(todaysEventCell), 250); // Mostra i dettagli con un ritardo leggermente maggiore
         } else {
             // Se non c'è un evento per oggi, cerca il calendario del mese corrente.
             const currentMonthCalendarIndex = Array.from(calendars).findIndex(cal => {

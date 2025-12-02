@@ -1,70 +1,60 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const form = document.getElementById('booking-form');
     const messageDiv = document.getElementById('form-message');
-    const eventSelector = document.getElementById('event-selector');
     const brunchSlotGroup = document.getElementById('brunch-slot-group');
     const brunchSlotSelector = document.getElementById('brunch-slot-selector');
+    const eventSelectionContainer = document.getElementById('event-selection-container');
+    const bookingFormWrapper = document.getElementById('booking-form-wrapper');
+    const backToEventsBtn = document.getElementById('back-to-events');
+    const pageSubtitle = document.getElementById('page-subtitle');
+    const selectedEventTitle = document.getElementById('selected-event-title');
+
+    // Elementi del pop-up
+    const mailingListPopup = document.getElementById('mailing-list-popup-overlay');
+    const mailingListForm = document.getElementById('mailing-list-form');
+    const closePopupBtn = document.getElementById('close-popup-btn');
+    const skipToBookingBtn = document.getElementById('skip-to-booking-btn');
+    const mailingListMessage = document.getElementById('mailing-list-message');
+    // Elementi del nuovo pop-up di caricamento
+    const loaderPopup = document.getElementById('loader-popup-overlay');
+    const loaderProgressBar = document.getElementById('loader-progress-bar-fill');
+
 
     let allBookableEvents = []; // Array per memorizzare TUTTI gli eventi dal backend
-    let displayedEvents = [];   // Array per memorizzare gli eventi filtrati (mese corrente) e mostrati all'utente
+    let selectedEvent = null; // Oggetto per l'evento attualmente selezionato
 
-    const backendBaseUrl = 'https://felabackend.onrender.com';
+    // const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
+    const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale 
 
-    // --- Carica e filtra gli eventi prenotabili ---
-    try {
-        const response = await fetch(`${backendBaseUrl}/api/bookable-events`);
-        if (!response.ok) throw new Error('Errore nel caricamento degli eventi.');
+    // Funzione per mostrare la selezione degli eventi e nascondere il form
+    const showEventSelection = () => {
+        pageSubtitle.textContent = 'Seleziona un evento per cui prenotare.';
+        eventSelectionContainer.style.display = 'grid';
+        bookingFormWrapper.style.display = 'none';
+        selectedEvent = null;
+        form.reset();
+        messageDiv.innerHTML = '';
+    };
 
-        allBookableEvents = await response.json();
+    // Funzione per mostrare il pop-up della mailing list
+    const showMailingListPopup = (event) => {
+        selectedEvent = event;
+        mailingListPopup.classList.add('visible');
+    };
 
-        // --- Logica di filtraggio per mese corrente ---
-        const today = new Date();
-        const currentMonth = today.getMonth(); // 0-indexed (Gennaio è 0, Dicembre è 11)
-        const currentYear = today.getFullYear();
+    // Funzione per nascondere il pop-up
+    const hideMailingListPopup = () => {
+        mailingListPopup.classList.remove('visible');
+        if (mailingListForm) mailingListForm.reset();
+        if (mailingListMessage) mailingListMessage.innerHTML = '';
+    };
 
-        displayedEvents = allBookableEvents.filter(event => {
-            // La data dal backend è una stringa ISO (es. "2025-11-23"), la convertiamo in oggetto Date
-            const eventDate = new Date(event.booking_date);
-            return eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear;
-        });
-
-        // --- Popola il menu a tendina con gli eventi filtrati ---
-        eventSelector.innerHTML = '<option value="" disabled selected>Seleziona un evento...</option>'; // Pulisce e aggiunge opzione di default
-
-        if (displayedEvents.length === 0) {
-            const option = document.createElement('option');
-            option.value = "";
-            option.textContent = "Nessun evento disponibile per questo mese";
-            option.disabled = true;
-            eventSelector.appendChild(option);
-        } else {
-            displayedEvents.forEach((event, index) => {
-                const option = document.createElement('option');
-                option.value = index; // Usiamo l'indice per recuperare i dati completi dall'array `displayedEvents`
-                option.textContent = event.display_name;
-                eventSelector.appendChild(option);
-            });
-        }
-
-    } catch (error) {
-        console.error("Impossibile caricare gli eventi:", error);
-        messageDiv.textContent = 'Non è stato possibile caricare gli eventi prenotabili. Riprova più tardi.';
-        messageDiv.style.color = 'red';
-    }
-
-    // --- Mostra/nasconde il selettore dei turni in base all'evento scelto ---
-    eventSelector.addEventListener('change', () => {
-        const selectedEventIndex = eventSelector.value;
-        if (selectedEventIndex === "") {
-            brunchSlotGroup.style.display = 'none';
-            brunchSlotSelector.required = false;
-            return;
-        }
-
-        // Recupera l'evento corretto dall'array degli eventi visualizzati
-        const selectedEvent = displayedEvents[selectedEventIndex];
-
-        if (selectedEvent.type === 'brunch' && selectedEvent.available_slots) {
+    // Funzione per mostrare il form di prenotazione
+    const proceedToBookingForm = () => {
+        pageSubtitle.textContent = 'Compila il modulo per completare la prenotazione.';
+        selectedEventTitle.textContent = selectedEvent.display_name;
+        
+        if (selectedEvent.available_slots && selectedEvent.available_slots.length > 0) {
             brunchSlotSelector.required = true;
             brunchSlotSelector.innerHTML = '<option value="" disabled selected>Seleziona un turno...</option>';
             selectedEvent.available_slots.forEach(slot => {
@@ -78,31 +68,159 @@ document.addEventListener('DOMContentLoaded', async () => {
             brunchSlotSelector.required = false;
             brunchSlotGroup.style.display = 'none';
         }
+
+        eventSelectionContainer.style.display = 'none';
+        bookingFormWrapper.style.display = 'block';
+    };
+
+    // --- Carica e visualizza gli eventi prenotabili come box ---
+    try {
+        const response = await fetch(`${backendBaseUrl}/api/bookable-events`);
+        if (!response.ok) throw new Error('Errore nel caricamento degli eventi.');
+
+        allBookableEvents = await response.json();
+
+        eventSelectionContainer.innerHTML = ''; // Pulisce il contenitore
+
+        if (allBookableEvents.length === 0) {
+            eventSelectionContainer.innerHTML = '<p class="no-events-message">Al momento non ci sono eventi prenotabili. Torna a trovarci presto!</p>';
+        } else {
+            allBookableEvents.forEach(event => {
+                const eventBox = document.createElement('div');
+                eventBox.className = 'event-box';
+                eventBox.setAttribute('role', 'button');
+                eventBox.tabIndex = 0;
+
+                const eventDate = new Date(event.booking_date);
+                const formattedDate = eventDate.toLocaleDateString('it-IT', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long'
+                });
+
+                eventBox.innerHTML = `
+                    <h3 class="event-box-title">${event.display_name}</h3>
+                    <p class="event-box-date">${formattedDate}</p>
+                `;
+
+                // Aggiungi evento click per mostrare il form
+                eventBox.addEventListener('click', () => showMailingListPopup(event));
+                eventBox.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        showMailingListPopup(event);
+                    }
+                });
+
+                eventSelectionContainer.appendChild(eventBox);
+            });
+        }
+
+    } catch (error) {
+        console.error("Impossibile caricare gli eventi:", error);
+        eventSelectionContainer.innerHTML = '<p class="no-events-message">Non è stato possibile caricare gli eventi. Riprova più tardi.</p>';
+    }
+
+    // --- Gestisce il click sul pulsante "Torna agli eventi" ---
+    if (backToEventsBtn) backToEventsBtn.addEventListener('click', showEventSelection);
+
+    // --- Gestione del Pop-up Mailing List ---
+    if (skipToBookingBtn) skipToBookingBtn.addEventListener('click', () => {
+        hideMailingListPopup();
+        proceedToBookingForm();
     });
+
+    if (closePopupBtn) closePopupBtn.addEventListener('click', hideMailingListPopup);
+
+    if (mailingListPopup) mailingListPopup.addEventListener('click', (e) => {
+        if (e.target === mailingListPopup) {
+            hideMailingListPopup();
+        }
+    });
+
+    if (mailingListForm) mailingListForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const emailInput = document.getElementById('popup-email');
+        const emailValue = emailInput.value;
+        mailingListMessage.textContent = 'Iscrizione in corso...';
+        mailingListMessage.style.color = '#333';
+
+        try {
+            const response = await fetch(`${backendBaseUrl}/api/mailing-list-signup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: emailValue })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok && response.status !== 201 && response.status !== 200) {
+                throw new Error(result.detail || 'Risposta non valida dal server.');
+            }
+
+            mailingListMessage.textContent = result.message === "Email già iscritta!" 
+                ? "Sei già dei nostri! Grazie!" 
+                : "Grazie per esserti iscritto!";
+                
+            mailingListMessage.style.color = 'green';
+            setTimeout(() => { hideMailingListPopup(); proceedToBookingForm(); }, 2000);
+        } catch (error) {
+            mailingListMessage.textContent = 'Si è verificato un errore. Riprova.';
+            mailingListMessage.style.color = 'red';
+            console.error("Errore iscrizione mailing list:", error);
+        }
+    });
+
+    // --- Funzioni per gestire il pop-up di caricamento lento ---
+    const showLoaderPopup = () => {
+        if (loaderPopup) {
+            loaderPopup.classList.add('visible');
+            // Forza il ricalcolo dello stile per far partire la transizione
+            setTimeout(() => {
+                if (loaderProgressBar) loaderProgressBar.style.width = '100%';
+            }, 100);
+        }
+    };
+
+    const hideLoaderPopup = () => {
+        if (loaderPopup) {
+            loaderPopup.classList.remove('visible');
+            // Resetta la barra di progresso per la prossima volta
+            if (loaderProgressBar) loaderProgressBar.style.width = '0%';
+        }
+    };
 
     // --- Gestisce l'invio del form di prenotazione ---
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); // Impedisce il ricaricamento della pagina
 
-        const selectedEventIndex = eventSelector.value;
-        if (selectedEventIndex === "") return; // Non fare nulla se non è stato selezionato un evento
-
-        // Recupera l'evento corretto dall'array degli eventi visualizzati
-        const selectedEvent = displayedEvents[selectedEventIndex];
+        if (!selectedEvent) {
+            messageDiv.textContent = 'Nessun evento selezionato. Torna indietro e scegline uno.';
+            messageDiv.style.color = 'red';
+            return;
+        }
 
         const formData = {
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            booking_date: selectedEvent.booking_date,
-            booking_time: selectedEvent.type === 'brunch' ? brunchSlotSelector.value : selectedEvent.booking_time,
-            event_id: selectedEvent.id, // Invia l'ID dell'evento se presente (sarà null per i brunch)
+            booking_date: selectedEvent.booking_date, // La data è sempre quella dell'evento
+            // Usa il valore del turno selezionato se l'evento ha available_slots, altrimenti usa booking_time dell'evento
+            booking_time: (selectedEvent.available_slots && selectedEvent.available_slots.length > 0) ? brunchSlotSelector.value : selectedEvent.booking_time,
+            event_id: selectedEvent.id,
             guests: parseInt(document.getElementById('guests').value, 10),
             notes: document.getElementById('notes').value,
         };
 
         messageDiv.textContent = 'Invio in corso...';
         messageDiv.style.color = '#333';
+
+        // Imposta un timer. Se la richiesta non finisce entro 1.5 secondi, mostra il pop-up di caricamento.
+        let isRequestSlow = false;
+        const slowRequestTimer = setTimeout(() => {
+            isRequestSlow = true;
+            showLoaderPopup();
+        }, 1500); // 1.5 secondi
+
 
         try {
             const response = await fetch(`${backendBaseUrl}/api/bookings`, {
@@ -113,23 +231,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                 body: JSON.stringify(formData),
             });
 
+            clearTimeout(slowRequestTimer); // La richiesta è finita, annulla il timer
+            if (isRequestSlow) hideLoaderPopup(); // Se il pop-up era apparso, nascondilo
+
             if (response.ok) {
                 const result = await response.json();
                 // Modifichiamo il messaggio di successo per includere il suggerimento sulla cartella spam
                 messageDiv.innerHTML = `
                     <p style="font-size: 1.1em; margin-bottom: 10px;">Prenotazione confermata!</p>
-                    <p>Riceverai un'email di riepilogo entro pochi minuti.<br>
-                    <strong style="font-size: 0.9em;">Se non la vedi, controlla la cartella Posta Indesiderata o Spam.</strong></p>
                 `;
                 messageDiv.style.color = 'green';
                 form.reset();
-                brunchSlotGroup.style.display = 'none'; // Nasconde di nuovo il selettore del brunch
+                setTimeout(showEventSelection, 4000); // Torna alla selezione eventi dopo 4 secondi
             } else {
                 const error = await response.json();
                 messageDiv.textContent = `Errore: ${error.detail || 'Impossibile completare la prenotazione.'}`;
                 messageDiv.style.color = 'red';
             }
         } catch (error) {
+            clearTimeout(slowRequestTimer); // Annulla il timer anche in caso di errore
+            if (isRequestSlow) hideLoaderPopup(); // Nascondi il pop-up anche in caso di errore
+
             console.error('Errore di rete:', error);
             messageDiv.textContent = 'Errore di connessione con il server. Riprova più tardi.';
             messageDiv.style.color = 'red';

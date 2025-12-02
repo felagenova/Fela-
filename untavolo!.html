@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Prenota il tuo tavolo da Fela! Music Bar a Genova. Scegli data, turno e numero di persone in modo semplice e veloce.">
+    <title>Prenota il tuo tavolo - Fela! Music Bar</title>
+    <!-- Google Fonts: Red Hat Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
+
+    <!-- Abilita le View Transitions -->
+    <meta name="view-transition" content="same-origin">
+
+    <!-- Stili -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/prenotazione.css">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-79CC36NDY9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-79CC36NDY9');
+    </script>
+</head>
+<body>
+
+    <header class="site-header-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/f!_logo_rosso.svg" alt="Logo Fela! Music Bar Genova">
+            </a>
+            <button class="hamburger-menu" aria-label="Apri menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Menu</a>
+                <a href="brunch.html">Il Brunch</a>
+                <a href="eventi.html">Eventi</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-container">
+        <div class="booking-wrapper">
+            <h1>UN TAVOLO<br>PER Fela!</h1>
+            <p id="page-subtitle" class="subtitle">Seleziona un evento per cui prenotare.</p>
+
+            <!-- Contenitore per i box degli eventi -->
+            <div id="event-selection-container" class="event-selection-container">
+                <!-- I box degli eventi verranno inseriti qui da JavaScript -->
+            </div>
+
+            <!-- Wrapper per il modulo di prenotazione, inizialmente nascosto -->
+            <div id="booking-form-wrapper" style="display: none;">
+                <button id="back-to-events" class="btn btn-back">‹ Torna agli eventi</button>
+                <h2 id="selected-event-title"></h2>
+
+                <form id="booking-form">
+                    <!-- Il campo nascosto per l'ID dell'evento verrà gestito da JS -->
+                    <div class="form-group">
+                        <label for="name">Nome e Cognome</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Telefono</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <!-- Nuovo: Menu a tendina per i turni, nascosto di default -->
+                    <div class="form-group" id="brunch-slot-group" style="display: none;">
+                        <label for="brunch-slot-selector">Scegli il Turno</label>
+                        <select id="brunch-slot-selector" name="brunch-slot-selector">
+                            <!-- Opzioni caricate da JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Numero Persone</label>
+                        <input type="number" id="guests" name="guests" min="1" max="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Note (allergie, preferenze, etc.)</label>
+                        <textarea id="notes" name="notes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-submit">Invia Prenotazione</button>
+                </form>
+
+                <div id="form-message"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Pop-up per Iscrizione Mailing List -->
+    <div id="mailing-list-popup-overlay" class="popup-overlay">
+        <div class="popup-box">
+            <button id="close-popup-btn" class="popup-close-btn" aria-label="Chiudi">&times;</button>
+            <h3>Rimani in contatto!</h3>
+            <p>Iscriviti alla nostra newsletter list per non perderti eventi futuri, novità e promozioni speciali.</p>
+            
+            <form id="mailing-list-form">
+                <div class="form-group">
+                    <label for="popup-email" class="visually-hidden">La tua email</label>
+                    <input type="email" id="popup-email" name="popup-email" placeholder="La tua email migliore" required>
+                </div>
+                <div class="form-group-checkbox">
+                    <input type="checkbox" id="privacy-consent" required>
+                    <label for="privacy-consent">Dichiaro di aver letto e accettato la <a href="privacy.html" target="_blank">Privacy Policy</a> e acconsento al trattamento dei miei dati.</label>
+                </div>
+                <button type="submit" class="btn btn-submit">Iscrivimi!</button>
+            </form>
+
+            <button id="skip-to-booking-btn" class="btn-link">Salta e vai alla prenotazione →</button>
+
+            <div id="mailing-list-message"></div>
+        </div>
+    </div>
+
+    <!-- Pop-up di Caricamento per Richieste Lente -->
+    <div id="loader-popup-overlay" class="popup-overlay">
+        <div class="popup-box loader-popup-box">
+            <h3>Stiamo cercando un posto per te...</h3>
+            <p>Il nostro sistema si sta attivando. L'operazione potrebbe richiedere fino a 45 secondi.</p>
+            
+            <!-- Barra di Caricamento -->
+            <div class="loader-progress-bar-container">
+                <div id="loader-progress-bar-fill" class="loader-progress-bar-fill"></div>
+            </div>
+            <p class="loader-subtext">Per favore, attendi il completamento.</p>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-left">
+            <p><strong>Fela!<br>Music Bar - Social Hub</strong></p>
+            <a href="https://maps.app.goo.gl/zhNrFjCBpWnWwXuP9" target="_blank" rel="noopener noreferrer">
+                <p>Via di S. Cosimo, 6r, 16128 Genova GE</p>
+            </a>
+        </div>
+        <div class="footer-right">
+            <p>
+                <strong>Orari:</strong><br>
+                Mer-Gio: 18:00 - 01:00<br>
+                Ven-Sab: 18:00 - 02:00<br>
+                Dom: 12:00 - 21:00<br>
+                Lun-Mar: FELAKIUDI
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/booking.js" defer></script>
+
+</body>
+</html>

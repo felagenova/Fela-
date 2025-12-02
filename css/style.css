@@ -250,6 +250,18 @@ body {
     color: #f3f0ce;
 }
 
+/* Stile specifico per il bottone "Fela! Meets SUNNYFOOD" nella homepage */
+.btn[href="transatlantica.html"] {
+    color: #28220bff;
+    border-color: #e4a04eff;
+}
+
+.btn[href="transatlantica.html"]:hover {
+    background-color: #006a68ff; /* Nuovo colore hover richiesto */
+    border-color: #006a68ff;
+    color: #f3f0ce;
+}
+
 /* Stile specifico per il bottone di prenotazione nel pop-up promo */
 .btn.btn-promo-booking {
     border-color: #019e51ff;
@@ -1227,15 +1239,14 @@ body {
 }
 .promo-popup-content {
     background-color: #f3f0ce;
-    color: #487a7bff; /* Colore del testo brunch */
+    color: #ff0403; /* Colore del testo rosso Fela! */
     padding: 30px;
     border-radius: 12px;
-    border: 3px solid #487a7bff; /* Bordo colore brunch */
 
     /* Sostituzione del bordo con la cornice SVG personalizzata */
     border-style: solid;
     border-width: 15px;
-    border-image-source: url('../images/custom-pattern-brunch.svg');
+    border-image-source: url('../images/custom-pattern-red.svg'); /* Cornice rossa standard */
     border-image-slice: 30;
     border-image-repeat: round;
     text-align: center; /* Centra il testo all'interno del pop-up */
@@ -1260,14 +1271,14 @@ body {
 .promo-popup-content h3 {
     margin: 0 0 15px 0;
     font-size: 28px;
-    font-weight: 700;
+    font-weight: 700; 
 }
 /* Nuovo stile per il titolo dell'evento */
 .promo-popup-content h4.promo-event-title {
     font-size: 22px;
     font-weight: 900;
     margin: 0 0 5px 0;
-    color: #ff0403; /* Colore del testo rosso */
+    color: #ff0403; /* Assicura che il colore sia rosso */
 }
 
 .promo-popup-content p {
@@ -1282,7 +1293,7 @@ body {
     background: none;
     border: none;
     font-size: 32px;
-    color: #487a7bff; /* Colore del testo brunch */
+    color: #ff0403; /* Colore rosso Fela! */
     cursor: pointer;
     line-height: 1;
 }
@@ -2028,27 +2039,34 @@ body {
 }
 
 /* --- Stili per il bottone di prenotazione nella pagina Transatlantica --- */
-.booking-button-container {
+.book-table-button-container {
     display: flex;
     justify-content: center;
     padding: 40px 40px 0px 40px; /* Spaziatura aggiornata per la nuova posizione */
+    padding: 80px 40px 0px 40px; /* Aumentata la spaziatura superiore per abbassare il bottone */
     position: relative;
     z-index: 5; /* Assicura che sia sopra lo sfondo ma sotto la navbar/footer se necessario */
 }
 
-.btn-transatlantica-booking {
+.book-table-btn {
     /* Stile che riprende i bottoni della homepage */
     background-color: #f3f0ce; /* Sfondo crema */
     color: #1a1a1aff; /* Testo nero per contrasto */
     border: 2px solid #1a1a1aff; /* Bordo nero */
+    background-color: #f3f0ce; /* Sfondo color panna */
+    color: #006a68ff; /* Testo del nuovo colore richiesto */
+    border: 2px solid #006a68ff; /* Bordo dello stesso colore del testo */
     min-width: 200px; /* Larghezza minima per coerenza */
     font-size: 18px;
     font-weight: 700;
 }
 
-.btn-transatlantica-booking:hover {
+.btn-table-btn:hover {
     background-color: #e4a04eff; /* Colore arancione/ocra al passaggio del mouse */
     color: #1a1a1aff; /* Mantiene il testo nero */
     border-color: #e4a04eff; /* Anche il bordo cambia colore */
+    background-color: #006a68ff; /* Colore di sfondo al passaggio del mouse */
+    color: #f3f0ce; /* Testo color panna per contrasto */
+    border-color: #006a68ff; /* Il bordo mantiene il colore */
     transform: scale(1.05); /* Mantiene l'effetto di ingrandimento */
 }

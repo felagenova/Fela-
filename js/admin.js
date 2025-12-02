@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalBookings = 0;
     const bookingsPerPage = 10;
 
-    const backendBaseUrl = 'https://felabackend.onrender.com';
+    // const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
+    const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale
 
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -70,15 +71,28 @@ document.addEventListener('DOMContentLoaded', () => {
             bookableEvents = await response.json();
 
             eventFilter.innerHTML = '<option value="all">Tutti gli eventi</option>'; // Reset del filtro
+
             bookableEvents.forEach(event => {
-                const option = document.createElement('option');
-                // Il valore conterrà l'ID dell'evento speciale o un identificatore per il brunch
-                option.value = event.id ? `special_${event.id}` : `brunch_${event.booking_date}|${event.booking_time || (event.available_slots ? event.available_slots[0] : '00:00')}`;
-                option.textContent = event.display_name;
-                eventFilter.appendChild(option);
+                // Se l'evento ha più turni (available_slots), crea un'opzione per ogni turno
+                if (event.available_slots && event.available_slots.length > 0) {
+                    event.available_slots.forEach(slot => {
+                        const option = document.createElement('option');
+                        // Il valore conterrà la data e lo specifico turno
+                        option.value = `brunch_${event.booking_date}|${slot}`;
+                        // Il testo mostrerà il nome dell'evento e l'ora del turno
+                        option.textContent = `${event.display_name} - Turno ${slot.substring(0, 5)}`;
+                        eventFilter.appendChild(option);
+                    });
+                } else {
+                    // Altrimenti, crea una singola opzione per l'evento (speciale o con orario unico)
+                    const option = document.createElement('option');
+                    option.value = event.id ? `special_${event.id}` : `brunch_${event.booking_date}|${event.booking_time || '00:00'}`;
+                    option.textContent = event.display_name;
+                    eventFilter.appendChild(option);
+                }
             });
         } catch (error) {
-            console.error("Impossibile caricare gli eventi per il filtro:", error);
+            console.error("Impossibile caricare gli eventi per il filtro:", error); // Questo errore potrebbe essere causato da problemi CORS
         }
     }
 
@@ -192,8 +206,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Esporta in PDF ---
     async function exportToPDF() {
+        // Mostra un messaggio di attesa
+        adminMessageDiv.textContent = 'Creazione del PDF in corso...';
+        adminMessageDiv.style.color = '#333';
+
+        // 1. Recupera TUTTE le prenotazioni per il filtro corrente per calcolare il totale degli ospiti
+        let allBookingsForFilter = [];
+        let totalGuests = 0;
+        let urlToFetchAll = `${backendBaseUrl}/api/admin/bookings?limit=2000`; // Limite alto per prenderle tutte
+        const filterValueAll = eventFilter.value;
+
+        if (filterValueAll !== 'all') {
+            if (filterValueAll.startsWith('special_')) {
+                urlToFetchAll += `&event_id=${filterValueAll.substring(8)}`;
+            } else if (filterValueAll.startsWith('brunch_')) {
+                const [date, time] = filterValueAll.substring(7).split('|');
+                urlToFetchAll += `&event_date=${date}&event_time=${time}`;
+            }
+        }
+
+        try {
+            const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
+            const allBookingsResponse = await fetch(urlToFetchAll, {
+                headers: { 'Authorization': `Basic ${encodedCredentials}` }
+            });
+            if (!allBookingsResponse.ok) throw new Error('Impossibile caricare i dati per il riepilogo.');
+            
+            const data = await allBookingsResponse.json();
+            allBookingsForFilter = data.bookings;
+            totalGuests = allBookingsForFilter.reduce((sum, booking) => sum + booking.guests, 0);
+
+        } catch (error) {
+            adminMessageDiv.textContent = `Errore nella preparazione del PDF: ${error.message}`;
+            adminMessageDiv.style.color = 'red';
+            return; // Interrompe l'esecuzione se non riesce a caricare i dati
+        }
+
         const filterValue = eventFilter.value;
-        let urlToFetch = `${backendBaseUrl}/api/bookings/pdf?limit=1000`; // URL base
+        const selectedOptionText = eventFilter.options[eventFilter.selectedIndex].text;
+
+        // Definiamo le intestazioni corrette da inviare al backend
+        const headers = ["ID", "Nome", "Email", "Telefono", "Data", "Ora", "Ospiti", "Note"];
+        const encodedHeaders = encodeURIComponent(JSON.stringify(headers));
+
+        // Definiamo il titolo del documento da inviare al backend
+        const title = (filterValue === 'all' || !selectedOptionText) 
+            ? 'Riepilogo di tutte le prenotazioni' 
+            : selectedOptionText;
+        const encodedTitle = encodeURIComponent(title);
+
+        // 2. Crea la stringa di riepilogo
+        const summaryText = `Riepilogo: ${totalBookings} prenotazioni per un totale di ${totalGuests} ospiti.`;
+        const encodedSummary = encodeURIComponent(summaryText);
+
+        // 3. Aggiungiamo intestazioni, titolo, riepilogo e limite alla URL
+        let urlToFetch = `${backendBaseUrl}/api/bookings/pdf?limit=2000&headers=${encodedHeaders}&title=${encodedTitle}&summary=${encodedSummary}`;
 
         if (filterValue !== 'all') {
             if (filterValue.startsWith('special_')) {
@@ -218,15 +285,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`Errore dal server: ${response.status} ${response.statusText}`);
             }
 
-            // Estrai il nome del file dall'header Content-Disposition
-            const disposition = response.headers.get('Content-Disposition');
-            let filename = 'prenotazioni.pdf'; // Nome file di default
-            if (disposition && disposition.indexOf('attachment') !== -1) {
-                const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                const matches = filenameRegex.exec(disposition);
-                if (matches != null && matches[1]) {
-                    filename = matches[1].replace(/['"]/g, '');
-                }
+            // --- Logica per generare un nome file dinamico e corretto ---
+            let filename;
+
+            if (filterValue === 'all' || !selectedOptionText) {
+                filename = 'prenotazioni_tutti_gli_eventi.pdf';
+            } else {
+                // Pulisce il nome dell'evento per creare un nome file valido
+                const safeEventName = selectedOptionText
+                    .toLowerCase()
+                    .replace(/[^a-z0-9\s-]/g, '') // Rimuove caratteri non alfanumerici (tranne spazi e trattini)
+                    .replace(/\s+/g, '_'); // Sostituisce gli spazi con underscore
+                filename = `prenotazioni_${safeEventName}.pdf`;
             }
 
             const pdfBlob = await response.blob();
@@ -241,6 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
             a.remove(); // Rimuovi il link dopo il click
             URL.revokeObjectURL(pdfUrl); // Libera la memoria
 
+            // Messaggio di successo
+            adminMessageDiv.textContent = 'PDF esportato con successo!';
+            adminMessageDiv.style.color = 'green';
         } catch (error) {
             console.error('Errore durante l\'esportazione in PDF:', error);
             adminMessageDiv.textContent = 'Impossibile esportare il PDF. Controlla la console per i dettagli.';
@@ -255,6 +328,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const eventDisplayName = document.getElementById('event_display_name').value;
         const eventDate = document.getElementById('event_date').value;
         const eventTime = document.getElementById('event_time').value; // Può essere vuoto
+        
+        // Raccoglie i valori dai campi dei turni e li filtra per non includere quelli vuoti
+        const eventSlots = [
+            document.getElementById('event_shift_1').value,
+            document.getElementById('event_shift_2').value,
+            document.getElementById('event_shift_3').value
+        ].filter(slot => slot !== ''); // Filtra via le stringhe vuote
 
         specialEventsMessageDiv.textContent = 'Aggiunta evento in corso...';
         specialEventsMessageDiv.style.color = '#333';
@@ -270,7 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     display_name: eventDisplayName,
                     booking_date: eventDate,
-                    booking_time: eventTime || null // Invia null se l'ora non è specificata
+                    booking_time: eventTime || null, // Invia null se l'ora non è specificata
+                    available_slots: eventSlots // Invia la lista di turni raccolti
                 }),
             });
 
@@ -305,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (events.length === 0) {
                 const row = specialEventsTableBody.insertRow();
                 const cell = row.insertCell();
-                cell.colSpan = 5; // Occupa tutte le colonne
+                cell.colSpan = 6; // Occupa tutte le colonne
                 cell.textContent = 'Nessun evento speciale aggiunto.';
                 cell.style.textAlign = 'center';
                 return;
@@ -318,11 +399,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const statusClass = event.is_closed ? 'status-closed' : 'status-open';
                 const toggleButtonText = event.is_closed ? 'Apri' : 'Chiudi';
                 const toggleButtonClass = event.is_closed ? 'btn-open' : 'btn-close';
+
+                // Formatta i turni per la visualizzazione
+                const turniText = event.available_slots && event.available_slots.length > 0 ? event.available_slots.map(s => s.substring(0, 5)).join(', ') : 'N/D';
     
                 row.innerHTML = `
                     <td>${event.display_name}</td>
                     <td>${new Date(event.booking_date).toLocaleDateString()}</td>
                     <td>${event.booking_time ? event.booking_time.substring(0, 5) : 'N/D'}</td>
+                    <td>${turniText}</td>
                     <td><span class="status ${statusClass}">${statusText}</span></td>
                     <td>
                         <button class="action-btn ${toggleButtonClass}" data-event-id="${event.id}">${toggleButtonText}</button>

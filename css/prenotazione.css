@@ -18,6 +18,61 @@
     margin-bottom: 40px;
 }
 
+/* --- Stili per la selezione degli eventi --- */
+.event-selection-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.event-box {
+    background-color: #fdfdfd;
+    border: 2px solid #ff0403;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-box:hover,
+.event-box:focus {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(255, 4, 3, 0.15);
+    outline: none;
+}
+
+.event-box-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ff0403;
+    margin: 0 0 10px 0;
+}
+
+.event-box-date {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+    text-transform: capitalize;
+}
+
+.no-events-message {
+    font-size: 18px;
+    color: #555;
+    text-align: center;
+    padding: 40px 20px;
+    background-color: rgba(0,0,0,0.02);
+    border-radius: 8px;
+}
+
+/* Stili per il form di prenotazione che appare dopo */
+#selected-event-title {
+    color: #ff0403;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
 /* Stile per il form */
 #booking-form {
     display: flex;
@@ -66,6 +121,29 @@
     box-shadow: 0 0 0 3px rgba(255, 4, 3, 0.3);
 }
 
+
+/* Stile specifico per il form del pop-up */
+#mailing-list-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra gli elementi del form, incluso il pulsante */
+    gap: 15px;
+}
+
+/* Stile per il campo email nel pop-up */
+#mailing-list-email {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ff0403; /* Bordo rosso in stile con il sito */
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    font-family: "Red Hat Display", sans-serif;
+    font-size: 16px;
+    color: #333;
+    box-sizing: border-box;
+    text-align: center; /* Centra il testo del placeholder */
+}
+
 /* Stile per il pulsante di invio */
 .btn-submit {
     margin-top: 20px; /* Aggiunge spazio sopra il pulsante */
@@ -79,6 +157,17 @@
     font-size: 18px;
     font-weight: 700;
     min-height: 25px; /* Altezza minima per evitare "salti" nel layout */
+}
+
+/* Stile per il pulsante "Torna agli eventi" */
+.btn-back {
+    background: transparent;
+    border: none;
+    color: #ff0403;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding: 5px 0;
+    cursor: pointer;
 }
 
 /* Stile per l'header nelle pagine interne */
@@ -272,4 +361,94 @@
     #bookings-table td:nth-of-type(7)::before { content: "Ospiti"; }
     #bookings-table td:nth-of-type(8)::before { content: "Note"; }
     #bookings-table td:nth-of-type(9)::before { content: "Azioni"; }
+}
+
+/* --- Stili per il Pop-up --- */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.popup-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-box {
+    background-color: #f3f0ce;
+    color: #ff0403;
+    padding: 30px;
+    border-radius: 12px;
+    border: 3px solid #ff0403;
+    text-align: center;
+    max-width: 90%;
+    width: 450px;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.popup-overlay.visible .popup-box {
+    transform: scale(1);
+}
+
+.popup-box h3 {
+    margin: 0 0 15px 0;
+    font-size: 28px;
+}
+
+.popup-box p {
+    margin-bottom: 25px;
+}
+
+.popup-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #ff0403;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.form-group-checkbox {
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    gap: 10px;
+    margin: 15px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #ff0403;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 20px;
+    font-weight: 700;
+}
+
+#mailing-list-message {
+    margin-top: 15px;
+    font-weight: 700;
+    min-height: 20px;
 }

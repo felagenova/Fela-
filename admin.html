@@ -66,8 +66,8 @@
         }
 
         /* Centra il contenuto della colonna Stato */
-        .admin-table th:nth-child(4),
-        .admin-table td:nth-child(4) {
+        .admin-table th:nth-child(5), /* Aggiornato per la nuova colonna Turni */
+        .admin-table td:nth-child(5) { /* Aggiornato per la nuova colonna Turni */
             text-align: center;
         }
 
@@ -129,6 +129,12 @@
                         <label for="event_time">Ora Evento (opzionale, es. 20:00)</label>
                         <input type="time" id="event_time" name="event_time">
                     </div>
+                    <div class="form-group">
+                        <label>Turni (opzionale, fino a 3)</label>
+                        <input type="time" id="event_shift_1" name="event_shift_1" style="margin-right: 10px;">
+                        <input type="time" id="event_shift_2" name="event_shift_2" style="margin-right: 10px;">
+                        <input type="time" id="event_shift_3" name="event_shift_3">
+                    </div>
                     <button type="submit" class="btn btn-submit">Aggiungi Evento</button>
                 </form>
                 <div id="special-events-message" style="margin-top: 15px;"></div>
@@ -139,6 +145,7 @@
                             <th data-label="Nome Evento">Nome Evento</th>
                             <th data-label="Data">Data</th>
                             <th data-label="Ora">Ora</th>
+                            <th data-label="Turni">Turni</th>
                             <th data-label="Stato">Stato</th>
                             <th data-label="Azione">Azione</th>
                         </tr>
