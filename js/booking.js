@@ -15,10 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const closePopupBtn = document.getElementById('close-popup-btn');
     const skipToBookingBtn = document.getElementById('skip-to-booking-btn');
     const mailingListMessage = document.getElementById('mailing-list-message');
-    // Elementi del nuovo pop-up di caricamento
-    const loaderPopup = document.getElementById('loader-popup-overlay');
-    const loaderProgressBar = document.getElementById('loader-progress-bar-fill');
-
 
     let allBookableEvents = []; // Array per memorizzare TUTTI gli eventi dal backend
     let selectedEvent = null; // Oggetto per l'evento attualmente selezionato
@@ -170,25 +166,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // --- Funzioni per gestire il pop-up di caricamento lento ---
-    const showLoaderPopup = () => {
-        if (loaderPopup) {
-            loaderPopup.classList.add('visible');
-            // Forza il ricalcolo dello stile per far partire la transizione
-            setTimeout(() => {
-                if (loaderProgressBar) loaderProgressBar.style.width = '100%';
-            }, 100);
-        }
-    };
-
-    const hideLoaderPopup = () => {
-        if (loaderPopup) {
-            loaderPopup.classList.remove('visible');
-            // Resetta la barra di progresso per la prossima volta
-            if (loaderProgressBar) loaderProgressBar.style.width = '0%';
-        }
-    };
-
     // --- Gestisce l'invio del form di prenotazione ---
     form.addEventListener('submit', async (event) => {
         event.preventDefault(); // Impedisce il ricaricamento della pagina
@@ -214,14 +191,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         messageDiv.textContent = 'Invio in corso...';
         messageDiv.style.color = '#333';
 
-        // Imposta un timer. Se la richiesta non finisce entro 1.5 secondi, mostra il pop-up di caricamento.
-        let isRequestSlow = false;
-        const slowRequestTimer = setTimeout(() => {
-            isRequestSlow = true;
-            showLoaderPopup();
-        }, 1500); // 1.5 secondi
-
-
         try {
             const response = await fetch(`${backendBaseUrl}/api/bookings`, {
                 method: 'POST',
@@ -230,9 +199,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 },
                 body: JSON.stringify(formData),
             });
-
-            clearTimeout(slowRequestTimer); // La richiesta è finita, annulla il timer
-            if (isRequestSlow) hideLoaderPopup(); // Se il pop-up era apparso, nascondilo
 
             if (response.ok) {
                 const result = await response.json();
@@ -249,9 +215,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 messageDiv.style.color = 'red';
             }
         } catch (error) {
-            clearTimeout(slowRequestTimer); // Annulla il timer anche in caso di errore
-            if (isRequestSlow) hideLoaderPopup(); // Nascondi il pop-up anche in caso di errore
-
             console.error('Errore di rete:', error);
             messageDiv.textContent = 'Errore di connessione con il server. Riprova più tardi.';
             messageDiv.style.color = 'red';
