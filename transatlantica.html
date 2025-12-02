@@ -40,6 +40,19 @@
       background-color: #006a68;
       color: #f3f0ce; /* Testo color panna su hover */
     }
+
+    /* Media query per dispositivi mobili */
+    @media (max-width: 768px) {
+      .book-table-button-container {
+        position: relative; /* Necessario per z-index */
+        z-index: 10; /* Assicura che il pulsante sia sopra l'immagine */
+        margin-bottom: -20px; /* Sposta il pulsante verso il basso, sopra l'immagine */
+      }
+
+      .page-container:first-of-type {
+        padding-top: 5px; /* Aggiunge spazio sopra l'immagine per fare posto al pulsante */
+      }
+    }
   </style>
 
   <!-- Google tag (gtag.js) -->
