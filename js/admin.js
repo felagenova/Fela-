@@ -206,7 +206,257 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Esporta in PDF ---
     async function exportToPDF() {
-        // Mostra un messaggio di attesa
+        // ...existing code...
+        async function exportToPDF() {
+            // Mostra un messaggio di attesa
+            adminMessageDiv.textContent = 'Creazione del PDF in corso...';
+            adminMessageDiv.style.color = '#333';
+        
+            // 1. Recupera TUTTE le prenotazioni per il filtro corrente per calcolare il totale degli ospiti
+            let allBookingsForFilter = [];
+            let totalGuests = 0;
+            let urlToFetchAll = `${backendBaseUrl}/api/admin/bookings?limit=2000`; // Limite alto per prenderle tutte
+            const filterValueAll = eventFilter.value;
+        
+            if (filterValueAll !== 'all') {
+                if (filterValueAll.startsWith('special_')) {
+                    urlToFetchAll += `&event_id=${filterValueAll.substring(8)}`;
+                } else if (filterValueAll.startsWith('brunch_')) {
+                    const [date, time] = filterValueAll.substring(7).split('|');
+                    urlToF                    // ...existing code...
+                    async function exportToPDF() {
+                        // Mostra un messaggio di attesa
+                        adminMessageDiv.textContent = 'Creazione del PDF in corso...';
+                        adminMessageDiv.style.color = '#333';
+                    
+                        // 1. Recupera TUTTE le prenotazioni per il filtro corrente per calcolare il totale degli ospiti
+                        let allBookingsForFilter = [];
+                        let totalGuests = 0;
+                        let urlToFetchAll = `${backendBaseUrl}/api/admin/bookings?limit=2000`; // Limite alto per prenderle tutte
+                        const filterValueAll = eventFilter.value;
+                    
+                        if (filterValueAll !== 'all') {
+                            if (filterValueAll.startsWith('special_')) {
+                                urlToFetchAll += `&event_id=${filterValueAll.substring(8)}`;
+                            } else if (filterValueAll.startsWith('brunch_')) {
+                                const [date, time] = filterValueAll.substring(7).split('|');
+                                urlToFetchAll += `&event_date=${date}&event_time=${time}`;
+                            }
+                        }
+                    
+                        try {
+                            const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
+                            const allBookingsResponse = await fetch(urlToFetchAll, {
+                                headers: { 'Authorization': `Basic ${encodedCredentials}` }
+                            });
+                            if (!allBookingsResponse.ok) throw new Error('Impossibile caricare i dati per il riepilogo.');
+                            
+                            const data = await allBookingsResponse.json();
+                            allBookingsForFilter = data.bookings || [];
+                            totalGuests = allBookingsForFilter.reduce((sum, booking) => sum + (booking.guests || 0), 0);
+                    
+                        } catch (error) {
+                            adminMessageDiv.textContent = `Errore nella preparazione del PDF: ${error.message}`;
+                            adminMessageDiv.style.color = 'red';
+                            return;
+                        }
+                    
+                        const filterValue = eventFilter.value;
+                        const selectedOptionText = eventFilter.options[eventFilter.selectedIndex]?.text || '';
+                    
+                        // Estrae il nome evento rimuovendo eventuali suffissi tipo " - Turno HH:MM"
+                        let eventTitle = selectedOptionText;
+                        if (selectedOptionText.includes(' - Turno ')) {
+                            eventTitle = selectedOptionText.split(' - Turno ')[0];
+                        } else if (selectedOptionText.includes(' - ')) {
+                            // fallback: rimuove parti dopo un trattino se non è un turno
+                            eventTitle = selectedOptionText.split(' - ')[0];
+                        }
+                    
+                        // Definiamo le intestazioni corrette da inviare al backend
+                        const headers = ["ID", "Nome", "Email", "Telefono", "Data", "Ora", "Ospiti", "Note"];
+                        const encodedHeaders = encodeURIComponent(JSON.stringify(headers));
+                    
+                        // Usa il conteggio effettivo delle prenotazioni caricate per il riepilogo
+                        const totalBookingsForPdf = allBookingsForFilter.length;
+                    
+                        // Definiamo il titolo del documento da inviare al backend
+                        const title = (filterValue === 'all' || !selectedOptionText) 
+                            ? 'Riepilogo di tutte le prenotazioni' 
+                            : `Prenotazioni di ${eventTitle}`;
+                        const encodedTitle = encodeURIComponent(title);
+                    
+                        // 2. Crea la stringa di riepilogo
+                        const summaryText = `Riepilogo: ${totalBookingsForPdf} prenotazioni per un totale di ${totalGuests} ospiti.`;
+                        const encodedSummary = encodeURIComponent(summaryText);
+                    
+                        // 3. Aggiungiamo intestazioni, titolo, riepilogo e limite alla URL
+                        let urlToFetch = `${backendBaseUrl}/api/bookings/pdf?limit=2000&headers=${encodedHeaders}&title=${encodedTitle}&summary=${encodedSummary}`;
+                    
+                        if (filterValue !== 'all') {
+                            if (filterValue.startsWith('special_')) {
+                                const eventId = filterValue.substring(8);
+                                urlToFetch += `&event_id=${eventId}`;
+                            } else if (filterValue.startsWith('brunch_')) {
+                                const [date, time] = filterValue.substring(7).split('|');
+                                urlToFetch += `&event_date=${date}&event_time=${time}`;
+                            }
+                        }
+                    
+                        try {
+                            const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
+                            const response = await fetch(urlToFetch, {
+                                method: 'GET',
+                                headers: {
+                                    'Authorization': `Basic ${encodedCredentials}`,
+                                },
+                            });
+                    
+                            if (!response.ok) {
+                                throw new Error(`Errore dal server: ${response.status} ${response.statusText}`);
+                            }
+                    
+                            // Nome file dinamico
+                            let filename;
+                            if (filterValue === 'all' || !selectedOptionText) {
+                                filename = 'prenotazioni_tutti_gli_eventi.pdf';
+                            } else {
+                                const safeEventName = eventTitle
+                                    .toLowerCase()
+                                    .replace(/[^a-z0-9\s-]/g, '')
+                                    .trim()
+                                    .replace(/\s+/g, '_');
+                                filename = `prenotazioni_${safeEventName}.pdf`;
+                            }
+                    
+                            const pdfBlob = await response.blob();
+                            const pdfUrl = URL.createObjectURL(pdfBlob);
+                    
+                            const a = document.createElement('a');
+                            a.href = pdfUrl;
+                            a.download = filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                            URL.revokeObjectURL(pdfUrl);
+                    
+                            adminMessageDiv.textContent = 'PDF esportato con successo!';
+                            adminMessageDiv.style.color = 'green';
+                        } catch (error) {
+                            console.error('Errore durante l\'esportazione in PDF:', error);
+                            adminMessageDiv.textContent = 'Impossibile esportare il PDF. Controlla la console per i dettagli.';
+                            adminMessageDiv.style.color = 'red';
+                        }
+                    }
+                    // ...existing code...etchAll += `&event_date=${date}&event_time=${time}`;
+                }
+            }
+        
+            try {
+                const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
+                const allBookingsResponse = await fetch(urlToFetchAll, {
+                    headers: { 'Authorization': `Basic ${encodedCredentials}` }
+                });
+                if (!allBookingsResponse.ok) throw new Error('Impossibile caricare i dati per il riepilogo.');
+                
+                const data = await allBookingsResponse.json();
+                allBookingsForFilter = data.bookings || [];
+                totalGuests = allBookingsForFilter.reduce((sum, booking) => sum + (booking.guests || 0), 0);
+        
+            } catch (error) {
+                adminMessageDiv.textContent = `Errore nella preparazione del PDF: ${error.message}`;
+                adminMessageDiv.style.color = 'red';
+                return;
+            }
+        
+            const filterValue = eventFilter.value;
+            const selectedOptionText = eventFilter.options[eventFilter.selectedIndex]?.text || '';
+        
+            // Estrae il nome evento rimuovendo eventuali suffissi tipo " - Turno HH:MM"
+            let eventTitle = selectedOptionText;
+            if (selectedOptionText.includes(' - Turno ')) {
+                eventTitle = selectedOptionText.split(' - Turno ')[0];
+            } else if (selectedOptionText.includes(' - ')) {
+                // fallback: rimuove parti dopo un trattino se non è un turno
+                eventTitle = selectedOptionText.split(' - ')[0];
+            }
+        
+            // Definiamo le intestazioni corrette da inviare al backend
+            const headers = ["ID", "Nome", "Email", "Telefono", "Data", "Ora", "Ospiti", "Note"];
+            const encodedHeaders = encodeURIComponent(JSON.stringify(headers));
+        
+            // Usa il conteggio effettivo delle prenotazioni caricate per il riepilogo
+            const totalBookingsForPdf = allBookingsForFilter.length;
+        
+            // Definiamo il titolo del documento da inviare al backend
+            const title = (filterValue === 'all' || !selectedOptionText) 
+                ? 'Riepilogo di tutte le prenotazioni' 
+                : `Prenotazioni di ${eventTitle}`;
+            const encodedTitle = encodeURIComponent(title);
+        
+            // 2. Crea la stringa di riepilogo
+            const summaryText = `Riepilogo: ${totalBookingsForPdf} prenotazioni per un totale di ${totalGuests} ospiti.`;
+            const encodedSummary = encodeURIComponent(summaryText);
+        
+            // 3. Aggiungiamo intestazioni, titolo, riepilogo e limite alla URL
+            let urlToFetch = `${backendBaseUrl}/api/bookings/pdf?limit=2000&headers=${encodedHeaders}&title=${encodedTitle}&summary=${encodedSummary}`;
+        
+            if (filterValue !== 'all') {
+                if (filterValue.startsWith('special_')) {
+                    const eventId = filterValue.substring(8);
+                    urlToFetch += `&event_id=${eventId}`;
+                } else if (filterValue.startsWith('brunch_')) {
+                    const [date, time] = filterValue.substring(7).split('|');
+                    urlToFetch += `&event_date=${date}&event_time=${time}`;
+                }
+            }
+        
+            try {
+                const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
+                const response = await fetch(urlToFetch, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Basic ${encodedCredentials}`,
+                    },
+                });
+        
+                if (!response.ok) {
+                    throw new Error(`Errore dal server: ${response.status} ${response.statusText}`);
+                }
+        
+                // Nome file dinamico
+                let filename;
+                if (filterValue === 'all' || !selectedOptionText) {
+                    filename = 'prenotazioni_tutti_gli_eventi.pdf';
+                } else {
+                    const safeEventName = eventTitle
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s-]/g, '')
+                        .trim()
+                        .replace(/\s+/g, '_');
+                    filename = `prenotazioni_${safeEventName}.pdf`;
+                }
+        
+                const pdfBlob = await response.blob();
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+        
+                const a = document.createElement('a');
+                a.href = pdfUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(pdfUrl);
+        
+                adminMessageDiv.textContent = 'PDF esportato con successo!';
+                adminMessageDiv.style.color = 'green';
+            } catch (error) {
+                console.error('Errore durante l\'esportazione in PDF:', error);
+                adminMessageDiv.textContent = 'Impossibile esportare il PDF. Controlla la console per i dettagli.';
+                adminMessageDiv.style.color = 'red';
+            }
+        }
+        // ...existing code...        // Mostra un messaggio di attesa
         adminMessageDiv.textContent = 'Creazione del PDF in corso...';
         adminMessageDiv.style.color = '#333';
 

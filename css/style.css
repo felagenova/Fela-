@@ -397,6 +397,8 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     margin-top: 60px; /* 
+    margin-top: 60px;
+}
 .inner-page-bg .page-container {
     background: transparent; /* Rimuoviamo lo sfondo dal contenitore principale */
     backdrop-filter: none;
@@ -1686,13 +1688,20 @@ body {
     border-width: 3px;
 }
 
+.episode-card.not-playable:hover {
+    transform: none;
+    cursor: default;
+}
+
 .episode-play-btn,
 .episode-expand-btn {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px;
-    flex-shrink: 0;
+    padding: 5px; /* Aggiunge un po' di area cliccabile */
+}
+.episode-shrink {
+
 }
 
 .episode-play-btn svg,
@@ -1728,7 +1737,6 @@ body {
     transition: max-height 0.5s ease-out, margin-top 0.5s ease-out;
     margin: 0;
     width: 100%; /* Occupa tutta la larghezza della card */
-    flex-basis: 100%; /* Forza la descrizione ad andare a capo */
 }
 
 .episode-card.expanded .episode-text-content p {
@@ -1741,12 +1749,27 @@ body {
 }
 
 /* --- Wrapper per video e controlli custom --- */
-.video-wrapper {
+.player-wrapper {
     margin-bottom: 20px;
+    position: relative;
+}
+
+/* Stile per la copertina della puntata */
+#episode-artwork {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 3px solid #5b5bffff;
+    display: block;
+    margin-bottom: 20px; /* Spazio tra immagine e controlli */
+}
+
+#soundcloud-player {
+    display: none; /* Nasconde il player di SoundCloud */
 }
 
 /* Nasconde i nostri controlli custom quando il video è in fullscreen */
-.video-wrapper:fullscreen .progress-wrapper {
+.player-wrapper:fullscreen .progress-wrapper {
     display: none;
 }
 
@@ -1877,10 +1900,10 @@ body {
     fill: currentColor;
 }
 
-/* Nasconde temporaneamente le puntate dalla seconda in poi */
-.episode-list .episode-card:not(:first-child) {
+/* Rimosso: Nasconde temporaneamente le puntate dalla seconda in poi */
+/* .episode-list .episode-card:not(:first-child) {
     display: none;
-}
+} */
 
 /* --- Stili per il Tooltip su "Dalida" --- */
 .tooltip-trigger {
@@ -2046,6 +2069,20 @@ body {
     padding: 80px 40px 0px 40px; /* Aumentata la spaziatura superiore per abbassare il bottone */
     position: relative;
     z-index: 5; /* Assicura che sia sopra lo sfondo ma sotto la navbar/footer se necessario */
+}
+
+.progress-and-play-wrapper {
+    display: flex;
+    align-items: center; /* Allinea verticalmente al centro gli elementi */
+    gap: 10px; /* Aggiunge un po' di spazio tra il pulsante e la barra */
+    gap: 15px; /* Aumentato lo spazio tra pulsante e barra */
+    flex-grow: 1; /* Permette al wrapper di occupare lo spazio disponibile */
+    margin: 0 10px; /* Aggiunge un margine laterale per "stringere" la barra */
+}
+
+/* Potrebbe essere necessario regolare la larghezza della barra di avanzamento */
+.progress-and-play-wrapper .progress-bar-container {
+    flex-grow: 1; /* La barra di avanzamento occupa lo spazio rimanente */
 }
 
 .book-table-btn {

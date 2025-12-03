@@ -42,8 +42,7 @@
             <nav class="main-nav">
                 <a href="index.html">Home</a>
                 <a href="menu.html">Menu</a>
-                <a href="brunch.html">Il Brunch</a>
-                <!-- <a href="salotto.html" class="active">Il Salotto di Fela!</a> -->
+                <a href="salotto.html" class="active">Il Salotto</a>
                 <a href="eventi.html">Eventi</a>
             </nav>
         </div>
@@ -63,26 +62,26 @@
             <span class="intro-sub">e potrebbero salvare la vosta</span>
         </p>
 
-        <div class="video-wrapper">
-            <div class="video-container">
-                <!-- Questo div verrà sostituito dal player di YouTube via API -->
-                <div id="youtube-player"></div>
-            </div>
-            <div class="progress-wrapper">
-                <button id="play-pause-custom-btn" aria-label="Play">
-                    <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    <svg class="pause-icon" style="display: none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                </button>
+        <div class="player-wrapper">
+            <!-- Immagine di copertina per la puntata corrente -->
+            <img id="episode-artwork" src="" alt="Copertina della puntata corrente">
+            <!-- Il player di SoundCloud è nascosto, funge solo da motore audio -->
+            <iframe id="soundcloud-player" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src=""></iframe>
+            <div class="custom-controls-container">
                 <span id="current-time-custom" class="time-display">00:00</span>
-                <div id="progress-bar-container-custom" class="progress-bar-container">
-                    <div id="progress-bar-filled-custom" class="progress-bar-filled"></div>
-                    <div id="progress-bar-thumb-custom" class="progress-bar-thumb"></div>
+                <!-- Nuovo contenitore per raggruppare barra e pulsante -->
+                <div class="progress-and-play-wrapper">
+                    <button id="play-pause-custom-btn" aria-label="Play">
+                        <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg class="pause-icon" style="display: none;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+                    <div id="progress-bar-container-custom" class="progress-bar-container">
+                        <div id="progress-bar-filled-custom" class="progress-bar-filled"></div>
+                        <div id="progress-bar-thumb-custom" class="progress-bar-thumb"></div>
+                    </div>
                 </div>
                 <span id="duration-custom" class="time-display">00:00</span>
-                <button id="fullscreen-btn-custom" class="player-control-btn" aria-label="Schermo intero">
-                    <svg class="fullscreen-icon" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 2h-2v3h-3v2h5v-5zm-3-4V5h3v2h-3z"/></svg>
-                    <svg class="exit-fullscreen-icon" style="display: none;" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
-                </button>
+                <!-- Il pulsante fullscreen è stato rimosso perché non applicabile a un player audio -->
             </div>
         </div>
 
@@ -93,12 +92,9 @@
         <div class="episode-list-container">
             <h2>Le Puntate</h2>
             <div class="episode-list">
-                <!-- Esempio di puntata. Copia e incolla questo blocco per aggiungerne altre. -->
-                <!-- Sostituisci data-video-id con l'ID del video di YouTube -->
-                <div class="episode-card active" data-video-id="gZ6mLf3p0eY">
-                    <button class="episode-play-btn" aria-label="Riproduci 1° Puntata w/ Dalida">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
+                <!-- Esempio di puntata. Copia e incolla questo blocco per aggiungerne altre. -->                
+                <!-- Sostituisci data-track-url con l'URL della traccia SoundCloud -->
+                <div class="episode-card not-playable" data-artwork-url="images/salotto/episode-1.jpg">
                     <div class="episode-text-content">
                         <h4>1° Puntata w/ Dalida</h4>
                         <p>Dalida Spunton è una conduttrice radiofonica con oltre dieci anni di esperienza e una passione autentica per la musica. Da undici anni è la voce de “La Cimice”, in onda ogni martedì alle 18 su Radio Skylab, dove alterna curiosità, interviste e tanta buona musica. Sempre sulle stesse frequenze, ogni giovedì o venerdì, ospita artisti di rilievo nella rubrica “Consigli musicali non richiesti”.<br><br>
@@ -112,112 +108,14 @@ Nei suoi dj set, Dalida esplora le sonorità del rock e della black music, spazi
                     </button>
                 </div>
 
-                <!-- Esempio di puntata 2 -->
-                <div class="episode-card" data-video-id="r_p8I9-t2eA">
-                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 2">
+                <!-- Puntata 2 con Carlo Bordone -->
+                <div class="episode-card" data-track-url="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/fela-srl/il-salotto-di-fela-wdalida-pres-carlo-bordone&color=%233a5cda&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false" data-artwork-url="images/carlobordone_salotto.png">
+                    <button class="episode-play-btn" aria-label="Riproduci 2° Puntata w/ Carlo Bordone">
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
                     <div class="episode-text-content">
-                        <h4>Titolo della Puntata 2</h4>
-                        <p>Descrizione della seconda puntata. Clicca qui per vedere questo episodio nel player qui sopra.</p>
-                    </div>
-                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
-                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                    </button>
-                </div>
-
-                <!-- Esempio di puntata 3 -->
-                <div class="episode-card" data-video-id="4xDzrQpsaBU">
-                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 3">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <div class="episode-text-content">
-                        <h4>Titolo della Puntata 3</h4>
-                        <p>Un altro fantastico episodio dal Salotto di Fela, tutto da scoprire e ascoltare.</p>
-                    </div>
-                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
-                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                    </button>
-                </div>
-
-                <!-- Esempio di puntata 4 -->
-                <div class="episode-card" data-video-id="ID_VIDEO_4">
-                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 4">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <div class="episode-text-content">
-                        <h4>Titolo della Puntata 4</h4>
-                        <p>Descrizione della quarta puntata. Inserisci qui i dettagli.</p>
-                    </div>
-                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
-                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                    </button>
-                </div>
-
-                <!-- Esempio di puntata 5 -->
-                <div class="episode-card" data-video-id="ID_VIDEO_5">
-                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 5">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <div class="episode-text-content">
-                        <h4>Titolo della Puntata 5</h4>
-                        <p>Descrizione della quinta puntata. Inserisci qui i dettagli.</p>
-                    </div>
-                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
-                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                    </button>
-                </div>
-
-                <!-- Esempio di puntata 6 -->
-                <div class="episode-card" data-video-id="ID_VIDEO_6">
-                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 6">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <div class="episode-text-content">
-                        <h4>Titolo della Puntata 6</h4>
-                        <p>Descrizione della sesta puntata. Inserisci qui i dettagli.</p>
-                    </div>
-                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
-                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                    </button>
-                </div>
-
-                <!-- Esempio di puntata 7 -->
-                <div class="episode-card" data-video-id="ID_VIDEO_7">
-                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 7">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <div class="episode-text-content">
-                        <h4>Titolo della Puntata 7</h4>
-                        <p>Descrizione della settima puntata. Inserisci qui i dettagli.</p>
-                    </div>
-                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
-                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                    </button>
-                </div>
-
-                <!-- Esempio di puntata 8 -->
-                <div class="episode-card" data-video-id="ID_VIDEO_8">
-                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 8">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <div class="episode-text-content">
-                        <h4>Titolo della Puntata 8</h4>
-                        <p>Descrizione della ottava puntata. Inserisci qui i dettagli.</p>
-                    </div>
-                    <button class="episode-expand-btn" aria-label="Mostra dettagli">
-                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-                    </button>
-                </div>
-
-                <!-- Esempio di puntata 9 -->
-                <div class="episode-card" data-video-id="ID_VIDEO_9">
-                    <button class="episode-play-btn" aria-label="Riproduci Titolo della Puntata 9">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <div class="episode-text-content">
-                        <h4>Titolo della Puntata 9</h4>
-                        <p>Descrizione della nona puntata. Inserisci qui i dettagli.</p>
+                        <h4>2° Puntata w/ Carlo Bordone</h4>
+                        <p>CARLO BORDONE (Torino, 1968). Giornalista, copywriter, docente di comunicazione e traduttore. Ha cominciato a scrivere di musica su Rumore nel 1996, vi è tornato nel 2013. In mezzo ha collaborato per dodici anni con Il Mucchio e il Mucchio Extra. Scrive anche per Rolling Stone Italia, Sentire Ascoltare, Quants, Humans VS Robots, Changes. Ha scritto e tradotto vari libri ad argomento musicale per Arcana, Giunti, Vololibero.</p>
                     </div>
                     <button class="episode-expand-btn" aria-label="Mostra dettagli">
                         <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
@@ -250,8 +148,8 @@ Nei suoi dj set, Dalida esplora le sonorità del rock e della black music, spazi
     </footer>
 
     <script src="js/main.js" defer></script>
-    <!-- Carichiamo l'API di YouTube prima del nostro script -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Carichiamo l'API di SoundCloud prima del nostro script -->
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script src="js/salotto.js" defer></script>
 
     <!-- Box informativo di Dalida (ora è un modale) -->
