@@ -29,43 +29,6 @@
 
         gtag('config', 'G-79CC36NDY9');
     </script>
-    <style>
-        /* Stili per il pop-up */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none; /* Nascosto di default */
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .popup-content {
-            position: relative;
-            background-color: #f3f0ce;
-            /* padding: 20px; */ /* Rimosso il padding per far riempire l'immagine */
-            border-radius: 8px;
-            display: flex; /* Aggiunto per il layout flessibile */
-            justify-content: center; /* Centra orizzontalmente */
-            align-items: center; /* Centra verticalmente */
-            max-width: 90%;
-            border: 3px solid #8d5fd3ff; /* Aggiunto il bordo */
-            max-height: 90vh;
-
-            overflow-y: auto;
-        }
-        .popup-content img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-        .popup-close-btn {
-            position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; color: #333; cursor: pointer; border: none; background: transparent;
-        }
-    </style>
 </head>
 <body>    
     
@@ -96,7 +59,31 @@
             <a href="#vini" class="jump-btn">Vini</a>
             <a href="#cocktails" class="jump-btn">Cocktails</a>
             <a href="#food" class="jump-btn">Food</a>
-            <button id="complefela-btn" class="jump-btn" style="background-color: #f3f0ce; color: #8d5fd3ff; border: 2px solid #8d5fd3ff;">COMPLEFELA CON ERNESTO</button>
+        </div>
+
+        <!-- Categoria FELASPECIAL -->
+        <div class="menu-category" id="felaspecial">
+            <h2 class="category-title">i FelaSpecial del weekend!</h2>
+            <section class="menu-section">
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Trippa olio limone e pepe con salsa verde</h4>
+                        <span class="price">€6</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Melanzane alla parmigiana</h4>
+                        <span class="price">€6</span>
+                    </div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-item-header">
+                        <h4>Crostini di polenta con baccalà mantecato</h4>
+                        <span class="price">€6</span>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- Categoria VINI -->
@@ -461,12 +448,6 @@
                 </div>
                 <div class="menu-item">
                     <div class="menu-item-header">
-                        <h4>Mozzarelle in Carrozza</h4>
-                        <span class="price">€4</span>
-                    </div>
-                </div>
-                <div class="menu-item">
-                    <div class="menu-item-header">
                         <h4>Mix Fritti Verdure</h4>
                         <span class="price">€4</span>
                     </div>
@@ -494,22 +475,14 @@
                         <span class="price">€4,50</span>
                     </div>--->
                 </div>
-                <p class="category-footnote" style="text-align: left; margin-top: -10px;">* soggetto a disponibilità</p>
             </section>
         </div>
 
         <div class="menu-footnotes">
-            <p>** Tutti i formaggi sono a latte crudo.</p>
+                <p class="category-footnote" style="text-align: left; margin-top: -10px;">* soggetto a disponibilità</p>
+                <p class="category-footnote" style="text-align: left; margin-top: -10px;">** Tutti i formaggi sono a latte crudo.</p>
         </div>
 
-    </div>
-
-    <!-- Pop-up per "COMPLEFELA CON ERNESTO" -->
-    <div id="complefela-popup" class="popup-overlay">
-        <div class="popup-content">
-            <button id="close-complefela-popup" class="popup-close-btn" aria-label="Chiudi">&times;</button>
-            <img src="images/post_menuFELAMEETSLAPESA.png" alt="Complefela con Ernesto">
-        </div>
     </div>
 
     <!-- Banner per il consenso dei cookie -->
@@ -564,22 +537,6 @@
             if (window.scrollY > 300) { backToTopButton.classList.add('show'); } 
             else { backToTopButton.classList.remove('show'); }
         });
-
-        // Script per il pop-up "Complefela con Ernesto"
-        const complefelaBtn = document.getElementById('complefela-btn');
-        const complefelaPopup = document.getElementById('complefela-popup');
-        const closeComplefelaPopup = document.getElementById('close-complefela-popup');
-
-        complefelaBtn.addEventListener('click', () => {
-            complefelaPopup.style.display = 'flex';
-        });
-
-        closeComplefelaPopup.addEventListener('click', () => {
-            complefelaPopup.style.display = 'none';
-        });
-
-        // Chiudi il pop-up se si clicca sullo sfondo
-        complefelaPopup.addEventListener('click', (e) => { if (e.target === complefelaPopup) { complefelaPopup.style.display = 'none'; } });
     </script>
 
 </body>
