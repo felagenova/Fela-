@@ -14,6 +14,7 @@
     <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cookie-banner.css">
 
     <!-- Abilita le View Transitions per animazioni fluide tra le pagine -->
     <meta name="view-transition" content="same-origin">
@@ -147,10 +148,19 @@ Nei suoi dj set, Dalida esplora le sonorità del rock e della black music, spazi
         </div>
     </footer>
 
+    <!-- Banner per il consenso dei cookie -->
+    <div id="cookie-banner" class="cookie-banner">
+        <p>
+            Questo sito utilizza cookie tecnici e di terze parti per migliorare la tua esperienza. Cliccando su "Accetta", acconsenti all'uso di tutti i cookie. Per saperne di più, consulta la nostra <a href="privacy.html" target="_blank">Privacy Policy</a>.
+        </p>
+        <button id="cookie-accept-btn" class="btn">Accetta</button>
+    </div>
+
     <script src="js/main.js" defer></script>
     <!-- Carichiamo l'API di SoundCloud prima del nostro script -->
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <script src="js/salotto.js" defer></script>
+    <script src="js/cookie-banner.js" defer></script>
 
     <!-- Box informativo di Dalida (ora è un modale) -->
     <div id="dalida-modal-overlay" class="modal-overlay">

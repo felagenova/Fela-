@@ -20,6 +20,7 @@
     <!-- 1. Precarica il file CSS completo in background -->
     <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+    <link rel="stylesheet" href="css/cookie-banner.css">
     
     <!-- Google tag (gtag.js) - INCOLLA QUI IL TUO CODICE GOOGLE ANALYTICS -->
     <!-- Sostituisci G-XXXXXXXXXX con il tuo ID di misurazione reale -->
@@ -148,10 +149,19 @@
         </div>
     </div>
 
+    <!-- Banner per il consenso dei cookie -->
+    <div id="cookie-banner" class="cookie-banner">
+        <p>
+            Questo sito utilizza cookie tecnici e di terze parti per migliorare la tua esperienza. Cliccando su "Accetta", acconsenti all'uso di tutti i cookie. Per saperne di più, consulta la nostra <a href="privacy.html" target="_blank">Privacy Policy</a>.
+        </p>
+        <button id="cookie-accept-btn" class="btn">Accetta</button>
+    </div>
+
 
     <!-- 3. Carica lo script in modo differito per non bloccare il rendering -->
     <script src="js/loader.js" defer></script>
     <script src="js/music-player.js" defer></script>
     <script src="js/promo.js" defer></script>
+    <script src="js/cookie-banner.js" defer></script>
 </body>
 </html>

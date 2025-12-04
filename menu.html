@@ -14,6 +14,7 @@
     <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cookie-banner.css">
 
     <!-- Abilita le View Transitions per animazioni fluide tra le pagine -->
     <meta name="view-transition" content="same-origin">
@@ -511,6 +512,15 @@
         </div>
     </div>
 
+    <!-- Banner per il consenso dei cookie -->
+    <div id="cookie-banner" class="cookie-banner">
+        <p>
+            Questo sito utilizza cookie tecnici e di terze parti per migliorare la tua esperienza. Cliccando su "Accetta", acconsenti all'uso di tutti i cookie. Per saperne di più, consulta la nostra <a href="privacy.html" target="_blank">Privacy Policy</a>.
+        </p>
+        <button id="cookie-accept-btn" class="btn">Accetta</button>
+    </div>
+
+
     <footer class="site-footer">
         <div class="footer-left">
             <p><strong>Fela! - Music Bar - Social Hub</strong></p>            
@@ -534,6 +544,7 @@
 
     <!-- Script specifici per la pagina menu -->
     <script src="js/brunch-logic.js" defer></script>
+    <script src="js/cookie-banner.js" defer></script>
 
     <!-- Script per funzionalità comuni (es. "Torna su") -->
     <script>

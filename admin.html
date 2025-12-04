@@ -13,6 +13,7 @@
     <meta name="view-transition" content="same-origin">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/prenotazione.css"> <!-- Puoi riutilizzare questo CSS o crearne uno specifico per l'admin -->
+    <link rel="stylesheet" href="css/cookie-banner.css">
     <style>
         /* Stili per i badge di stato degli eventi */
         .status {
@@ -215,12 +216,21 @@
         </div>
     </footer>
 
+    <!-- Banner per il consenso dei cookie -->
+    <div id="cookie-banner" class="cookie-banner">
+        <p>
+            Questo sito utilizza cookie tecnici e di terze parti per migliorare la tua esperienza. Cliccando su "Accetta", acconsenti all'uso di tutti i cookie. Per saperne di più, consulta la nostra <a href="privacy.html" target="_blank">Privacy Policy</a>.
+        </p>
+        <button id="cookie-accept-btn" class="btn">Accetta</button>
+    </div>
+
     <!-- Librerie per la generazione del PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
 
     <script src="js/admin.js"></script>
     <script src="js/main.js" defer></script>
+    <script src="js/cookie-banner.js" defer></script>
 
 </body>
 </html>
