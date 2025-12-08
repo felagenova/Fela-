@@ -43,28 +43,31 @@
 
     <!-- Stili specifici per il pop-up Transatlantica -->
     <style>
-        .promo-popup-transatlantica {
-            /* Applica la cornice SVG */
-            border-image-source: url('images/costum-pattern-transa.svg');
-            border-image-slice: 10; /* Valore per tagliare i bordi dell'SVG */
-            border-image-width: 25px; /* Spessore visibile della cornice */
-            border-image-repeat: round; /* Adatta il pattern senza tagliarlo */
-            border-style: solid;
-            background-color: #FDF5E6; /* Sfondo color crema */
+        /* Stile per il pulsante del pop-up Brunch */
+        #promo-popup .btn {
+            background-color: #487a7bff; /* Colore a tema brunch */
+            border-color: #487a7bff;
+            color: #f3f0ce;
         }
-        .promo-popup-transatlantica h4,
-        .promo-popup-transatlantica h2,
-        .promo-popup-transatlantica p { color: #28220b !important; }
+        /* Stile per il pulsante del menu Brunch */
+        .btn-brunch {
+            border-color: #487a7bff;
+            color: #487a7bff;
+        }
 
-        /* Stile per il bottone del pop-up Transatlantica */
-        .promo-popup-transatlantica .btn-promo-after-brunch {
-            border: 2px solid #e4a04e; /* Bordo con il colore della cornice */
-            color: #28220b; /* Testo dello stesso colore degli altri testi */
-            background-color: transparent; /* Sfondo trasparente */
+        .btn-brunch:hover {
+            background-color: #487a7bff; /* Aggiunto colore di sfondo */
+            border-color: #487a7bff;     /* Mantenuto per coerenza */
+            color: #f3f0ce;              /* Testo più chiaro per contrasto */
         }
-        .promo-popup-transatlantica .btn-promo-after-brunch:hover {
-            background-color: #e4a04e; /* Sfondo al passaggio del mouse */
-            color: #28220b; /* Mantiene il colore del testo per leggibilità */
+        /* Stile per il pulsante Fela Meets Sunnyfood */
+        .btn-sunnyfood {
+            border-color: #fec174ff;
+            color: #006a68ff;
+        }
+        .btn-sunnyfood:hover {
+            background-color: #fec174ff;
+            color: #006a68ff;
         }
     </style>
 </head>
@@ -89,7 +92,8 @@
             <div class="button-container">
                 <a href="menu.html" class="btn">Menu</a>
                 <a href="eventi.html" class="btn">Eventi</a>
-                <a href="felemeetssunnyfoodxblacktronic20thanniversary.html" class="btn">Fela! Meets<br>SUNNYFOOD</a>
+                <a href="brunch.html" class="btn btn-brunch">Il Brunch</a>
+                <a href="felemeetssunnyfoodxblacktronic20thanniversary.html" class="btn btn-sunnyfood">Fela! Meets<br>SUNNYFOOD</a>
                 <a href="salotto.html" class="btn btn-salotto">Il Salotto</a>
                 <!-- <a href="untavolo!.html" id="un-tavolo-btn" class="btn">Un Tavolo</a> -->
                 <!--
@@ -141,11 +145,10 @@
     <div id="promo-popup" class="promo-popup-overlay">
         <div class="promo-popup-content">
             <button id="promo-close-btn" class="promo-popup-close" aria-label="Chiudi">&times;</button>
-            <h4>Domenica 7 Dicembre</h4>
-            <h2 class="promo-event-title">SPICY TUM</h2>
-            <p>w/ Gambo, Marco Mou, Geena</p>
-            <p>Dalle 17.00</p>
-            <!-- <a href="eventi.html" class="btn">Scopri di più</a> -->
+            <h4>Domenica 14 Dicembre</h4>
+            <h2 class="promo-event-title">KALAKUTA BRUNCH</h2>
+            <p>Torna il Brunch di Fela! Scopri il menu e prenota subito il tuo posto</p>
+            <a href="brunch.html" class="btn">Scopri il Menu</a>
         </div>
     </div>
 

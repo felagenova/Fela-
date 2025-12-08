@@ -211,12 +211,7 @@ body {
 }
 
 /* Stile specifico per il bottone "Il Brunch" nella homepage */
-.btn#brunch-btn {
-    color: #487a7bff;
-    border-color: #487a7bff;
-}
-
-.btn#brunch-btn:hover {
+.btn#brunch-btn, .btn#brunch-btn:hover {
     background-color: #487a7bff;
     color: #f3f0ce;
 }
@@ -1241,14 +1236,14 @@ body {
 }
 .promo-popup-content {
     background-color: #f3f0ce;
-    color: #ff0403; /* Colore del testo rosso Fela! */
+    color: #487a7bff; /* Colore del testo brunch */
     padding: 30px;
     border-radius: 12px;
 
     /* Sostituzione del bordo con la cornice SVG personalizzata */
     border-style: solid;
     border-width: 15px;
-    border-image-source: url('../images/custom-pattern-red.svg'); /* Cornice rossa standard */
+    border-image-source: url('../images/custom-pattern-brunch.svg'); /* Cornice brunch */
     border-image-slice: 30;
     border-image-repeat: round;
     text-align: center; /* Centra il testo all'interno del pop-up */
@@ -1279,8 +1274,8 @@ body {
 .promo-popup-content h4.promo-event-title {
     font-size: 22px;
     font-weight: 900;
-    margin: 0 0 5px 0;
-    color: #ff0403; /* Assicura che il colore sia rosso */
+    margin: 10px 0 5px 0;
+    color: #487a7bff; /* Colore brunch */
 }
 
 .promo-popup-content p {
@@ -1294,8 +1289,8 @@ body {
     right: 15px;
     background: none;
     border: none;
-    font-size: 32px;
-    color: #ff0403; /* Colore rosso Fela! */
+    font-size: 28px;
+    color: #487a7bff; /* Colore brunch */
     cursor: pointer;
     line-height: 1;
 }
