@@ -284,13 +284,17 @@ body {
     gap: 15px;
     margin: 30px auto; /* Centra verticalmente e aggiunge margine sopra e sotto */
     margin-top: 30px;
+    gap: 20px; /* Aumentato lo spazio per una migliore leggibilità */
+    margin: 0; /* Rimosso il margine */
     padding: 10px 20px;
     background: #f3f0ce; /* Colore panna */
     border-radius: 100px; /* Forma a pillola */
-    border: 2px solid #ff0403; /* Bordo rosso per coerenza */
+    border: none; /* Bordo rosso per coerenza */
     width: auto;
     max-width: 350px; /* Aumentata larghezza per il testo */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: none; /* Rimosso il limite di larghezza */
+    box-sizing: border-box; /* Assicura che padding e bordo non alterino la larghezza totale */
 }
 
 .player-btn {
@@ -552,27 +556,6 @@ body {
     .btn#cooking-btn small {
         margin-left: 5px; /* Aggiunge un piccolo spazio tra "Shai Cooking" e la data */
     }
-
-    /* Music Player su mobile */
-    #music-player-container {
-        max-width: 90%; /* Occupa il 90% della larghezza, come i bottoni */
-        padding: 8px 15px;
-        gap: 10px;
-        margin-top: 25px;
-    }
-
-    #track-info {
-        font-size: 12px; /* Riduciamo la dimensione del font base */
-    }
-
-    .track-artist {
-        font-size: 10px; /* Riduciamo anche l'artista */
-    }
-
-    #volume-slider {
-        width: 60px; /* Riduciamo la larghezza della barra del volume */
-    }
-
 
     /* Pagine Interne (Menu, Eventi) */
     .page-container {
