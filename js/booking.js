@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     let allBookableEvents = []; // Array per memorizzare TUTTI gli eventi dal backend
     let selectedEvent = null; // Oggetto per l'evento attualmente selezionato
 
-    // const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
-    const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale 
+    const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
+    // const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale 
 
     // Funzione per mostrare la selezione degli eventi e nascondere il form
     const showEventSelection = () => {

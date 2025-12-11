@@ -13,11 +13,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    // const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
-    const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale
+    const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
+    // const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale
 
     try {
-        const response = await fetch(backendUrl, {
+        const cancellationUrl = `${backendBaseUrl}/api/bookings/cancel/${token}`;
+        const response = await fetch(cancellationUrl, {
             method: 'GET', // o 'DELETE' se preferisci, ma GET è più semplice per un link
         });
 

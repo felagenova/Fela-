@@ -15,11 +15,33 @@
     <link rel="stylesheet" href="css/prenotazione.css"> <!-- Puoi riutilizzare questo CSS o crearne uno specifico per l'admin -->
     <link rel="stylesheet" href="css/cookie-banner.css">
     <style>
+        .booking-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Stile a card per le sezioni */
+        .admin-card {
+            background-color: #f3f0ce;
+            border-radius: 8px;
+            padding: 25px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+            overflow: hidden; /* Per contenere le tabelle */
+        }
+
+        .admin-card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f3f0ce;
+            padding-bottom: 15px;
+        }
+
         /* Stili per i badge di stato degli eventi */
         .status {
             padding: 4px 8px;
             border-radius: 12px;
-            color: white;
+            color: #f3f0ce;
             font-weight: bold;
             font-size: 0.9em;
             white-space: nowrap;
@@ -36,7 +58,7 @@
             padding: 6px 12px;
             border: none;
             border-radius: 5px;
-            color: white;
+            color: #f3f0ce;
             font-weight: 500;
             font-size: 14px;
             transition: opacity 0.2s ease;
@@ -54,10 +76,21 @@
         .btn-delete {
             background-color: #6c757d; /* Grigio scuro per "Elimina" */
         }
+
+        /* Miglioramenti per le tabelle admin */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .admin-table tbody tr:hover {
+            background-color: #f3f0ce; /* Evidenzia la riga al passaggio del mouse */
+        }
+        .admin-table tbody tr:nth-child(odd) {
+            background-color: #f3f0ce;
+        }
+
         /* Allineamento di default per le tabelle admin */
         .admin-table th { text-align: left; } /* Intestazioni a sinistra */
-        .admin-table td { text-align: right; } /* Dati a destra */
-
 
 
         /* Allinea a destra il contenuto della colonna Azioni per entrambe le tabelle */
@@ -74,8 +107,60 @@
 
         /* Allinea a sinistra il primo dato della tabella eventi speciali (Nome Evento) */
         #special-events-table tbody tr td:first-child {
+            font-weight: 500;
             text-align: left;
         }
+
+        /* Centra le intestazioni della tabella eventi speciali, escludendo la prima e l'ultima colonna */
+        #special-events-table th:not(:first-child):not(:last-child) {
+            text-align: center;
+        }
+
+        /* Allinea a sinistra nome, email e note nella tabella prenotazioni */
+        #bookings-table tbody tr td:nth-child(2),
+        #bookings-table tbody tr td:nth-child(3),
+        #bookings-table tbody tr td:nth-child(8) {
+            text-align: left;
+        }
+        #bookings-table tbody tr td:first-child {
+            text-align: center;
+        }
+
+        /* Stili per il form di creazione eventi */
+        #add-special-event-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Layout a due colonne */
+            gap: 20px 25px; /* Spazio verticale e orizzontale */
+            align-items: end; /* Allinea gli elementi in basso per coerenza */
+        }
+
+        /* Imposta il primo campo e il gruppo turni a larghezza piena */
+        #add-special-event-form .form-group:first-child,
+        #add-special-event-form .shifts-group {
+            grid-column: 1 / -1; /* Occupa tutta la larghezza */
+        }
+
+        /* Stili per il gruppo dei turni */
+        .shifts-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .shifts-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Tre colonne per gli input dei turni */
+            gap: 15px;
+        }
+        .shifts-inputs input {
+            width: 100%; /* Assicura che gli input riempiano lo spazio */
+        }
+
+        /* Centra il pulsante di invio nel form eventi */
+        #add-special-event-form .btn-submit {
+            grid-column: 1 / -1; /* Occupa tutta la larghezza della griglia */
+            justify-self: center; /* Centra il pulsante orizzontalmente */
+            width: auto;
+        }
+
     </style>
 </head>
 <body class="admin-page">
@@ -104,90 +189,99 @@
             <h1>Pannello Prenotazioni</h1>
             <p class="subtitle">Inserisci la password per visualizzare le prenotazioni.</p>
 
-            <form id="admin-login-form" class="admin-login-form">
-                <div class="form-group">
-                    <label for="admin_password">Password Amministratore</label>
-                    <input type="password" id="admin_password" name="admin_password" required>
-                </div>
-                <button type="submit" class="btn btn-submit">Accedi</button>
-            </form>
+            <div class="admin-card">
+                <form id="admin-login-form" class="admin-login-form">
+                    <div class="form-group">
+                        <label for="admin_password">Password Amministratore</label>
+                        <input type="password" id="admin_password" name="admin_password" required>
+                    </div>
+                    <button type="submit" class="btn btn-submit">Accedi</button>
+                </form>
+            </div>
 
             <div id="admin-message" style="margin-top: 15px;"></div>
 
             <div id="bookings-list" style="margin-top: 30px; display: none;">
                 <!-- Sezione per la gestione manuale degli eventi -->
-                <h2>Gestione Eventi Speciali</h2>
-                <form id="add-special-event-form" class="admin-login-form">
-                    <div class="form-group">
-                        <label for="event_display_name">Nome Evento (es. "Fela! meets La Pesa")</label>
-                        <input type="text" id="event_display_name" name="event_display_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="event_date">Data Evento</label>
-                        <input type="date" id="event_date" name="event_date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="event_time">Ora Evento (opzionale, es. 20:00)</label>
-                        <input type="time" id="event_time" name="event_time">
-                    </div>
-                    <div class="form-group">
-                        <label>Turni (opzionale, fino a 3)</label>
-                        <input type="time" id="event_shift_1" name="event_shift_1" style="margin-right: 10px;">
-                        <input type="time" id="event_shift_2" name="event_shift_2" style="margin-right: 10px;">
-                        <input type="time" id="event_shift_3" name="event_shift_3">
-                    </div>
-                    <button type="submit" class="btn btn-submit">Aggiungi Evento</button>
-                </form>
-                <div id="special-events-message" style="margin-top: 15px;"></div>
-                <h3>Eventi Speciali Attivi</h3>
-                <table id="special-events-table" class="admin-table">
-                    <thead>
-                        <tr>
-                            <th data-label="Nome Evento">Nome Evento</th>
-                            <th data-label="Data">Data</th>
-                            <th data-label="Ora">Ora</th>
-                            <th data-label="Turni">Turni</th>
-                            <th data-label="Stato">Stato</th>
-                            <th data-label="Azione">Azione</th>
-                        </tr>
-                    </thead>
-                    <tbody id="special-events-table-body">
-                        <!-- Le righe degli eventi speciali verranno inserite qui dal JavaScript -->
-                    </tbody>
-                </table>
-                <hr style="margin: 30px 0;">
-
-                <div class="admin-controls">
-                    <div class="filter-group">
-                        <label for="event-filter">Filtra per evento:</label>
-                        <select id="event-filter">
-                            <option value="all">Tutti gli eventi</option>
-                            <!-- Opzioni caricate da JS -->
-                        </select>
-                    </div>
-                    <button id="load-bookings-btn" class="btn">Carica Tutte le Prenotazioni</button>
-                    <button id="export-pdf" class="btn">Esporta in PDF</button>
+                <div id="special-events-card" class="admin-card">
+                    <h2>Creazione Eventi</h2>
+                    <form id="add-special-event-form">
+                        <div class="form-group">
+                            <label for="event_display_name">Nome Evento</label>
+                            <input type="text" id="event_display_name" name="event_display_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event_date">Data Evento</label>
+                            <input type="date" id="event_date" name="event_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event_time">Ora (opzionale)</label>
+                            <input type="time" id="event_time" name="event_time">
+                        </div>
+                        <div class="form-group shifts-group">
+                            <label>Turni (opzionale, max 3)</label>
+                            <div class="shifts-inputs">
+                                <input type="time" id="event_shift_1" name="event_shift_1">
+                                <input type="time" id="event_shift_2" name="event_shift_2">
+                                <input type="time" id="event_shift_3" name="event_shift_3">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-submit">Aggiungi Evento</button>
+                    </form>
+                    <div id="special-events-message" style="margin-top: 15px;"></div>
+                    <h3 style="margin-top: 30px;">Eventi Attivi</h3>
+                    <table id="special-events-table" class="admin-table">
+                        <thead>
+                            <tr>
+                                <th data-label="Nome Evento">Nome Evento</th>
+                                <th data-label="Data">Data</th>
+                                <th data-label="Ora">Ora</th>
+                                <th data-label="Turni">Turni</th>
+                                <th data-label="Stato">Stato</th>
+                                <th data-label="Azione">Azione</th>
+                            </tr>
+                        </thead>
+                        <tbody id="special-events-table-body">
+                            <!-- Le righe degli eventi speciali verranno inserite qui dal JavaScript -->
+                        </tbody>
+                    </table>
                 </div>
-                <h2>Tutte le Prenotazioni</h2>
-                <table id="bookings-table" class="admin-table">
-                    <thead>
-                        <tr>
-                            <th data-label="ID">ID</th>
-                            <th data-label="Nome">Nome</th>
-                            <th data-label="Email">Email</th>
-                            <th data-label="Telefono">Telefono</th>
-                            <th data-label="Data">Data</th>
-                            <th data-label="Ora">Ora</th>
-                            <th data-label="Ospiti">Ospiti</th>
-                            <th data-label="Note">Note</th>
-                            <th data-label="Azioni">Azioni</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Le prenotazioni verranno inserite qui dal JavaScript -->
-                    </tbody>
-                </table>
-                <p id="no-bookings-message" style="display: none; text-align: center; margin-top: 20px;">Nessuna prenotazione trovata.</p>
+
+                <div class="admin-card">
+                    <h2>Tutte le Prenotazioni</h2>
+                    <div class="admin-controls" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div class="filter-group">
+                            <label for="event-filter">Filtra per evento:</label>
+                            <select id="event-filter">
+                                <option value="all">Tutti gli eventi</option>
+                                <!-- Opzioni caricate da JS -->
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                            <button id="load-bookings-btn" class="btn">Carica Tutte le Prenotazioni</button>
+                            <button id="export-pdf" class="btn">Esporta in PDF</button>
+                        </div>
+                    </div>
+                    <table id="bookings-table" class="admin-table">
+                        <thead>
+                            <tr>
+                                <th data-label="ID">ID</th>
+                                <th data-label="Nome">Nome</th>
+                                <th data-label="Email">Email</th>
+                                <th data-label="Telefono">Telefono</th>
+                                <th data-label="Data">Data</th>
+                                <th data-label="Ora">Ora</th>
+                                <th data-label="Ospiti">Ospiti</th>
+                                <th data-label="Note">Note</th>
+                                <th data-label="Azioni">Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Le prenotazioni verranno inserite qui dal JavaScript -->
+                        </tbody>
+                    </table>
+                    <p id="no-bookings-message" style="display: none; text-align: center; margin-top: 20px;">Nessuna prenotazione trovata.</p>
+                </div>
             </div>
 
             <!-- Controlli per la paginazione -->

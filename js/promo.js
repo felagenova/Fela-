@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const brunchPopup = document.getElementById('promo-popup');
     const closeBtnBrunch = document.getElementById('promo-close-btn');
     const unTavoloBtn = document.getElementById('un-tavolo-btn');
-    const backendBaseUrl = 'http://127.0.0.1:8000'; // Assicurati che questo sia l'URL corretto per produzione/sviluppo
+    const backendBaseUrl = 'https://felabackend.onrender.com'; // Assicurati che questo sia l'URL corretto per produzione/sviluppo
 
     // Funzione per mostrare il pop-up del brunch
     function showBrunchPopup() {

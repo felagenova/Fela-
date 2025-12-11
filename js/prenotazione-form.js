@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let allBookableEvents = [];
     let selectedEvent = null;
 
-    const backendBaseUrl = 'http://127.0.0.1:8000';
+    const backendBaseUrl = 'https://felabackend.onrender.com';
 
     // --- Carica gli eventi nel menu a tendina ---
     try {
