@@ -321,7 +321,7 @@
                 <div class="day-cell in-month has-event">18 <span class="event-marker">DAMZE...</span><div class="event-details-content"><h3>DAMZE FASHION ROOM</h3><p>DAMZE w/ Juma, Leo Elle & Vago live + Moli dj-set</p></div></div>
                 <div class="day-cell in-month has-event">19 <span class="event-marker">DJ KAMO...</span><div class="event-details-content"><h3>DJ KAMO + CIMO MARIANO</h3></div></div>
                 <div class="day-cell in-month has-event">20 <span class="event-marker">OUR VINYL...</span><div class="event-details-content"><h3>"OUR VINYL WEIGHTS A TON"</h3><p>Squalo Selecta</p></div></div>
-                <div class="day-cell in-month has-event">21 <span class="event-marker">JAMAICAN...</span><div class="event-details-content"><h3>JAMAICAN BRUNCH</h3><p>for Jamaican Relief Week</p></div></div>
+                <div class="day-cell in-month has-event" id="event-dec-21">21 <span class="event-marker">JAMAICAN...</span><div class="event-details-content"><h3>MERENDA GIAMAICANA</h3><p>for Jamaican Relief Week<br>Dalle 16.00</p></div></div>
                 <!-- Settimana 4 -->
                 <div class="day-cell in-month closing-day">22 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
                 <div class="day-cell in-month has-event">23 <span class="event-marker">SUPERSONIDO</span><div class="event-details-content"><h3>Supersonido Special Christmas Tasting</h3></div></div>
@@ -431,6 +431,31 @@
     <script src="js/brunch-logic.js" defer></script>
     <script src="js/main.js" defer></script>
     <script src="js/cookie-banner.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Controlla se c'è un hash nell'URL
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    // Trova il contenitore del calendario genitore
+                    const calendarContainer = targetElement.closest('.calendar-container');
+
+                    if (calendarContainer) {
+                        // Nascondi tutti i calendari e mostra solo quello giusto
+                        document.querySelectorAll('.calendar-container').forEach(c => c.classList.remove('active'));
+                        calendarContainer.classList.add('active');
+
+                        // Scorri fino all'elemento dopo un breve ritardo per garantire che sia visibile
+                        setTimeout(() => {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
+            }
+        });
+    </script>
 
 </body>
 </html>
