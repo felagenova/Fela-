@@ -136,8 +136,9 @@
             align-items: end; /* Allinea gli elementi in basso per coerenza */
         }
 
-        /* Imposta il primo campo e il gruppo turni a larghezza piena */
+        /* Imposta il primo campo, il campo max ospiti e il gruppo turni a larghezza piena */
         #add-special-event-form .form-group:first-child,
+        #add-special-event-form .max-guests-group,
         #add-special-event-form .shifts-group {
             grid-column: 1 / -1; /* Occupa tutta la larghezza */
         }
@@ -220,7 +221,7 @@
                             <label for="event_time">Ora</label>
                             <input type="time" id="event_time" name="event_time">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group max-guests-group">
                             <label for="max_guests">Max Ospiti</label>
                             <input type="number" id="max_guests" name="max_guests" placeholder="Default: 25" min="1">
                         </div>
