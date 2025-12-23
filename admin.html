@@ -99,9 +99,11 @@
             text-align: right;
         }
 
-        /* Centra il contenuto della colonna Stato */
-        .admin-table th:nth-child(5), /* Aggiornato per la nuova colonna Turni */
-        .admin-table td:nth-child(5) { /* Aggiornato per la nuova colonna Turni */
+        /* Centra il contenuto delle colonne Max Ospiti (5) e Stato (6) */
+        .admin-table th:nth-child(5),
+        .admin-table td:nth-child(5),
+        .admin-table th:nth-child(6),
+        .admin-table td:nth-child(6) {
             text-align: center;
         }
 
@@ -218,6 +220,10 @@
                             <label for="event_time">Ora</label>
                             <input type="time" id="event_time" name="event_time">
                         </div>
+                        <div class="form-group">
+                            <label for="max_guests">Max Ospiti</label>
+                            <input type="number" id="max_guests" name="max_guests" placeholder="Default: 25" min="1">
+                        </div>
                         <div class="form-group shifts-group">
                             <label>Turni (opzionale, max 3)</label>
                             <div class="shifts-inputs">
@@ -237,6 +243,7 @@
                                 <th data-label="Data">Data</th>
                                 <th data-label="Ora">Ora</th>
                                 <th data-label="Turni">Turni</th>
+                                <th data-label="Max Ospiti">Max Ospiti</th>
                                 <th data-label="Stato">Stato</th>
                                 <th data-label="Azione">Azione</th>
                             </tr>

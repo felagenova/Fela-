@@ -344,6 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const eventDisplayName = document.getElementById('event_display_name').value;
         const eventDate = document.getElementById('event_date').value;
         const eventTime = document.getElementById('event_time').value; // Può essere vuoto
+        const maxGuestsInput = document.getElementById('max_guests').value; // Recupera il valore max_guests
         
         // Raccoglie i valori dai campi dei turni e li filtra per non includere quelli vuoti
         const eventSlots = [
@@ -367,7 +368,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     display_name: eventDisplayName,
                     booking_date: eventDate,
                     booking_time: eventTime || null, // Invia null se l'ora non è specificata
-                    available_slots: eventSlots // Invia la lista di turni raccolti
+                    available_slots: eventSlots, // Invia la lista di turni raccolti
+                    max_guests: maxGuestsInput ? parseInt(maxGuestsInput) : null // Invia il numero massimo di ospiti o null
                 }),
             });
 
@@ -402,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (events.length === 0) {
                 const row = specialEventsTableBody.insertRow();
                 const cell = row.insertCell();
-                cell.colSpan = 6; // Occupa tutte le colonne
+                cell.colSpan = 7; // Occupa tutte le colonne (aggiornato per Max Ospiti)
                 cell.textContent = 'Nessun evento speciale aggiunto.';
                 cell.style.textAlign = 'center';
                 return;
@@ -430,12 +432,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 const turniText = Array.isArray(slots) && slots.length > 0 ? slots.map(s => s.substring(0, 5)).join(', ') : 'N/D';
+                const maxGuestsText = event.max_guests ? event.max_guests : '25 (Default)';
     
                 row.innerHTML = `
                     <td>${event.display_name}</td>
                     <td>${new Date(event.booking_date).toLocaleDateString()}</td>
                     <td>${event.booking_time ? event.booking_time.substring(0, 5) : 'N/D'}</td>
                     <td>${turniText}</td>
+                    <td>${maxGuestsText}</td>
                     <td><span class="status ${statusClass}">${statusText}</span></td>
                     <td>
                         <button class="action-btn ${toggleButtonClass}" data-event-id="${event.id}">${toggleButtonText}</button>
