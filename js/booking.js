@@ -173,6 +173,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         // ----------------------------------
 
+        // --- BYPASS TEMPORANEO BACKEND ---
+        // Simuliamo il successo immediato per evitare l'errore SMTP del server.
+        // I dati sono comunque salvati su Google Sheets (vedi sopra).
+        mailingListMessage.textContent = "Grazie per esserti iscritto!";
+        mailingListMessage.style.color = 'green';
+        setTimeout(() => { hideMailingListPopup(); proceedToBookingForm(); }, 2000);
+
+        /* CODICE ORIGINALE DISABILITATO (Riattivare quando SMTP è configurato)
         try {
             const response = await fetch(`${backendBaseUrl}/api/mailing-list-signup`, {
                 method: 'POST',
@@ -197,6 +205,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             mailingListMessage.style.color = 'red';
             console.error("Errore iscrizione mailing list:", error);
         }
+        */
     });
 
     // --- Gestisce l'invio del form di prenotazione ---
