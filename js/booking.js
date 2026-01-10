@@ -159,11 +159,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const googleSheetUrl = 'https://script.google.com/macros/s/AKfycbwS2TrHYapffuhYlXBgQ5B7gp7t2V7xhMWaO-FlJwZ3PsTwv5sKExzUqpIJaDbNfUzP/exec'; // Es: 'https://script.google.com/macros/s/AKfycbx.../exec'
 
         if (googleSheetUrl) {
+            console.log('Tentativo invio a Google Sheet:', { email: emailValue, name: nameValue, surname: surnameValue });
             // Invio "fire and forget" a Google Sheets (non blocca l'esecuzione se fallisce)
             fetch(googleSheetUrl, {
                 method: 'POST',
                 mode: 'no-cors', // Necessario per inviare dati a Google senza errori CORS
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ 
                     email: emailValue,
                     name: nameValue,
@@ -173,14 +174,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         // ----------------------------------
 
-        // --- BYPASS TEMPORANEO BACKEND ---
-        // Simuliamo il successo immediato per evitare l'errore SMTP del server.
-        // I dati sono comunque salvati su Google Sheets (vedi sopra).
-        mailingListMessage.textContent = "Grazie per esserti iscritto!";
-        mailingListMessage.style.color = 'green';
-        setTimeout(() => { hideMailingListPopup(); proceedToBookingForm(); }, 2000);
-
-        /* CODICE ORIGINALE DISABILITATO (Riattivare quando SMTP è configurato)
+        // --- INVIO AL BACKEND (Database + Email Benvenuto) ---
         try {
             const response = await fetch(`${backendBaseUrl}/api/mailing-list-signup`, {
                 method: 'POST',
@@ -205,7 +199,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             mailingListMessage.style.color = 'red';
             console.error("Errore iscrizione mailing list:", error);
         }
-        */
     });
 
     // --- Gestisce l'invio del form di prenotazione ---
