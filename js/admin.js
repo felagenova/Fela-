@@ -346,12 +346,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const eventTime = document.getElementById('event_time').value; // Può essere vuoto
         const maxGuestsInput = document.getElementById('max_guests').value; // Recupera il valore max_guests
         
-        // Raccoglie i valori dai campi dei turni e li filtra per non includere quelli vuoti
-        const eventSlots = [
-            document.getElementById('event_shift_1').value,
-            document.getElementById('event_shift_2').value,
-            document.getElementById('event_shift_3').value
-        ].filter(slot => slot !== ''); // Filtra via le stringhe vuote
+        // Raccoglie i turni e le relative capacità specifiche (se definite nell'HTML)
+        const eventSlots = [];
+        const slotCapacities = {};
+
+        for (let i = 1; i <= 3; i++) {
+            const slotInput = document.getElementById(`event_shift_${i}`);
+            // Cerca un input corrispondente per il max ospiti del turno (es. id="event_shift_1_max")
+            const slotMaxInput = document.getElementById(`event_shift_${i}_max`);
+
+            if (slotInput && slotInput.value) {
+                eventSlots.push(slotInput.value);
+                if (slotMaxInput && slotMaxInput.value) {
+                    slotCapacities[slotInput.value] = parseInt(slotMaxInput.value);
+                }
+            }
+        }
 
         specialEventsMessageDiv.textContent = 'Aggiunta evento in corso...';
         specialEventsMessageDiv.style.color = '#333';
@@ -369,7 +379,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     booking_date: eventDate,
                     booking_time: eventTime || null, // Invia null se l'ora non è specificata
                     available_slots: eventSlots, // Invia la lista di turni raccolti
-                    max_guests: maxGuestsInput ? parseInt(maxGuestsInput) : null // Invia il numero massimo di ospiti o null
+                    max_guests: maxGuestsInput ? parseInt(maxGuestsInput) : null, // Invia il numero massimo di ospiti totale
+                    slot_capacities: Object.keys(slotCapacities).length > 0 ? slotCapacities : null // Invia le capacità specifiche per turno
                 }),
             });
 
@@ -435,13 +446,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const maxGuestsText = event.max_guests ? event.max_guests : '25 (Default)';
     
                 row.innerHTML = `
-                    <td>${event.display_name}</td>
-                    <td>${new Date(event.booking_date).toLocaleDateString()}</td>
-                    <td>${event.booking_time ? event.booking_time.substring(0, 5) : 'N/D'}</td>
-                    <td>${turniText}</td>
-                    <td>${maxGuestsText}</td>
-                    <td><span class="status ${statusClass}">${statusText}</span></td>
-                    <td>
+                    <td data-label="Nome Evento">${event.display_name}</td>
+                    <td data-label="Data">${new Date(event.booking_date).toLocaleDateString()}</td>
+                    <td data-label="Ora">${event.booking_time ? event.booking_time.substring(0, 5) : 'N/D'}</td>
+                    <td data-label="Turni">${turniText}</td>
+                    <td data-label="Max Ospiti">${maxGuestsText}</td>
+                    <td data-label="Stato"><span class="status ${statusClass}">${statusText}</span></td>
+                    <td data-label="Azione">
                         <button class="action-btn ${toggleButtonClass}" data-event-id="${event.id}">${toggleButtonText}</button>
                         <button class="action-btn btn-delete" data-event-id="${event.id}">Elimina</button>
                     </td>

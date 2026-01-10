@@ -153,8 +153,12 @@
             grid-template-columns: repeat(3, 1fr); /* Tre colonne per gli input dei turni */
             gap: 15px;
         }
-        .shifts-inputs input {
-            width: 100%; /* Assicura che gli input riempiano lo spazio */
+        .shift-row {
+            display: flex;
+            gap: 5px;
+        }
+        .shift-row input[type="number"] {
+            width: 70px; /* Campo più piccolo per il numero */
         }
 
         /* Centra il pulsante di invio nel form eventi */
@@ -164,6 +168,18 @@
             width: auto;
         }
 
+        /* Media Query per il form su mobile */
+        @media (max-width: 768px) {
+            #add-special-event-form {
+                grid-template-columns: 1fr; /* Una sola colonna per il form */
+            }
+            .shifts-inputs {
+                grid-template-columns: 1fr; /* Una sola colonna per i turni */
+            }
+            .admin-card {
+                padding: 15px; /* Riduci il padding della card */
+            }
+        }
     </style>
 </head>
 <body class="admin-page">
@@ -228,9 +244,18 @@
                         <div class="form-group shifts-group">
                             <label>Turni (opzionale, max 3)</label>
                             <div class="shifts-inputs">
-                                <input type="time" id="event_shift_1" name="event_shift_1">
-                                <input type="time" id="event_shift_2" name="event_shift_2">
-                                <input type="time" id="event_shift_3" name="event_shift_3">
+                                <div class="shift-row">
+                                    <input type="time" id="event_shift_1" name="event_shift_1" aria-label="Orario Turno 1">
+                                    <input type="number" id="event_shift_1_max" name="event_shift_1_max" placeholder="Max" min="1" aria-label="Max Ospiti Turno 1">
+                                </div>
+                                <div class="shift-row">
+                                    <input type="time" id="event_shift_2" name="event_shift_2" aria-label="Orario Turno 2">
+                                    <input type="number" id="event_shift_2_max" name="event_shift_2_max" placeholder="Max" min="1" aria-label="Max Ospiti Turno 2">
+                                </div>
+                                <div class="shift-row">
+                                    <input type="time" id="event_shift_3" name="event_shift_3" aria-label="Orario Turno 3">
+                                    <input type="number" id="event_shift_3_max" name="event_shift_3_max" placeholder="Max" min="1" aria-label="Max Ospiti Turno 3">
+                                </div>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-submit">Aggiungi Evento</button>
