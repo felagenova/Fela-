@@ -240,6 +240,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <p style="font-size: 1.1em; margin-bottom: 10px;">Prenotazione confermata!</p>
                 `;
                 messageDiv.style.color = 'green';
+
+                // --- TRACCIAMENTO GOOGLE ANALYTICS ---
+                if (typeof gtag === 'function') {
+                    gtag('event', 'booking_completed', {
+                        'event_category': 'Booking',
+                        'event_label': selectedEvent.display_name,
+                        'value': formData.guests
+                    });
+                }
+                // -------------------------------------
+
                 form.reset();
                 setTimeout(showEventSelection, 4000); // Torna alla selezione eventi dopo 4 secondi
             } else {
