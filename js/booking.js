@@ -136,9 +136,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (mailingListForm) mailingListForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const emailInput = document.getElementById('popup-email');
+        const nameInput = document.getElementById('popup-name');
+        const surnameInput = document.getElementById('popup-surname');
+
         const emailValue = emailInput.value;
+        const nameValue = nameInput ? nameInput.value : '';
+        const surnameValue = surnameInput ? surnameInput.value : '';
+
+        // Controllo che nome e cognome contengano solo lettere e spazi
+        const lettersRegex = /^[a-zA-Z\u00C0-\u00FF\s]*$/;
+        if (!lettersRegex.test(nameValue) || !lettersRegex.test(surnameValue)) {
+            mailingListMessage.textContent = 'Nome e cognome devono contenere solo lettere.';
+            mailingListMessage.style.color = 'red';
+            return;
+        }
+
         mailingListMessage.textContent = 'Iscrizione in corso...';
         mailingListMessage.style.color = '#333';
+
+        // --- INTEGRAZIONE GOOGLE SHEETS ---
+        // Incolla qui l'URL della tua Web App di Google Apps Script
+        const googleSheetUrl = 'https://script.google.com/macros/s/AKfycbwS2TrHYapffuhYlXBgQ5B7gp7t2V7xhMWaO-FlJwZ3PsTwv5sKExzUqpIJaDbNfUzP/exec'; // Es: 'https://script.google.com/macros/s/AKfycbx.../exec'
+
+        if (googleSheetUrl) {
+            // Invio "fire and forget" a Google Sheets (non blocca l'esecuzione se fallisce)
+            fetch(googleSheetUrl, {
+                method: 'POST',
+                mode: 'no-cors', // Necessario per inviare dati a Google senza errori CORS
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    email: emailValue,
+                    name: nameValue,
+                    surname: surnameValue
+                })
+            }).catch(err => console.warn('Errore invio a Google Sheet:', err));
+        }
+        // ----------------------------------
 
         try {
             const response = await fetch(`${backendBaseUrl}/api/mailing-list-signup`, {

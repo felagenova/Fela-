@@ -130,8 +130,9 @@
     gap: 15px;
 }
 
-/* Stile per il campo email nel pop-up */
-#mailing-list-email {
+/* Stile per i campi input nel pop-up (Nome, Cognome, Email) */
+#mailing-list-form input[type="text"],
+#mailing-list-form input[type="email"] {
     width: 100%;
     padding: 12px;
     border: 2px solid #ff0403; /* Bordo rosso in stile con il sito */
