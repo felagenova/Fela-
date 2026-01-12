@@ -110,7 +110,7 @@ body {
     width: 100%;
     height: 100vh;
     background-image: url('../images/backlanding.webp');
-    background-color: #1a1a1a;
+    background-color: #f3f0ce;
     background-size: cover;
     background-position: center center;
     filter: blur(10px); /* Effetto sfocatura */
@@ -141,6 +141,27 @@ body {
     animation: scrollBackground 60s linear infinite;
 }
 
+/* Override per la Home Page con nuovi asset */
+.home-page .landing-container {
+    background-image: none; /* Rimuove l'immagine di sfondo precedente */
+    background-color: #1a1a1a; /* Mantiene il colore di sfondo scuro */
+    background-color: transparent; /* Rende trasparente il container per mostrare gli asset sotto */
+    animation: none; /* Rimuove l'animazione di sfondo precedente */
+    pointer-events: none; /* Permette ai click di passare agli asset sottostanti */
+}
+
+/* Imposta lo sfondo scuro direttamente sul body per la home page */
+body.home-page {
+    background-color: #1a1a1a;
+    background-color: #f3f0ce;
+}
+
+/* Inverte i colori del logo nella home page per renderlo visibile su sfondo scuro */
+.home-page .logo {
+    filter: invert(1);
+    filter: none;
+}
+
 .glass-container {
     background: rgba(244, 190, 190, 0.066); /* Sfondo semi-trasparente */
     backdrop-filter: blur(4px); /* Effetto sfocatura */
@@ -152,6 +173,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    pointer-events: auto; /* Riabilita i click per i bottoni e il contenuto */
 }
 
 .logo {
@@ -295,6 +317,8 @@ body {
     width: 100%;
     max-width: none; /* Rimosso il limite di larghezza */
     box-sizing: border-box; /* Assicura che padding e bordo non alterino la larghezza totale */
+    position: relative; /* Necessario per z-index */
+    z-index: 100; /* Assicura che sia sopra gli asset animati */
 }
 
 .player-btn {
@@ -477,6 +501,8 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     gap: 30px; /* Spazio tra le colonne */
+    position: relative; /* Necessario per z-index */
+    z-index: 100; /* Assicura che sia sopra gli asset animati */
 }
 
 .footer-left, .footer-right {
@@ -1025,6 +1051,7 @@ body {
     will-change: transform, opacity; /* Ottimizzazione per le performance */
     image-rendering: -webkit-optimize-contrast; /* Per browser Webkit */
     image-rendering: crisp-edges; /* Standard moderno */
+    pointer-events: auto; /* Rende gli asset cliccabili */
 }
 
 /* --- Stili per la Navbar --- */
@@ -2084,4 +2111,14 @@ body {
     color: #f3f0ce; /* Testo color panna per contrasto */
     border-color: #006a68ff; /* Il bordo mantiene il colore */
     transform: scale(1.05); /* Mantiene l'effetto di ingrandimento */
+}
+
+/* Animazione per gli asset della Home Page (sinistra verso destra) */
+@keyframes moveLeftToRight {
+    from {
+        transform: translateX(-150vw) rotate(180deg);
+    }
+    to {
+        transform: translateX(250vw) rotate(360deg);
+    }
 }
