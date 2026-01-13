@@ -22,6 +22,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
     // const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale 
 
+    // --- CONFIGURAZIONE PUSH NOTIFICATION ---
+    // IMPORTANTE: Sostituisci questa stringa con la tua VAPID Public Key reale
+    const VAPID_PUBLIC_KEY = "BOK07nYxyGjm-1_vsGbhmUqWM6orFC-wN3qzyZG8ljEdDtDP-o-7bsiOuqNr1efpvOzY4v5NoaZraug4Z6s1S6s"; 
+
+    // Funzione di utilità per convertire la chiave VAPID da stringa base64 a Uint8Array
+    function urlBase64ToUint8Array(base64String) {
+        const padding = '='.repeat((4 - base64String.length % 4) % 4);
+        const base64 = (base64String + padding)
+            .replace(/\-/g, '+')
+            .replace(/_/g, '/');
+
+        const rawData = window.atob(base64);
+        const outputArray = new Uint8Array(rawData.length);
+
+        for (let i = 0; i < rawData.length; ++i) {
+            outputArray[i] = rawData.charCodeAt(i);
+        }
+        return outputArray;
+    }
+
+    // Funzione per iscrivere l'utente alle notifiche push
+    async function subscribeUserToPush() {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+            console.log('Push messaging non supportato dal browser.');
+            return null;
+        }
+        try {
+            const registration = await navigator.serviceWorker.ready;
+            const subscription = await registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+            });
+            return subscription;
+        } catch (err) {
+            console.error('Impossibile iscrivere l\'utente alle notifiche:', err);
+            return null;
+        }
+    }
+
     // Funzione per mostrare la selezione degli eventi e nascondere il form
     const showEventSelection = () => {
         pageSubtitle.textContent = 'Seleziona un evento per cui prenotare.';
@@ -211,6 +250,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        messageDiv.textContent = 'Elaborazione prenotazione...';
+        messageDiv.style.color = '#333';
+
+        // --- TENTATIVO DI ISCRIZIONE PUSH ---
+        // Proviamo a ottenere la sottoscrizione prima di inviare i dati
+        // Se l'utente rifiuta o c'è un errore, pushSubscription sarà null e la prenotazione procederà comunque.
+        const pushSubscription = await subscribeUserToPush();
+        // ------------------------------------
+
         const formData = {
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
@@ -221,6 +269,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             event_id: selectedEvent.id,
             guests: parseInt(document.getElementById('guests').value, 10),
             notes: document.getElementById('notes').value,
+            push_subscription: pushSubscription // Aggiungiamo l'oggetto sottoscrizione (o null)
         };
 
         messageDiv.textContent = 'Invio in corso...';
