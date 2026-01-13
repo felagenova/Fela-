@@ -33,7 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Gestisce il click sul pulsante di installazione
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
+            // Modifica per il testing: Se siamo su iOS (o simulazione), diamo priorità al tooltip
+            // anche se il browser supporta il prompt nativo (come succede in Chrome DevTools)
+            if (isIos) {
+                showIosInstallTooltip();
+            } else if (deferredPrompt) {
                 // ANDROID/DESKTOP: Mostra il prompt nativo
                 deferredPrompt.prompt();
                 // Attendi la risposta dell'utente
@@ -43,11 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 deferredPrompt = null;
                 // Nascondi il bottone dopo la scelta
                 installBtn.style.display = 'none';
-            } else if (isIos) {
-                // IOS: Mostra istruzioni (Safari non permette il prompt programmatico)
-                alert("Per installare questa app su iPhone:\n1. Premi il pulsante Condividi (icona quadrata con freccia in basso)\n2. Scorri e seleziona 'Aggiungi alla schermata Home'");
-                // IOS: Mostra Tooltip Grafico invece dell'alert
-                showIosInstallTooltip();
             }
         });
     }
