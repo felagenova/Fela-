@@ -1037,13 +1037,14 @@ body.home-page {
 /* --- Stili per l'animazione degli asset --- */
 #animation-container {
     position: fixed;
-    top: 0;
+    top: -10%; /* Estende il contenitore sopra lo schermo per evitare tagli in alto */
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 120%; /* Aumenta l'altezza per estendere il fondo oltre lo schermo */
     pointer-events: none; /* Permette di cliccare attraverso il contenitore */
     overflow: hidden;
     z-index: 0; /* Lo mettiamo a un livello base, gli asset avranno z-index positivo o negativo */
+    perspective: 1000px; /* Aggiunge profondità 3D per le rotazioni */
 }
 
 .animated-asset {
@@ -2129,7 +2130,8 @@ body.home-page {
     position: fixed;
     bottom: 30px; /* Posizionato sopra la barra inferiore di Safari */
     left: 50%;
-    transform: translateX(-50%);
+    /* Stato iniziale: centrato orizzontalmente, spostato in basso di 20px, invisibile */
+    transform: translateX(-50%) translateY(20px);
     background-color: #f3f0ce;
     color: #1a1a1a;
     border: 3px solid #ff0403;
@@ -2140,28 +2142,17 @@ body.home-page {
     text-align: center;
     width: 85%;
     max-width: 320px;
-    display: none; /* Nascosto di default */
+    
+    /* Transizioni fluide per entrata e uscita */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.5s;
     font-family: "Red Hat Display", sans-serif;
 }
 
 #ios-install-tooltip.visible {
-    display: block;
-    animation: fadeInUp 0.5s ease;
-}
-
-/* Freccia che punta verso il basso (verso il tasto condividi) */
-#ios-install-tooltip::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 15px 15px 0;
-    border-style: solid;
-    border-color: #ff0403 transparent transparent transparent;
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translate(-50%, 50px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
+    /* Stato visibile: opaco, posizione originale */
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
 }

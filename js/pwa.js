@@ -101,6 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${instructionsHtml}
             `;
             document.body.appendChild(tooltip);
+            // Forza il reflow per garantire che l'animazione di entrata parta correttamente la prima volta
+            void tooltip.offsetWidth;
         }
         
         tooltip.classList.add('visible');
