@@ -47,6 +47,16 @@ document.addEventListener('DOMContentLoaded', function() {
             'images/nuoviassets/asset20.webp',
             'images/nuoviassets/asset21.webp',
             'images/nuoviassets/asset22.webp',
+            'images/nuoviassets/asset23.webp',
+            'images/nuoviassets/asset24.webp',
+            'images/nuoviassets/asset25.webp',
+            'images/nuoviassets/asset26.webp',
+            'images/nuoviassets/asset27.webp',
+            'images/nuoviassets/asset28.webp',
+            'images/nuoviassets/asset29.webp',
+            'images/nuoviassets/asset30.webp',
+            'images/nuoviassets/asset31.webp',
+            'images/nuoviassets/asset32.webp'
 
             // AGGIORNA QUI I NOMI DEI TUOI FILE REALI
         ],
@@ -89,8 +99,9 @@ document.addEventListener('DOMContentLoaded', function() {
         initialAssets = CONFIG.eventsPage.initialAssets; // Usa il valore per la pagina eventi
         newAssetInterval = isMobile ? CONFIG.mobile.newAssetInterval : CONFIG.desktop.newAssetInterval;
     } else if (isHomePage) {
-        initialAssets = CONFIG.homePage.initialAssets;
-        newAssetInterval = CONFIG.homePage.newAssetInterval;
+        // Parametri ottimizzati per evitare sovraffollamento con gli asset giganti
+        initialAssets = isMobile ? 5 : 6; 
+        newAssetInterval = isMobile ? 7000 : 4000; // Molto più lento (era 1500ms)
     } else {
         initialAssets = isMobile ? CONFIG.mobile.initialAssets : CONFIG.desktop.initialAssets; // Comportamento standard per la home
         newAssetInterval = isMobile ? CONFIG.mobile.newAssetInterval : CONFIG.desktop.newAssetInterval;
@@ -98,8 +109,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let lastTimestamp = 0;
 
+    // --- VARIABILI PARALLASSE (Mobile) ---
+    let deviceTilt = { x: 0, y: 0 };
+    if (window.DeviceOrientationEvent && isMobile && isHomePage) {
+        window.addEventListener('deviceorientation', (event) => {
+            deviceTilt.x = event.gamma; // Inclinazione laterale (-90 a 90)
+            deviceTilt.y = event.beta;  // Inclinazione frontale (-180 a 180)
+        });
+    }
+
     function getRandom(min, max) {
         return Math.random() * (max - min) + min;
+    }
+
+    // --- NUOVA FUNZIONE: Gestione Pool Asset per evitare ripetizioni (Shuffle Bag) ---
+    let homeAssetPool = [];
+    function getUniqueHomeAsset() {
+        if (homeAssetPool.length === 0) {
+            // Riempi il pool con una copia degli asset e mescola
+            homeAssetPool = [...CONFIG.homeAssets];
+            // Fisher-Yates shuffle (algoritmo di mescolamento efficiente)
+            for (let i = homeAssetPool.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [homeAssetPool[i], homeAssetPool[j]] = [homeAssetPool[j], homeAssetPool[i]];
+            }
+        }
+        return homeAssetPool.pop();
     }
 
     // --- NUOVA FUNZIONE: Genera una traiettoria casuale e la relativa animazione CSS ---
@@ -161,11 +196,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- NUOVA FUNZIONE: Crea asset per la Home Page (3 righe, sinistra -> destra) ---
     function createHomeAsset() {
+        // Limitiamo il numero massimo di asset contemporanei per evitare crash/rallentamenti
+        const currentCount = document.querySelectorAll('.animated-asset').length;
+        const maxLimit = isMobile ? 10 : 18;
+        if (currentCount >= maxLimit) return;
+
         const asset = document.createElement('img');
         asset.classList.add('animated-asset');
 
-        // 1. Scegli un'immagine casuale dalla cartella nuoviassets
-        const randomImage = CONFIG.homeAssets[Math.floor(Math.random() * CONFIG.homeAssets.length)];
+        // 1. Scegli un'immagine casuale (senza ripetizioni ravvicinate)
+        const randomImage = getUniqueHomeAsset();
         asset.src = randomImage;
 
         // 2. Dimensione
@@ -188,7 +228,10 @@ document.addEventListener('DOMContentLoaded', function() {
         asset.style.left = '-100vw'; // Parte molto più a sinistra per gestire asset grandi
 
         // 4. Animazione
-        const duration = getRandom(70, 100); // Durata aumentata per compensare il tragitto più lungo
+        // Su mobile riduciamo la durata per aumentare la velocità (40-70s invece di 70-100s)
+        const minDur = isMobile ? 55 : 70;
+        const maxDur = isMobile ? 85 : 100;
+        const duration = getRandom(minDur, maxDur); 
         asset.style.animation = `moveLeftToRight ${duration}s linear forwards`;
 
         // 5. Z-Index (dietro al contenuto principale)
@@ -252,6 +295,21 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!document.hidden) { // OTTIMIZZAZIONE 4: Controlla se la pagina è visibile
             const elapsed = timestamp - lastTimestamp;
 
+            // --- AGGIORNAMENTO PARALLASSE ---
+            if (isMobile && isHomePage) {
+                // Calcolo offset limitato per evitare movimenti eccessivi
+                // Gamma (X): limitiamo a +/- 30 gradi per evitare scatti ai bordi
+                const tiltX = Math.max(-30, Math.min(30, deviceTilt.x || 0));
+                // Beta (Y): consideriamo un range attorno ai 45 gradi (posizione naturale della mano)
+                const tiltY = Math.max(15, Math.min(75, deviceTilt.y || 0)) - 45;
+
+                // Moltiplicatore per pixel (es. max ~45px di spostamento)
+                const moveX = tiltX * 1.5; 
+                const moveY = tiltY * 1.5;
+
+                animationContainer.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+
             if (elapsed > newAssetInterval) {
                 lastTimestamp = timestamp;
                 if (isHomePage) {
@@ -298,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // usando un delay negativo sull'animazione.
                     const asset = document.createElement('img');
                     asset.classList.add('animated-asset');
-                    const randomImage = CONFIG.homeAssets[Math.floor(Math.random() * CONFIG.homeAssets.length)];
+                    const randomImage = getUniqueHomeAsset();
                     asset.src = randomImage;
                     const sizeSettings = isMobile ? CONFIG.homePage.size.mobile : CONFIG.homePage.size.desktop;
                     const size = getRandom(sizeSettings.min, sizeSettings.max);
@@ -311,7 +369,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     asset.style.top = `${getRandom(minTop, maxTop)}vh`;
                     asset.style.left = '-100vw'; // Posizione base molto più a sinistra
                     
-                    const duration = getRandom(70, 100); // Durata aumentata
+                    const minDur = isMobile ? 55 : 70;
+                    const maxDur = isMobile ? 85 : 100;
+                    const duration = getRandom(minDur, maxDur);
                     // Delay negativo casuale tra 0 e la durata totale per spargerli sullo schermo
                     const negativeDelay = getRandom(0, duration);
                     
