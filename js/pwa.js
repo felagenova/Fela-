@@ -65,32 +65,49 @@ document.addEventListener('DOMContentLoaded', () => {
     function showIosInstallTooltip() {
         let tooltip = document.getElementById('ios-install-tooltip');
         
+        // Rileva se è Chrome su iOS (User Agent contiene 'CriOS')
+        const isChromeIOS = /CriOS/.test(navigator.userAgent);
+
         if (!tooltip) {
             tooltip = document.createElement('div');
             tooltip.id = 'ios-install-tooltip';
-            // Icona Condividi (SVG inline) e Icona Aggiungi (+)
+            
+            // Icone SVG
             const shareIcon = `<svg style="width:18px;height:18px;vertical-align:middle;fill:#007AFF;margin:0 2px;" viewBox="0 0 24 24"><path d="M12 1L8 5h3v9h2V5h3L12 1zm-5 9v10h10V10h-2v8H9v-8H7z"/></svg>`;
-            const addIcon = `<svg style="width:18px;height:18px;vertical-align:middle;fill:#1a1a1a;margin:0 2px;" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>`;
+            const addIcon = `<svg style="width:18px;height:18px;vertical-align:middle;fill:#1a1a1a;margin:0 2px;" viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>`; // Quadrato con croce
+            const threeDotsIcon = `<svg style="width:18px;height:18px;vertical-align:middle;fill:#007AFF;margin:0 2px;" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>`; // 3 puntini
+
+            let instructionsHtml = '';
+
+            if (isChromeIOS) {
+                // Istruzioni specifiche per Chrome su iOS
+                instructionsHtml = `
+                    <p style="margin:5px 0; font-size:15px;">1. Clicca sull'icona <strong>Condividi</strong> ${shareIcon} in alto a destra.</p>
+                    <p style="margin:5px 0; font-size:15px;">2. Clicca su <strong>Altro</strong> ${threeDotsIcon}.</p>
+                    <p style="margin:5px 0; font-size:15px;">3. Clicca su <strong>Aggiungi alla schermata Home</strong> ${addIcon}.</p>
+                `;
+            } else {
+                // Istruzioni specifiche per Safari su iOS
+                instructionsHtml = `
+                    <p style="margin:5px 0; font-size:15px;">1. Clicca sui <strong>3 puntini</strong> ${threeDotsIcon} in basso a destra.</p>
+                    <p style="margin:5px 0; font-size:15px;">2. Clicca su <strong>Condividi</strong> ${shareIcon}.</p>
+                    <p style="margin:5px 0; font-size:15px;">3. Clicca su <strong>Altro</strong> ${threeDotsIcon}.</p>
+                    <p style="margin:5px 0; font-size:15px;">4. Clicca su <strong>Aggiungi alla schermata Home</strong> ${addIcon}.</p>
+                `;
+            }
 
             tooltip.innerHTML = `
-                <button id="close-ios-tooltip" style="position:absolute; top:5px; right:10px; background:none; border:none; font-size:24px; color:#ff0403; cursor:pointer; line-height:1;">&times;</button>
                 <h4 style="margin:0 0 10px 0; color:#ff0403; font-size:18px;">Installa Fela!</h4>
-                <p style="margin:5px 0; font-size:15px;">1. Tocca l'icona <strong>Condividi</strong> ${shareIcon} qui sotto.</p>
-                <p style="margin:5px 0; font-size:15px;">2. Scorri e seleziona <strong>"Aggiungi alla schermata Home"</strong> ${addIcon}</p>
+                ${instructionsHtml}
             `;
             document.body.appendChild(tooltip);
-            
-            // Chiudi al click sulla X
-            tooltip.querySelector('#close-ios-tooltip').addEventListener('click', () => {
-                tooltip.classList.remove('visible');
-            });
         }
         
         tooltip.classList.add('visible');
         
-        // Nascondi automaticamente dopo 10 secondi
+        // Nascondi automaticamente dopo 15 secondi (aumentato per dare tempo di leggere)
         setTimeout(() => {
             tooltip.classList.remove('visible');
-        }, 10000);
+        }, 15000);
     }
 });
