@@ -355,8 +355,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Calcola l'offset tra il cursore e l'angolo dell'elemento per evitare "salti"
             const rect = draggedAsset.getBoundingClientRect();
-            dragOffsetX = x - rect.left;
-            dragOffsetY = y - rect.top;
 
             // Calcola la rotazione corrente per evitare scatti visivi
             const style = window.getComputedStyle(draggedAsset);
@@ -370,15 +368,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 dragStartRotation = Math.round(Math.atan2(b, a) * (180/Math.PI));
             }
 
+            // Calcola la posizione corretta per centrare l'elemento (evita ingrandimenti e salti)
+            // Usiamo lo stile inline originale per la larghezza invece del rect.width che include la rotazione
+            const currentWidth = parseFloat(draggedAsset.style.width) || rect.width;
+            const currentHeight = draggedAsset.clientHeight;
+            const tx = rect.left + (rect.width - currentWidth) / 2;
+            const ty = rect.top + (rect.height - currentHeight) / 2;
+
+            dragOffsetX = x - tx;
+            dragOffsetY = y - ty;
+
             // Ferma l'animazione CSS corrente
             draggedAsset.style.animation = 'none';
             
             // Resetta left/top e usa transform per posizionarlo esattamente dove si trova ora, mantenendo la rotazione
-            draggedAsset.style.width = rect.width + 'px'; // Fissa la larghezza calcolata
             draggedAsset.style.height = 'auto';
             draggedAsset.style.left = '0';
             draggedAsset.style.top = '0';
-            draggedAsset.style.transform = `translate(${rect.left}px, ${rect.top}px) rotate(${dragStartRotation}deg)`;
+            draggedAsset.style.transform = `translate(${tx}px, ${ty}px) rotate(${dragStartRotation}deg)`;
             
             // Porta in primo piano
             draggedAsset.style.zIndex = 1000;
@@ -442,12 +449,32 @@ document.addEventListener('DOMContentLoaded', function() {
         // Limitiamo la velocità di rotazione
         rotationSpeed = Math.max(Math.min(rotationSpeed, 15), -15);
 
+        let isResuming = false; // Flag per indicare se ha ripreso lo scorrimento naturale
+
         function animateThrow() {
             if (!asset.isConnected) return; // Se rimosso dal DOM
 
-            // Applica attrito (Friction)
-            vx *= 0.95; 
-            vy *= 0.95;
+            if (!isResuming) {
+                // Applica attrito (Friction)
+                vx *= 0.95; 
+                vy *= 0.95;
+                
+                // Rallenta gradualmente la rotazione del lancio
+                rotationSpeed *= 0.98;
+
+                // Controlla se si è quasi fermato
+                if (Math.abs(vx) < 0.05 && Math.abs(vy) < 0.05) {
+                    isResuming = true;
+                    
+                    // Imposta velocità per lo scorrimento laterale (circa 5vw al secondo, simile agli altri)
+                    const scrollSpeedPxPerSec = window.innerWidth * 0.05; 
+                    vx = scrollSpeedPxPerSec / 1000; // px per ms
+                    vy = 0; // Azzera movimento verticale
+                    
+                    // Imposta una rotazione lenta e costante per il viaggio
+                    rotationSpeed = 0.1; 
+                }
+            }
 
             // Aggiorna posizione (16ms circa per frame)
             currentX += vx * 16;
@@ -456,18 +483,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             asset.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${currentRotation}deg)`;
 
-            // Controlla limiti o stop
+            // Controlla limiti
             const r = asset.getBoundingClientRect();
             const isOutOfBounds = (r.right < 0 || r.left > window.innerWidth || r.bottom < 0 || r.top > window.innerHeight);
-            const isStopped = (Math.abs(vx) < 0.05 && Math.abs(vy) < 0.05);
 
             if (isOutOfBounds) {
                 asset.remove();
-            } else if (isStopped) {
-                // Dissolvenza se si ferma nello schermo
-                asset.style.transition = 'opacity 0.5s';
-                asset.style.opacity = '0';
-                setTimeout(() => asset.remove(), 500);
             } else {
                 // Continua loop
                 asset.dataset.throwAnimId = requestAnimationFrame(animateThrow);
