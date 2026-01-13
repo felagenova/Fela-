@@ -11,11 +11,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Favicon -->
     <link rel="icon" href="images/favicon.ico" sizes="any">
+    
+    <!-- Force HTTPS Redirect (Esclude localhost per lo sviluppo) -->
+    <script>
+        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+            location.replace('https://' + location.hostname + location.pathname + location.search);
+        }
+    </script>
+
     <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
     <link rel="manifest" href="site.webmanifest">
     
     <!-- Abilita le View Transitions per animazioni fluide tra le pagine -->
+    <meta name="theme-color" content="#f3f0ce">
     <meta name="view-transition" content="same-origin">
 
     <!-- 1. Precarica il file CSS completo in background -->
@@ -97,6 +106,8 @@
                 -->
                 <!-- <a href="transatlantica.html" id="transatlantica-btn" class="btn">Transatlantica<br>Takeover</a> -->
                 <a href="https://www.instagram.com/fela.genova/" target="_blank" rel="noopener noreferrer" class="btn">Instagram</a>
+                <!-- Pulsante Installa App (nascosto di default, visibile solo se installabile) -->
+                <button id="install-app-btn" class="btn" style="display: none;">Installa App</button>
             </div>
         </div>
     </main>
@@ -150,20 +161,7 @@
     <script src="js/music-player.js" defer></script>
     <script src="js/cookie-banner.js" defer></script>
     <script src="js/animations.js"></script>
+    <script src="js/pwa.js" defer></script>
 
-    <!-- Registrazione Service Worker per PWA e supporto Offline -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registrato con successo:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Registrazione ServiceWorker fallita:', error);
-                    });
-            });
-        }
-    </script>
 </body>
 </html>

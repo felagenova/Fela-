@@ -213,6 +213,7 @@ body.home-page {
     font-weight: 700; /* Testo più in grassetto per leggibilità */
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
     text-align: center; /* Centra il testo all'interno del bottone */
+    cursor: pointer; /* Assicura che il cursore sia corretto anche per i tag <button> */
 }
 
 .btn:hover {
@@ -2121,4 +2122,46 @@ body.home-page {
     to {
         transform: translateX(250vw) rotate(360deg);
     }
+}
+
+/* --- Tooltip Installazione iOS --- */
+#ios-install-tooltip {
+    position: fixed;
+    bottom: 30px; /* Posizionato sopra la barra inferiore di Safari */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f3f0ce;
+    color: #1a1a1a;
+    border: 3px solid #ff0403;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    z-index: 10000; /* Sopra a tutto */
+    text-align: center;
+    width: 85%;
+    max-width: 320px;
+    display: none; /* Nascosto di default */
+    font-family: "Red Hat Display", sans-serif;
+}
+
+#ios-install-tooltip.visible {
+    display: block;
+    animation: fadeInUp 0.5s ease;
+}
+
+/* Freccia che punta verso il basso (verso il tasto condividi) */
+#ios-install-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 15px 15px 0;
+    border-style: solid;
+    border-color: #ff0403 transparent transparent transparent;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translate(-50%, 50px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
 }

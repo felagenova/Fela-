@@ -15,6 +15,7 @@
   <link rel="icon" href="images/favicon.ico" sizes="any">
   <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
+  <link rel="manifest" href="site.webmanifest">
 
   <!--
     ISTRUZIONI PER IL FONT MONTECATINI:
@@ -22,6 +23,7 @@
     Esempio per Adobe Fonts (da NON usare direttamente, usa il tuo codice!):
     <link rel="stylesheet" href="https://use.typekit.net/tuocodice.css">
   -->
+  <meta name="theme-color" content="#f3f0ce">
   <!-- Abilita le View Transitions per animazioni fluide tra le pagine -->
   <meta name="view-transition" content="same-origin">
 
@@ -181,5 +183,20 @@
   <script src="js/autoscroll.js"></script> 
   <script src="js/cookie-banner.js" defer></script>
   <script src="js/popup-soldout.js" defer></script>
+
+  <!-- Registrazione Service Worker per PWA e supporto Offline -->
+  <script>
+      if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+              navigator.serviceWorker.register('service-worker.js')
+                  .then(registration => {
+                      console.log('ServiceWorker registrato con successo:', registration.scope);
+                  })
+                  .catch(error => {
+                      console.log('Registrazione ServiceWorker fallita:', error);
+                  });
+          });
+      }
+  </script>
 </body>
 </html>

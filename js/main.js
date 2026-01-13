@@ -11,4 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.toggle('no-scroll');
         });
     }
+
+    // --- Registrazione Service Worker per PWA e supporto Offline ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(registration => {
+                    console.log('ServiceWorker registrato con successo:', registration.scope);
+                })
+                .catch(error => {
+                    console.log('Registrazione ServiceWorker fallita:', error);
+                });
+        });
+    }
 });
