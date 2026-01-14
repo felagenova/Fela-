@@ -83,6 +83,29 @@
         <img src="images/logoblack.webp" alt="Caricamento..." class="loader-logo">
     </div>
 
+    <!-- Pop-up Immagine (Post-Loader) -->
+    <div id="image-popup-overlay" class="image-popup-overlay">
+        <div class="image-popup-content">
+            <button id="image-popup-close" class="image-popup-close" aria-label="Chiudi">&times;</button>
+            <div class="text-popup-menu">
+                <h3>Mercoledì 14 Gennaio</h3>
+                <h2>MENU DEGUSTAZIONE<br>"LA MADELEINE"</h2>
+                <ul>
+                    <li>Bao al vapore, kimchi di verdure, glassa teriyaki allo yuzu</li>
+                    <li>Gyoza vegani di verdure e zenzero</li>
+                    <li>Mini burger (un classicone de Madeleine in versione mini)</li>
+                    <li>Capasanta c.b.t, crema di pinoli tostati e lime, crunch di olive</li>
+                    <li>Frolla al rosmarino, hummus di ceci e avocado, chips di funghi e verdure, glassa al wasabi</li>
+                    <li>Bacio di Alassio alla nocciola e cioccolato</li>
+                </ul>
+                <div class="popup-footer">
+                    <p class="tapas-count">6 tapas<br><span>(compreso dolce)</span></p>
+                    <p class="price">24€<br><span>(escluse bevande)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <main id="landing-background" class="landing-container">
         
         <div class="glass-container">
@@ -162,6 +185,7 @@
     <script src="js/cookie-banner.js" defer></script>
     <script src="js/animations.js"></script>
     <script src="js/pwa.js?v=2" defer></script>
+    <script src="js/image-popup.js" defer></script>
 
     <!-- Registrazione Service Worker per PWA e supporto Offline -->
     <script>
