@@ -51,27 +51,100 @@
         if (sessionStorage.getItem('hasVisitedHomepage') === 'true') { document.documentElement.classList.add('loader-hidden'); }
     </script>
 
-    <!-- Stili specifici per il pop-up Transatlantica -->
+    <!-- OTTIMIZZAZIONE: Critical CSS Inlining -->
+    <!-- Questi stili sono necessari per il rendering immediato della parte "above-the-fold" della homepage. -->
     <style>
-        /* Stile per il pulsante del menu Brunch */
-        .btn-brunch {
-            border-color: #487a7bff;
-            color: #487a7bff;
+        /* --- Stili per il Loading Screen --- */
+        #loader-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #1a1a1aff;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+        html.loader-hidden #loader-wrapper {
+            opacity: 0; visibility: hidden; transition: none;
+        }
+        .loader-logo {
+            width: 100px; height: auto;
+            animation: wobble 1.8s ease-in-out infinite, reveal-bottom-to-top 1s ease-out forwards;
+            filter: invert(1);
+            clip-path: inset(100% 0 0 0);
+        }
+        @keyframes wobble {
+          0%, 100% { transform: translateX(0%) rotate(0deg); }
+          15% { transform: translateX(-15%) rotate(-5deg); }
+          30% { transform: translateX(10%) rotate(3deg); }
+          45% { transform: translateX(-10%) rotate(-3deg); }
+          60% { transform: translateX(5%) rotate(2deg); }
+          75% { transform: translateX(-2%) rotate(-1deg); }
+        }
+        @keyframes reveal-bottom-to-top {
+            0% { clip-path: inset(100% 0 0 0); }
+            100% { clip-path: inset(0 0 0 0); }
         }
 
-        .btn-brunch:hover {
-            background-color: #487a7bff; /* Aggiunto colore di sfondo */
-            border-color: #487a7bff;     /* Mantenuto per coerenza */
-            color: #f3f0ce;              /* Testo più chiaro per contrasto */
+        /* --- Stili Generali Critici --- */
+        body {
+            margin: 0; padding: 0; height: 100%;
+            font-family: "Red Hat Display", sans-serif;
+            background-color: #f3f0ce;
         }
-        /* Stile per il pulsante Fela Meets Sunnyfood */
-        .btn-sunnyfood {
-            border-color: #fec174ff;
-            color: #006a68ff;
+        body.home-page {
+            background-color: #f3f0ce;
         }
-        .btn-sunnyfood:hover {
-            background-color: #fec174ff;
-            color: #006a68ff;
+        .visually-hidden {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+        }
+
+        /* --- Stili Critici per la Landing Page --- */
+        .landing-container {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 100vh; text-align: center; padding: 20px;
+            position: relative; z-index: 10; box-sizing: border-box;
+            background-color: transparent;
+            pointer-events: none;
+        }
+        .glass-container {
+            background: rgba(244, 190, 190, 0.066);
+            backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(12px);
+            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            padding: 30px 25px;
+            display: flex; flex-direction: column; align-items: center;
+            pointer-events: auto;
+        }
+        .logo {
+            max-width: 180px; height: auto;
+        }
+        .home-page .logo {
+            filter: none;
+        }
+        .claim {
+            color: #333; font-size: 12px; font-weight: 500;
+            margin: 15px 0 30px 0; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .button-container {
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .btn {
+            display: flex; justify-content: center; align-items: center;
+            padding: 12px 25px; min-width: 200px;
+            background-color: #f3f0ce; color: #ff0403;
+            text-decoration: none; border-radius: 8px; border: 2px solid #ff0403;
+            font-size: 18px; font-family: "Red Hat Display", sans-serif; font-weight: 700;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            text-align: center; cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #ff0403; color: #f3f0ce; transform: scale(1.05);
+        }
+        .btn.btn-salotto {
+            color: #5b5bffff; border-color: #5b5bffff;
+        }
+        .btn.btn-salotto:hover {
+            background-color: #5b5bffff; color: #f3f0ce;
         }
     </style>
 </head>
@@ -83,33 +156,10 @@
         <img src="images/logoblack.webp" alt="Caricamento..." class="loader-logo">
     </div>
 
-    <!-- Pop-up Immagine (Post-Loader) -->
-    <div id="image-popup-overlay" class="image-popup-overlay">
-        <div class="image-popup-content">
-            <button id="image-popup-close" class="image-popup-close" aria-label="Chiudi">&times;</button>
-            <div class="text-popup-menu">
-                <h3>Mercoledì 14 Gennaio</h3>
-                <h2>MENU DEGUSTAZIONE<br>"LA MADELEINE"</h2>
-                <ul>
-                    <li>Bao al vapore, kimchi di verdure, glassa teriyaki allo yuzu</li>
-                    <li>Gyoza vegani di verdure e zenzero</li>
-                    <li>Mini burger (un classicone de Madeleine in versione mini)</li>
-                    <li>Capasanta c.b.t, crema di pinoli tostati e lime, crunch di olive</li>
-                    <li>Frolla al rosmarino, hummus di ceci e avocado, chips di funghi e verdure, glassa al wasabi</li>
-                    <li>Bacio di Alassio alla nocciola e cioccolato</li>
-                </ul>
-                <div class="popup-footer">
-                    <p class="tapas-count">6 tapas<br><span>(compreso dolce)</span></p>
-                    <p class="price">24€<br><span>(escluse bevande)</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <main id="landing-background" class="landing-container">
         
         <div class="glass-container">
-            <img src="images/logoblack.webp" alt="Logo Fela!" class="logo">
+            <img src="images/logoblack.webp" alt="Logo Fela!" class="logo" fetchpriority="high">
 
             <!-- Intestazione H1 per SEO e accessibilità, nascosta visivamente -->
             <h1 class="visually-hidden">Fela! Music Bar - Social Hub a Genova</h1>
@@ -183,9 +233,8 @@
     <script src="js/loader.js" defer></script>
     <script src="js/music-player.js" defer></script>
     <script src="js/cookie-banner.js" defer></script>
-    <script src="js/animations.js"></script>
+    <script src="js/animations.js" defer></script>
     <script src="js/pwa.js?v=2" defer></script>
-    <script src="js/image-popup.js" defer></script>
 
     <!-- Registrazione Service Worker per PWA e supporto Offline -->
     <script>

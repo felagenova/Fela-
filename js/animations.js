@@ -229,8 +229,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 4. Animazione
         // Su mobile riduciamo la durata per aumentare la velocità (40-70s invece di 70-100s)
-        const minDur = isMobile ? 55 : 70;
-        const maxDur = isMobile ? 85 : 100;
+        const minDur = isMobile ? 45 : 70; // Aumentata velocità mobile (durata ridotta)
+        const maxDur = isMobile ? 75 : 100; // Aumentata velocità mobile (durata ridotta)
         const duration = getRandom(minDur, maxDur); 
         asset.style.animation = `moveLeftToRight ${duration}s linear forwards`;
 
@@ -346,18 +346,31 @@ document.addEventListener('DOMContentLoaded', function() {
     function startAnimations() {
         console.log("Precaricamento immagini...");
         // Seleziona l'array di immagini corretto in base alla pagina
-        const imagesToPreload = isHomePage ? CONFIG.homeAssets : CONFIG.assetImages;
+        const allImages = isHomePage ? CONFIG.homeAssets : CONFIG.assetImages;
 
-        preloadImages(imagesToPreload, () => {
-            console.log("Immagini caricate. Avvio animazioni.");
+        // OTTIMIZZAZIONE: Precarica solo un sottoinsieme per avviare prima l'animazione
+        // Mescoliamo per varietà
+        const shuffled = [...allImages].sort(() => 0.5 - Math.random());
+        // Carichiamo subito quelli necessari per la schermata iniziale + un piccolo buffer
+        const initialCount = Math.min(initialAssets + 2, shuffled.length);
+        const initialBatch = shuffled.slice(0, initialCount);
+        const remainingImages = shuffled.slice(initialCount);
+
+        preloadImages(initialBatch, () => {
+            console.log("Batch iniziale caricato. Avvio animazioni.");
+            
             for (let i = 0; i < initialAssets; i++) {
                 if (isHomePage) {
                     // Per la home, creiamo asset che sono GIA' sullo schermo all'avvio
                     // usando un delay negativo sull'animazione.
                     const asset = document.createElement('img');
                     asset.classList.add('animated-asset');
-                    const randomImage = getUniqueHomeAsset();
-                    asset.src = randomImage;
+                    
+                    // Usa le immagini del batch precaricato per evitare flash bianchi
+                    // Se finiamo il batch (improbabile con la logica sopra), usiamo il pool generale
+                    const imageSrc = (i < initialBatch.length) ? initialBatch[i] : getUniqueHomeAsset();
+                    asset.src = imageSrc;
+
                     const sizeSettings = isMobile ? CONFIG.homePage.size.mobile : CONFIG.homePage.size.desktop;
                     const size = getRandom(sizeSettings.min, sizeSettings.max);
                     asset.style.width = `${size}px`;
@@ -369,8 +382,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     asset.style.top = `${getRandom(minTop, maxTop)}vh`;
                     asset.style.left = '-100vw'; // Posizione base molto più a sinistra
                     
-                    const minDur = isMobile ? 55 : 70;
-                    const maxDur = isMobile ? 85 : 100;
+                    const minDur = isMobile ? 45 : 70; // Aumentata velocità mobile (durata ridotta)
+                    const maxDur = isMobile ? 75 : 100; // Aumentata velocità mobile (durata ridotta)
                     const duration = getRandom(minDur, maxDur);
                     // Delay negativo casuale tra 0 e la durata totale per spargerli sullo schermo
                     const negativeDelay = getRandom(0, duration);
@@ -384,6 +397,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             requestAnimationFrame(animationLoop);
+
+            // Carica il resto delle immagini in background dopo un breve ritardo
+            if (remainingImages.length > 0) {
+                setTimeout(() => {
+                    preloadImages(remainingImages, () => console.log("Precaricamento background completato."));
+                }, 3000);
+            }
         });
     }
 
