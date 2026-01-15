@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Gestisce il click sul pulsante di installazione
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
+            // --- NUOVO: Richiedi attivazione notifiche quando l'utente clicca su Installa ---
+            window.dispatchEvent(new CustomEvent('enable-push-notifications'));
+
             // Modifica per il testing: Se siamo su iOS (o simulazione), diamo priorità al tooltip
             // anche se il browser supporta il prompt nativo (come succede in Chrome DevTools)
             if (isIos) {

@@ -151,6 +151,22 @@
 <body class="home-page">
 
     <!-- Loading Screen -->
+    <header class="site-header-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="images/f!_logo_rosso.svg" alt="Logo Fela! Music Bar Genova">
+            </a>
+            <button class="hamburger-menu" aria-label="Apri menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <button id="navbar-notification-btn" class="notification-bell-btn" aria-label="Attiva Notifiche" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
+            </button>
+        </div>
+    </header>
+
     <div id="animation-container"></div>
     <div id="loader-wrapper">
         <img src="images/logoblack.webp" alt="Caricamento..." class="loader-logo">
@@ -229,11 +245,13 @@
     </div>
 
 
+    <script src="js/main.js" defer></script>
     <!-- 3. Carica lo script in modo differito per non bloccare il rendering -->
     <script src="js/loader.js" defer></script>
     <script src="js/music-player.js" defer></script>
     <script src="js/cookie-banner.js" defer></script>
     <script src="js/animations.js" defer></script>
+    <script src="js/booking.js" defer></script> <!-- Contiene la logica per le notifiche -->
     <script src="js/pwa.js?v=2" defer></script>
 
     <!-- Registrazione Service Worker per PWA e supporto Offline -->

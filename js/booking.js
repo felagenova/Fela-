@@ -110,50 +110,53 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // --- Carica e visualizza gli eventi prenotabili come box ---
-    try {
-        const response = await fetch(`${backendBaseUrl}/api/bookable-events`);
-        if (!response.ok) throw new Error('Errore nel caricamento degli eventi.');
+    // Eseguiamo questa parte SOLO se esiste il contenitore degli eventi (cioè siamo nella pagina Prenota)
+    if (eventSelectionContainer) {
+        try {
+            const response = await fetch(`${backendBaseUrl}/api/bookable-events`);
+            if (!response.ok) throw new Error('Errore nel caricamento degli eventi.');
 
-        allBookableEvents = await response.json();
+            allBookableEvents = await response.json();
 
-        eventSelectionContainer.innerHTML = ''; // Pulisce il contenitore
+            eventSelectionContainer.innerHTML = ''; // Pulisce il contenitore
 
-        if (allBookableEvents.length === 0) {
-            eventSelectionContainer.innerHTML = '<p class="no-events-message">Al momento non ci sono eventi prenotabili. Torna a trovarci presto!</p>';
-        } else {
-            allBookableEvents.forEach(event => {
-                const eventBox = document.createElement('div');
-                eventBox.className = 'event-box';
-                eventBox.setAttribute('role', 'button');
-                eventBox.tabIndex = 0;
+            if (allBookableEvents.length === 0) {
+                eventSelectionContainer.innerHTML = '<p class="no-events-message">Al momento non ci sono eventi prenotabili. Torna a trovarci presto!</p>';
+            } else {
+                allBookableEvents.forEach(event => {
+                    const eventBox = document.createElement('div');
+                    eventBox.className = 'event-box';
+                    eventBox.setAttribute('role', 'button');
+                    eventBox.tabIndex = 0;
 
-                const eventDate = new Date(event.booking_date);
-                const formattedDate = eventDate.toLocaleDateString('it-IT', {
-                    weekday: 'long',
-                    day: 'numeric',
-                    month: 'long'
+                    const eventDate = new Date(event.booking_date);
+                    const formattedDate = eventDate.toLocaleDateString('it-IT', {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long'
+                    });
+
+                    eventBox.innerHTML = `
+                        <h3 class="event-box-title">${event.display_name}</h3>
+                        <p class="event-box-date">${formattedDate}</p>
+                    `;
+
+                    // Aggiungi evento click per mostrare il form
+                    eventBox.addEventListener('click', () => showMailingListPopup(event));
+                    eventBox.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            showMailingListPopup(event);
+                        }
+                    });
+
+                    eventSelectionContainer.appendChild(eventBox);
                 });
+            }
 
-                eventBox.innerHTML = `
-                    <h3 class="event-box-title">${event.display_name}</h3>
-                    <p class="event-box-date">${formattedDate}</p>
-                `;
-
-                // Aggiungi evento click per mostrare il form
-                eventBox.addEventListener('click', () => showMailingListPopup(event));
-                eventBox.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        showMailingListPopup(event);
-                    }
-                });
-
-                eventSelectionContainer.appendChild(eventBox);
-            });
+        } catch (error) {
+            console.error("Impossibile caricare gli eventi:", error);
+            eventSelectionContainer.innerHTML = '<p class="no-events-message">Non è stato possibile caricare gli eventi. Riprova più tardi.</p>';
         }
-
-    } catch (error) {
-        console.error("Impossibile caricare gli eventi:", error);
-        eventSelectionContainer.innerHTML = '<p class="no-events-message">Non è stato possibile caricare gli eventi. Riprova più tardi.</p>';
     }
 
     // --- Gestisce il click sul pulsante "Torna agli eventi" ---
@@ -194,10 +197,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         mailingListMessage.textContent = 'Iscrizione in corso...';
         mailingListMessage.style.color = '#333';
 
-        // --- TENTATIVO DI ISCRIZIONE PUSH (Mailing List) ---
-        // Proviamo a ottenere la sottoscrizione anche qui per ricevere aggiornamenti sugli eventi
-        const pushSubscription = await subscribeUserToPush();
-
         // --- INTEGRAZIONE GOOGLE SHEETS ---
         // Incolla qui l'URL della tua Web App di Google Apps Script
         const googleSheetUrl = 'https://script.google.com/macros/s/AKfycbwS2TrHYapffuhYlXBgQ5B7gp7t2V7xhMWaO-FlJwZ3PsTwv5sKExzUqpIJaDbNfUzP/exec'; // Es: 'https://script.google.com/macros/s/AKfycbx.../exec'
@@ -223,10 +222,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await fetch(`${backendBaseUrl}/api/mailing-list-signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    email: emailValue,
-                    push_subscription: pushSubscription // Inviamo l'oggetto sottoscrizione al backend
-                })
+                body: JSON.stringify({ email: emailValue })
             });
 
             const result = await response.json();
@@ -249,80 +245,82 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // --- Gestisce l'invio del form di prenotazione ---
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Impedisce il ricaricamento della pagina
+    if (form) {
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Impedisce il ricaricamento della pagina
 
-        if (!selectedEvent) {
-            messageDiv.textContent = 'Nessun evento selezionato. Torna indietro e scegline uno.';
-            messageDiv.style.color = 'red';
-            return;
-        }
+            if (!selectedEvent) {
+                messageDiv.textContent = 'Nessun evento selezionato. Torna indietro e scegline uno.';
+                messageDiv.style.color = 'red';
+                return;
+            }
 
-        messageDiv.textContent = 'Elaborazione prenotazione...';
-        messageDiv.style.color = '#333';
+            messageDiv.textContent = 'Elaborazione prenotazione...';
+            messageDiv.style.color = '#333';
 
-        // --- TENTATIVO DI ISCRIZIONE PUSH ---
-        // Proviamo a ottenere la sottoscrizione prima di inviare i dati
-        // Se l'utente rifiuta o c'è un errore, pushSubscription sarà null e la prenotazione procederà comunque.
-        const pushSubscription = await subscribeUserToPush();
-        // ------------------------------------
+            // --- TENTATIVO DI ISCRIZIONE PUSH ---
+            // Proviamo a ottenere la sottoscrizione prima di inviare i dati
+            // Se l'utente rifiuta o c'è un errore, pushSubscription sarà null e la prenotazione procederà comunque.
+            const pushSubscription = await subscribeUserToPush();
+            // ------------------------------------
 
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            booking_date: selectedEvent.booking_date, // La data è sempre quella dell'evento
-            // Usa il valore del turno selezionato se l'evento ha available_slots, altrimenti usa booking_time dell'evento
-            booking_time: (selectedEvent.available_slots && selectedEvent.available_slots.length > 0) ? brunchSlotSelector.value : selectedEvent.booking_time,
-            event_id: selectedEvent.id,
-            guests: parseInt(document.getElementById('guests').value, 10),
-            notes: document.getElementById('notes').value,
-            push_subscription: pushSubscription // Aggiungiamo l'oggetto sottoscrizione (o null)
-        };
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                booking_date: selectedEvent.booking_date, // La data è sempre quella dell'evento
+                // Usa il valore del turno selezionato se l'evento ha available_slots, altrimenti usa booking_time dell'evento
+                booking_time: (selectedEvent.available_slots && selectedEvent.available_slots.length > 0) ? brunchSlotSelector.value : selectedEvent.booking_time,
+                event_id: selectedEvent.id,
+                guests: parseInt(document.getElementById('guests').value, 10),
+                notes: document.getElementById('notes').value,
+                push_subscription: pushSubscription // Aggiungiamo l'oggetto sottoscrizione (o null)
+            };
 
-        messageDiv.textContent = 'Invio in corso...';
-        messageDiv.style.color = '#333';
+            messageDiv.textContent = 'Invio in corso...';
+            messageDiv.style.color = '#333';
 
-        try {
-            const response = await fetch(`${backendBaseUrl}/api/bookings`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+            try {
+                const response = await fetch(`${backendBaseUrl}/api/bookings`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
 
-            if (response.ok) {
-                const result = await response.json();
-                // Modifichiamo il messaggio di successo per includere il suggerimento sulla cartella spam
-                messageDiv.innerHTML = `
-                    <p style="font-size: 1.1em; margin-bottom: 10px;">Prenotazione confermata!</p>
-                `;
-                messageDiv.style.color = 'green';
+                if (response.ok) {
+                    const result = await response.json();
+                    // Modifichiamo il messaggio di successo per includere il suggerimento sulla cartella spam
+                    messageDiv.innerHTML = `
+                        <p style="font-size: 1.1em; margin-bottom: 10px;">Prenotazione confermata!</p>
+                    `;
+                    messageDiv.style.color = 'green';
 
-                // --- TRACCIAMENTO GOOGLE ANALYTICS ---
-                if (typeof gtag === 'function') {
-                    gtag('event', 'booking_completed', {
-                        'event_category': 'Booking',
-                        'event_label': selectedEvent.display_name,
-                        'value': formData.guests
-                    });
+                    // --- TRACCIAMENTO GOOGLE ANALYTICS ---
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'booking_completed', {
+                            'event_category': 'Booking',
+                            'event_label': selectedEvent.display_name,
+                            'value': formData.guests
+                        });
+                    }
+                    // -------------------------------------
+
+                    form.reset();
+                    setTimeout(showEventSelection, 4000); // Torna alla selezione eventi dopo 4 secondi
+                } else {
+                    const error = await response.json();
+                    messageDiv.textContent = `Errore: ${error.detail || 'Impossibile completare la prenotazione.'}`;
+                    messageDiv.style.color = 'red';
                 }
-                // -------------------------------------
-
-                form.reset();
-                setTimeout(showEventSelection, 4000); // Torna alla selezione eventi dopo 4 secondi
-            } else {
-                const error = await response.json();
-                messageDiv.textContent = `Errore: ${error.detail || 'Impossibile completare la prenotazione.'}`;
+            } catch (error) {
+                console.error('Errore di rete:', error);
+                messageDiv.textContent = 'Errore di connessione con il server. Riprova più tardi.';
                 messageDiv.style.color = 'red';
             }
-        } catch (error) {
-            console.error('Errore di rete:', error);
-            messageDiv.textContent = 'Errore di connessione con il server. Riprova più tardi.';
-            messageDiv.style.color = 'red';
-        }
-    });
+        });
+    }
 
     // --- NUOVO: Gestione iscrizione push all'installazione della PWA ---
     // Questo intercetta l'evento di installazione dell'app (quando l'utente la aggiunge alla Home).
@@ -345,6 +343,123 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             } catch (error) {
                 console.error('Errore di rete durante l\'invio della sottoscrizione post-installazione:', error);
+            }
+        }
+    });
+
+    // --- NUOVO: Definiamo le icone SVG per la campanella ---
+    const bellIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>`;
+    const bellActiveIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>`;
+
+    // --- NUOVO: Gestione Pulsante Notifiche a Campanella nella Navbar ---
+    const notificationBellBtn = document.getElementById('navbar-notification-btn');
+
+    // Funzione per aggiornare l'aspetto della campanella in base allo stato reale
+    async function updateBellUI() {
+        if (!notificationBellBtn || !('serviceWorker' in navigator)) return;
+
+        // --- NUOVO: Controllo se l'app è in modalità standalone (PWA installata) ---
+        // window.navigator.standalone serve per iOS, matchMedia per Android/Desktop
+        const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+
+        if (!isStandalone) {
+            notificationBellBtn.style.display = 'none';
+            return;
+        }
+
+        if (Notification.permission === 'denied') {
+            notificationBellBtn.style.display = 'none';
+            return;
+        }
+
+        try {
+            const registration = await navigator.serviceWorker.ready;
+            const subscription = await registration.pushManager.getSubscription();
+
+            notificationBellBtn.style.display = 'flex';
+            notificationBellBtn.disabled = false; // Assicura che sia sempre cliccabile
+
+            if (subscription) {
+                // UTENTE ISCRITTO: Mostra campanella piena
+                notificationBellBtn.innerHTML = bellActiveIconSVG;
+                notificationBellBtn.setAttribute('aria-label', 'Disattiva notifiche');
+                notificationBellBtn.title = 'Notifiche attive. Clicca per disattivare.';
+            } else {
+                // UTENTE NON ISCRITTO: Mostra campanella vuota
+                notificationBellBtn.innerHTML = bellIconSVG;
+                notificationBellBtn.setAttribute('aria-label', 'Attiva notifiche');
+                notificationBellBtn.title = 'Clicca per attivare le notifiche.';
+            }
+        } catch (e) {
+            console.error('Errore aggiornamento UI campanella:', e);
+        }
+    }
+
+    if (notificationBellBtn && 'Notification' in window && 'serviceWorker' in navigator) {
+        // 1. Controllo iniziale dello stato
+        updateBellUI();
+
+        // 2. Gestione del Click (Toggle)
+        notificationBellBtn.addEventListener('click', async () => {
+            notificationBellBtn.disabled = true; // Disabilita temporaneamente durante l'operazione
+
+            try {
+                const registration = await navigator.serviceWorker.ready;
+                const subscription = await registration.pushManager.getSubscription();
+
+                if (subscription) {
+                    // --- DISATTIVAZIONE ---
+                    await subscription.unsubscribe();
+                    alert('Notifiche disattivate.');
+                } else {
+                    // --- ATTIVAZIONE ---
+                    const newSubscription = await subscribeUserToPush();
+                    if (newSubscription) {
+                        const response = await fetch(`${backendBaseUrl}/api/push-subscribe`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(newSubscription)
+                        });
+                        
+                        if (response.ok) {
+                            alert('Notifiche attivate! Riceverai aggiornamenti sui nuovi eventi.');
+                        } else {
+                            throw new Error('Errore salvataggio backend');
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Errore durante il toggle notifiche:', error);
+                // Non mostriamo alert se l'utente ha semplicemente annullato il prompt dei permessi
+                if (Notification.permission !== 'default') {
+                    alert('Si è verificato un errore o i permessi sono stati negati.');
+                }
+            } finally {
+                // 3. Aggiorna l'icona in base al nuovo stato
+                await updateBellUI();
+            }
+        });
+    }
+
+    // --- NUOVO: Ascoltatore per attivazione notifiche da eventi esterni (es. Installazione App) ---
+    window.addEventListener('enable-push-notifications', async () => {
+        console.log('Richiesta iscrizione notifiche da evento esterno (Installa App)...');
+        const subscription = await subscribeUserToPush();
+        
+        if (subscription) {
+            try {
+                await fetch(`${backendBaseUrl}/api/push-subscribe`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(subscription)
+                });
+                console.log('Iscrizione push completata con successo.');
+                // Aggiorna l'icona della campanella se la funzione è disponibile
+                if (typeof updateBellUI === 'function') {
+                    await updateBellUI();
+                }
+            } catch (error) {
+                console.error('Errore salvataggio push (evento esterno):', error);
             }
         }
     });

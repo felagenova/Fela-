@@ -2176,3 +2176,69 @@ body.home-page {
     visibility: visible;
     transform: translateX(-50%) translateY(0);
 }
+
+/* --- Stili Navbar per la Homepage --- */
+.home-page .site-header-nav {
+    background-color: transparent;
+    border-bottom: none;
+}
+
+/* Rimosso filtro per mantenere il logo rosso su sfondo crema */
+.home-page .nav-logo img {
+    filter: none;
+}
+
+.home-page .notification-bell-btn {
+    color: #ff0403;
+}
+
+/* Nasconde l'hamburger menu solo nella homepage */
+.home-page .hamburger-menu {
+    display: none;
+}
+
+/* --- Stili per il pulsante Notifiche nella Navbar --- */
+.notification-bell-btn {
+    background: none;
+    border: none;
+    color: #ff0403;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease, transform 0.2s ease;
+    margin-left: 15px; /* Spazio dagli altri link del menu */
+}
+
+.notification-bell-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Colori specifici per pagina */
+.salotto-page .notification-bell-btn {
+    color: #5b5bffff;
+}
+.brunch-page .notification-bell-btn {
+    color: #487a7bff;
+}
+.svg-flyer-page .notification-bell-btn {
+    color: #f3f0ce;
+}
+
+@media (max-width: 767px) {
+    /* Sulla homepage in versione mobile, la navbar non deve essere un overlay a scomparsa */
+    .home-page .main-nav {
+        position: static;
+        transform: none;
+        height: auto;
+        width: auto;
+        background-color: transparent;
+        flex-direction: row;
+        gap: 0;
+    }
+    .notification-bell-btn {
+        margin-left: 0;
+        /* Nel menu hamburger, la campanella sarà un elemento come gli altri */
+    }
+}
