@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
             });
+            console.log('Sottoscrizione Push ottenuta con successo:', subscription);
             return subscription;
         } catch (err) {
             console.error('Impossibile iscrivere l\'utente alle notifiche:', err);
@@ -193,6 +194,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         mailingListMessage.textContent = 'Iscrizione in corso...';
         mailingListMessage.style.color = '#333';
 
+        // --- TENTATIVO DI ISCRIZIONE PUSH (Mailing List) ---
+        // Proviamo a ottenere la sottoscrizione anche qui per ricevere aggiornamenti sugli eventi
+        const pushSubscription = await subscribeUserToPush();
+
         // --- INTEGRAZIONE GOOGLE SHEETS ---
         // Incolla qui l'URL della tua Web App di Google Apps Script
         const googleSheetUrl = 'https://script.google.com/macros/s/AKfycbwS2TrHYapffuhYlXBgQ5B7gp7t2V7xhMWaO-FlJwZ3PsTwv5sKExzUqpIJaDbNfUzP/exec'; // Es: 'https://script.google.com/macros/s/AKfycbx.../exec'
@@ -218,7 +223,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await fetch(`${backendBaseUrl}/api/mailing-list-signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: emailValue })
+                body: JSON.stringify({ 
+                    email: emailValue,
+                    push_subscription: pushSubscription // Inviamo l'oggetto sottoscrizione al backend
+                })
             });
 
             const result = await response.json();
@@ -313,6 +321,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error('Errore di rete:', error);
             messageDiv.textContent = 'Errore di connessione con il server. Riprova più tardi.';
             messageDiv.style.color = 'red';
+        }
+    });
+
+    // --- NUOVO: Gestione iscrizione push all'installazione della PWA ---
+    // Questo intercetta l'evento di installazione dell'app (quando l'utente la aggiunge alla Home).
+    window.addEventListener('appinstalled', async (event) => {
+        console.log('PWA installata con successo!');
+        // Questo è un ottimo momento per chiedere il permesso per le notifiche,
+        // dato che l'utente ha mostrato un forte interesse per l'app.
+        const subscription = await subscribeUserToPush();
+        if (subscription) {
+            // Invia la sottoscrizione al backend per salvarla nella lista generale.
+            // In questo modo, l'utente riceverà le notifiche broadcast (es. programma del lunedì).
+            try {
+                const response = await fetch(`${backendBaseUrl}/api/push-subscribe`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(subscription)
+                });
+                if (response.ok) {
+                    console.log('Sottoscrizione push inviata al backend dopo installazione PWA.');
+                }
+            } catch (error) {
+                console.error('Errore di rete durante l\'invio della sottoscrizione post-installazione:', error);
+            }
         }
     });
 });
