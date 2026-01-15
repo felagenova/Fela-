@@ -347,9 +347,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // --- NUOVO: Definiamo le icone SVG per la campanella ---
-    const bellIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>`;
-    const bellActiveIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>`;
+    // --- NUOVO: Definiamo le icone SVG per la campanella (Nuovo Stile) ---
+    // Icona Outline (Disattivo) - Più pulita e moderna
+    const bellIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>`;
+    
+    // Icona Filled (Attivo) - Piena per indicare che le notifiche sono accese
+    const bellActiveIconSVG = `<svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor" stroke="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>`;
+
+    // --- NUOVO: Stili per l'animazione della campanella ---
+    const bellStyleSheet = document.createElement("style");
+    bellStyleSheet.innerText = `
+        @keyframes bellRing {
+            0% { transform: rotate(0); }
+            15% { transform: rotate(15deg); }
+            30% { transform: rotate(-15deg); }
+            45% { transform: rotate(10deg); }
+            60% { transform: rotate(-10deg); }
+            75% { transform: rotate(5deg); }
+            100% { transform: rotate(0); }
+        }
+        .bell-ringing svg {
+            animation: bellRing 0.8s ease-in-out;
+            transform-origin: top center;
+        }
+    `;
+    document.head.appendChild(bellStyleSheet);
 
     // --- NUOVO: Gestione Pulsante Notifiche a Campanella nella Navbar ---
     const notificationBellBtn = document.getElementById('navbar-notification-btn');
@@ -402,6 +424,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 2. Gestione del Click (Toggle)
         notificationBellBtn.addEventListener('click', async () => {
             notificationBellBtn.disabled = true; // Disabilita temporaneamente durante l'operazione
+            
+            // --- ANIMAZIONE ---
+            notificationBellBtn.classList.add('bell-ringing');
+            setTimeout(() => notificationBellBtn.classList.remove('bell-ringing'), 800); // Rimuovi classe dopo l'animazione
 
             try {
                 const registration = await navigator.serviceWorker.ready;
