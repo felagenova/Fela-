@@ -176,9 +176,23 @@ body.home-page {
     pointer-events: auto; /* Riabilita i click per i bottoni e il contenuto */
 }
 
+/* Animazione bagliore a impulso per il logo */
+@keyframes logo-glow-pulse {
+    0%, 85% {
+        filter: drop-shadow(0 0 0 rgba(255, 4, 3, 0));
+    }
+    92% {
+        filter: drop-shadow(0 0 15px rgba(255, 4, 3, 0.6));
+    }
+    100% {
+        filter: drop-shadow(0 0 0 rgba(255, 4, 3, 0));
+    }
+}
+
 .logo {
     max-width: 180px; /* Imposta una larghezza massima per il logo */
     height: auto; /* Mantiene le proporzioni */
+    animation: logo-glow-pulse 8s infinite ease-in-out; /* Bagliore ogni 8 secondi */
 }
 
 .claim {
@@ -212,6 +226,8 @@ body.home-page {
     font-family: "Red Hat Display", sans-serif; /* Forza il font corretto anche sui bottoni */
     font-weight: 700; /* Testo più in grassetto per leggibilità */
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Transizione per l'hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); /* Ombra leggera per profondità */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; /* Transizione per l'hover */
     text-align: center; /* Centra il testo all'interno del bottone */
     cursor: pointer; /* Assicura che il cursore sia corretto anche per i tag <button> */
 }
@@ -220,6 +236,7 @@ body.home-page {
     background-color: #ff0403; /* Sfondo rosso al passaggio */
     color: #f3f0ce; /* Testo chiaro al passaggio */
     transform: scale(1.05); /* Ingrandisce leggermente il bottone */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12); /* Ombra più pronunciata al passaggio */
 }
 
 /* Stile specifico per il bottone "Il Salotto" nella homepage */
@@ -552,11 +569,14 @@ body.home-page {
     }
 
     .button-container {
+        align-items: center; /* Forza il centraggio dei bottoni */
         width: 90%; /* Occupa il 90% della larghezza dello schermo */
     }
 
     .btn {
         min-width: auto; /* Rimuove la larghezza minima fissa per adattarsi al container */
+        width: 100%; /* Occupa tutta la larghezza del suo contenitore */
+        box-sizing: border-box; /* Assicura che padding e bordo non alterino la larghezza totale */
     }
 
     /* Riduci la dimensione del font per il bottone dell'evento su mobile */
