@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         });
                         
                         if (response.ok) {
-                            showCustomNotification('Notifiche attivate! Riceverai aggiornamenti sui nuovi eventi.');
+                            showCustomNotification('Notifiche attivate!');
                         } else {
                             throw new Error('Errore salvataggio backend');
                         }

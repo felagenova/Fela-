@@ -14,173 +14,6 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/prenotazione.css"> <!-- Puoi riutilizzare questo CSS o crearne uno specifico per l'admin -->
     <link rel="stylesheet" href="css/cookie-banner.css">
-    <style>
-        .booking-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Stile a card per le sezioni */
-        .admin-card {
-            background-color: #f3f0ce;
-            border-radius: 8px;
-            padding: 25px 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-            overflow: hidden; /* Per contenere le tabelle */
-        }
-
-        .admin-card h2 {
-            margin-top: 0;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #f3f0ce;
-            padding-bottom: 15px;
-        }
-
-        /* Stili per i badge di stato degli eventi */
-        .status {
-            padding: 4px 8px;
-            border-radius: 12px;
-            color: #f3f0ce;
-            font-weight: bold;
-            font-size: 0.9em;
-            white-space: nowrap;
-        }
-        .status-open {
-            background-color: #28a745; /* Verde */
-        }
-        .status-closed {
-            background-color: #dc3545; /* Rosso */
-        }
-        /* Stile base per i pulsanti di azione nella tabella */
-        .action-btn {
-            cursor: pointer;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
-            color: #f3f0ce;
-            font-weight: 500;
-            font-size: 14px;
-            transition: opacity 0.2s ease;
-        }
-        .action-btn:hover {
-            opacity: 0.85;
-        }
-        /* Colori specifici per i pulsanti */
-        .btn-close {
-            background-color: #dc3545; /* Rosso per "Chiudi" */
-        }
-        .btn-open {
-            background-color: #28a745; /* Verde per "Apri" */
-        }
-        .btn-delete {
-            background-color: #6c757d; /* Grigio scuro per "Elimina" */
-        }
-
-        /* Miglioramenti per le tabelle admin */
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .admin-table tbody tr:hover {
-            background-color: #f3f0ce; /* Evidenzia la riga al passaggio del mouse */
-        }
-        .admin-table tbody tr:nth-child(odd) {
-            background-color: #f3f0ce;
-        }
-
-        /* Allineamento di default per le tabelle admin */
-        .admin-table th { text-align: left; } /* Intestazioni a sinistra */
-
-
-        /* Allinea a destra il contenuto della colonna Azioni per entrambe le tabelle */
-        .admin-table th:last-child,
-        .admin-table td:last-child {
-            text-align: right;
-        }
-
-        /* Centra il contenuto delle colonne Max Ospiti (5) e Stato (6) */
-        .admin-table th:nth-child(5),
-        .admin-table td:nth-child(5),
-        .admin-table th:nth-child(6),
-        .admin-table td:nth-child(6) {
-            text-align: center;
-        }
-
-        /* Allinea a sinistra il primo dato della tabella eventi speciali (Nome Evento) */
-        #special-events-table tbody tr td:first-child {
-            font-weight: 500;
-            text-align: left;
-        }
-
-        /* Centra le intestazioni della tabella eventi speciali, escludendo la prima e l'ultima colonna */
-        #special-events-table th:not(:first-child):not(:last-child) {
-            text-align: center;
-        }
-
-        /* Allinea a sinistra nome, email e note nella tabella prenotazioni */
-        #bookings-table tbody tr td:nth-child(2),
-        #bookings-table tbody tr td:nth-child(3),
-        #bookings-table tbody tr td:nth-child(8) {
-            text-align: left;
-        }
-        #bookings-table tbody tr td:first-child {
-            text-align: center;
-        }
-
-        /* Stili per il form di creazione eventi */
-        #add-special-event-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Layout a due colonne */
-            gap: 20px 25px; /* Spazio verticale e orizzontale */
-            align-items: end; /* Allinea gli elementi in basso per coerenza */
-        }
-
-        /* Imposta il primo campo, il campo max ospiti e il gruppo turni a larghezza piena */
-        #add-special-event-form .form-group:first-child,
-        #add-special-event-form .max-guests-group,
-        #add-special-event-form .shifts-group {
-            grid-column: 1 / -1; /* Occupa tutta la larghezza */
-        }
-
-        /* Stili per il gruppo dei turni */
-        .shifts-group {
-            display: flex;
-            flex-direction: column;
-        }
-        .shifts-inputs {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Tre colonne per gli input dei turni */
-            gap: 15px;
-        }
-        .shift-row {
-            display: flex;
-            gap: 5px;
-        }
-        .shift-row input[type="number"] {
-            width: 70px; /* Campo più piccolo per il numero */
-        }
-
-        /* Centra il pulsante di invio nel form eventi */
-        #add-special-event-form .btn-submit {
-            grid-column: 1 / -1; /* Occupa tutta la larghezza della griglia */
-            justify-self: center; /* Centra il pulsante orizzontalmente */
-            width: auto;
-        }
-
-        /* Media Query per il form su mobile */
-        @media (max-width: 768px) {
-            #add-special-event-form {
-                grid-template-columns: 1fr; /* Una sola colonna per il form */
-            }
-            .shifts-inputs {
-                grid-template-columns: 1fr; /* Una sola colonna per i turni */
-            }
-            .admin-card {
-                padding: 15px; /* Riduci il padding della card */
-            }
-        }
-    </style>
 </head>
 <body class="admin-page">
 
@@ -221,6 +54,31 @@
             <div id="admin-message" style="margin-top: 15px;"></div>
 
             <div id="bookings-list" style="margin-top: 30px; display: none;">
+                
+                <!-- NUOVO: Sezione Invio Notifiche Broadcast -->
+                <div class="admin-card">
+                    <h2>Invia Notifica a Tutti (Broadcast)</h2>
+                    <p style="margin-top: -15px; margin-bottom: 20px; font-size: 16px;">
+                        Utenti iscritti alle notifiche: <strong id="subscriber-count" style="color: #ff0403;">Caricamento...</strong>
+                    </p>
+                    <form id="broadcast-notification-form" style="display: grid; gap: 15px;">
+                        <div class="form-group">
+                            <label for="notif_title">Titolo Notifica</label>
+                            <input type="text" id="notif_title" name="title" required placeholder="Es: Stasera musica live!" style="width: 100%; padding: 10px; border: 2px solid #ff0403; border-radius: 8px;">
+                        </div>
+                        <div class="form-group">
+                            <label for="notif_body">Messaggio</label>
+                            <textarea id="notif_body" name="body" rows="3" required placeholder="Es: Vi aspettiamo dalle 18:00..." style="width: 100%; padding: 10px; border: 2px solid #ff0403; border-radius: 8px; font-family: inherit;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="notif_url">Link di destinazione (Opzionale)</label>
+                            <input type="text" id="notif_url" name="url" placeholder="https://felagenova.github.io/eventi.html" style="width: 100%; padding: 10px; border: 2px solid #ff0403; border-radius: 8px;">
+                        </div>
+                        <button type="submit" class="btn btn-submit" style="justify-self: start;">Invia Notifica 🔔</button>
+                    </form>
+                    <div id="broadcast-message" style="margin-top: 15px; font-weight: bold;"></div>
+                </div>
+
                 <!-- Sezione per la gestione manuale degli eventi -->
                 <div id="special-events-card" class="admin-card">
                     <h2>Creazione Eventi</h2>
@@ -282,7 +140,7 @@
 
                 <div class="admin-card">
                     <h2>Tutte le Prenotazioni</h2>
-                    <div class="admin-controls" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <div class="admin-controls">
                         <div class="filter-group">
                             <label for="event-filter">Filtra per evento:</label>
                             <select id="event-filter">
@@ -290,7 +148,7 @@
                                 <!-- Opzioni caricate da JS -->
                             </select>
                         </div>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                        <div class="admin-actions">
                             <button id="load-bookings-btn" class="btn">Carica Tutte le Prenotazioni</button>
                             <button id="export-pdf" class="btn">Esporta in PDF</button>
                         </div>

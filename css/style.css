@@ -2257,7 +2257,7 @@ body.home-page {
     font-family: "Red Hat Display", sans-serif;
     font-weight: 900; /* Font Heavy come i titoli */
     font-size: 18px;
-    text-transform: none; /* Testo normale, non maiuscolo */
+    text-transform: uppercase; /* Testo maiuscolo stile Fela */
     box-shadow: 0 10px 30px rgba(0,0,0,0.25); /* Ombra più decisa */
     z-index: 10005; /* Sopra a tutto */
     opacity: 0;
@@ -2273,4 +2273,239 @@ body.home-page {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(80px); /* Scende sotto la navbar */
+}
+
+/* Stile per il contenuto interno (icona + testo) */
+.notification-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* =========================================
+   --- STILI PER LA PAGINA ADMIN ---
+   ========================================= */
+
+/* Override per allargare il contenitore nella pagina admin */
+.admin-page .page-container {
+    max-width: 1600px; /* Molto più largo per accomodare la tabella */
+    width: 95%;
+    padding: 30px 20px;
+}
+
+/* Wrapper specifico per la pagina admin (sovrascrive prenotazione.css) */
+.admin-page .booking-wrapper {
+    max-width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    padding: 0;
+}
+
+/* Stile a card per le sezioni */
+.admin-card {
+    background-color: #f3f0ce;
+    border-radius: 8px;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+    /* overflow: hidden; Rimosso per evitare che tagli ombre o contenuti */
+    border: 2px solid #ff0403; /* Bordo rosso per coerenza */
+}
+
+/* Assicura che gli input non sbordino */
+.admin-card input, .admin-card textarea, .admin-card select {
+    box-sizing: border-box;
+}
+
+.admin-card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ff0403;
+    padding-bottom: 15px;
+    color: #ff0403;
+}
+
+/* Stili per i badge di stato */
+.status {
+    padding: 4px 8px;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+.status-open { background-color: #28a745; } /* Verde */
+.status-closed { background-color: #dc3545; } /* Rosso */
+
+/* Pulsanti di azione nelle tabelle */
+.action-btn {
+    cursor: pointer;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+    margin-left: 5px;
+}
+.action-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+.btn-close { background-color: #dc3545; }
+.btn-open { background-color: #28a745; }
+.btn-delete { background-color: #6c757d; }
+
+/* Tabelle Admin */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.admin-table th, .admin-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+
+.admin-table th {
+    background-color: #ff0403;
+    color: #f3f0ce;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.admin-table tbody tr:hover { background-color: #f9f9f9; }
+.admin-table tbody tr:nth-child(even) { background-color: #fcfcfc; }
+
+/* Allineamenti specifici colonne */
+.admin-table th:last-child, .admin-table td:last-child { text-align: right; }
+.admin-table th:nth-child(5), .admin-table td:nth-child(5),
+.admin-table th:nth-child(6), .admin-table td:nth-child(6) { text-align: center; }
+
+/* Form Creazione Eventi */
+#add-special-event-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 25px;
+    align-items: end;
+}
+
+#add-special-event-form .form-group:first-child,
+#add-special-event-form .max-guests-group,
+#add-special-event-form .shifts-group {
+    grid-column: 1 / -1;
+}
+
+#add-special-event-form .btn-submit {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: auto;
+    min-width: 200px;
+}
+
+/* Gruppo Turni */
+.shifts-group { display: flex; flex-direction: column; }
+.shifts-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+.shift-row { display: flex; gap: 5px; align-items: center; }
+.shift-row input[type="number"] { width: 80px; }
+
+/* Form Login Admin */
+.admin-login-form {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* --- RESPONSIVE ADMIN (Mobile) --- */
+@media (max-width: 768px) {
+    .admin-page .booking-wrapper { padding: 0 10px; }
+    .admin-card { padding: 15px; }
+
+    /* Form diventa a colonna singola */
+    #add-special-event-form { grid-template-columns: 1fr; }
+    .shifts-inputs { grid-template-columns: 1fr; }
+
+    /* Trasformazione Tabelle in Card */
+    .admin-table, .admin-table thead, .admin-table tbody, 
+    .admin-table th, .admin-table td, .admin-table tr {
+        display: block;
+    }
+
+    .admin-table thead { display: none; } /* Nasconde intestazioni */
+
+    .admin-table tr {
+        margin-bottom: 20px;
+        border: 2px solid #ff0403;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .admin-table td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        padding: 12px 15px;
+        display: flex;
+        justify-content: space-between; /* Allinea etichetta e valore */
+        align-items: center;
+        text-align: right;
+        min-height: auto;
+    }
+
+    .admin-table td:last-child {
+        border-bottom: none;
+        justify-content: flex-end;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        gap: 10px;
+    }
+
+    /* Etichetta generata via CSS usando data-label */
+    .admin-table td::before {
+        content: attr(data-label);
+        position: static;
+        width: auto;
+        text-align: left;
+        font-weight: 700;
+        color: #ff0403;
+        transform: none;
+        padding-right: 15px;
+        flex-shrink: 0;
+        max-width: 40%;
+    }
+
+    /* Gestione del testo lungo nelle celle (es. email, note) */
+    .admin-table td .cell-value {
+        text-align: right;
+        word-break: break-word;
+        max-width: 60%;
+    }
+    
+    /* Nasconde etichetta per la riga azioni */
+    .admin-table td[data-label="Azione"]::before,
+    .admin-table td[data-label="Azioni"]::before {
+        display: none;
+    }
+    
+    .admin-table td[data-label="Azione"],
+    .admin-table td[data-label="Azioni"] {
+        justify-content: center; /* Centra i bottoni */
+    }
 }

@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const addSpecialEventForm = document.getElementById('add-special-event-form');
     const specialEventsMessageDiv = document.getElementById('special-events-message');
     const specialEventsTableBody = document.getElementById('special-events-table-body');
+    
+    // Elementi per le notifiche broadcast
+    const broadcastForm = document.getElementById('broadcast-notification-form');
+    const broadcastMessageDiv = document.getElementById('broadcast-message');
+    const subscriberCountSpan = document.getElementById('subscriber-count');
+
     const loadBookingsBtn = document.getElementById('load-bookings-btn');
     let bookableEvents = [];
     let totalBookings = 0;
@@ -53,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 await populateEventFilter(); // Popola il filtro
                 loadBookings(currentPage); // Carica la prima pagina
                 await loadSpecialEvents(); // Carica gli eventi speciali
+                loadSubscriberCount(); // Carica il conteggio iscritti
 
                 // Scrolla dolcemente alla card di gestione eventi
                 const specialEventsCard = document.getElementById('special-events-card');
@@ -104,6 +111,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- Helper per gestire lo stato di caricamento dei pulsanti ---
+    function setButtonLoading(button, isLoading) {
+        if (isLoading) {
+            button.classList.add('btn-loading');
+            button.disabled = true;
+        } else {
+            button.classList.remove('btn-loading');
+            button.disabled = false;
+        }
+    }
+
     // --- Funzione per caricare le prenotazioni con paginazione ---
     async function loadBookings(page) {
         const skip = page * bookingsPerPage;
@@ -119,6 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 urlWithParams += `&event_date=${date}&event_time=${time}`;
             }
         }
+
+        // Se la chiamata è stata attivata dal pulsante "Carica", mostra lo spinner
+        setButtonLoading(loadBookingsBtn, true);
 
         try {
             const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
@@ -147,6 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Errore di rete:', error);
             adminMessageDiv.textContent = 'Errore di connessione con il server.';
             adminMessageDiv.style.color = 'red';
+        } finally {
+            setButtonLoading(loadBookingsBtn, false);
         }
     }
 
@@ -217,6 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
         adminMessageDiv.textContent = 'Creazione del PDF in corso...';
         adminMessageDiv.style.color = '#333';
 
+        setButtonLoading(exportPdfButton, true);
+
         // 1. Recupera TUTTE le prenotazioni per il filtro corrente per calcolare il totale degli ospiti
         let allBookingsForFilter = [];
         let totalGuests = 0;
@@ -246,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             adminMessageDiv.textContent = `Errore nella preparazione del PDF: ${error.message}`;
             adminMessageDiv.style.color = 'red';
+            setButtonLoading(exportPdfButton, false);
             return; // Interrompe l'esecuzione se non riesce a caricare i dati
         }
 
@@ -334,6 +360,76 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Errore durante l\'esportazione in PDF:', error);
             adminMessageDiv.textContent = 'Impossibile esportare il PDF. Controlla la console per i dettagli.';
             adminMessageDiv.style.color = 'red';
+        } finally {
+            setButtonLoading(exportPdfButton, false);
+        }
+    }
+
+    // --- Gestione Invio Notifiche Broadcast ---
+    if (broadcastForm) {
+        broadcastForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!confirm('Sei sicuro di voler inviare questa notifica a TUTTI gli utenti iscritti?')) {
+                return;
+            }
+
+            const title = document.getElementById('notif_title').value;
+            const body = document.getElementById('notif_body').value;
+            const url = document.getElementById('notif_url').value || 'https://felagenova.github.io';
+
+            broadcastMessageDiv.textContent = 'Invio in corso...';
+            broadcastMessageDiv.style.color = '#333';
+
+            try {
+                const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
+                const response = await fetch(`${backendBaseUrl}/api/admin/broadcast-notification`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Basic ${encodedCredentials}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title, body, url }),
+                });
+
+                if (response.ok) {
+                    broadcastMessageDiv.textContent = 'Notifica inviata con successo!';
+                    broadcastMessageDiv.style.color = 'green';
+                    broadcastForm.reset();
+                    // Rimuovi il messaggio dopo qualche secondo
+                    setTimeout(() => { broadcastMessageDiv.textContent = ''; }, 5000);
+                } else {
+                    const error = await response.json();
+                    broadcastMessageDiv.textContent = `Errore: ${error.detail || 'Impossibile inviare la notifica.'}`;
+                    broadcastMessageDiv.style.color = 'red';
+                }
+            } catch (error) {
+                console.error('Errore di rete:', error);
+                broadcastMessageDiv.textContent = 'Errore di connessione con il server.';
+                broadcastMessageDiv.style.color = 'red';
+            }
+        });
+    }
+
+    // --- Funzione per caricare il conteggio degli iscritti ---
+    async function loadSubscriberCount() {
+        if (!subscriberCountSpan) return;
+        
+        try {
+            const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
+            const response = await fetch(`${backendBaseUrl}/api/admin/push-subscriptions/count`, {
+                headers: { 'Authorization': `Basic ${encodedCredentials}` }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                subscriberCountSpan.textContent = data.count;
+            } else {
+                subscriberCountSpan.textContent = "N/D";
+            }
+        } catch (error) {
+            console.error("Errore caricamento conteggio iscritti:", error);
+            subscriberCountSpan.textContent = "Err";
         }
     }
 
