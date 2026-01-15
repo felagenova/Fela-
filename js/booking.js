@@ -376,6 +376,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- NUOVO: Gestione Pulsante Notifiche a Campanella nella Navbar ---
     const notificationBellBtn = document.getElementById('navbar-notification-btn');
 
+    // Funzione helper per mostrare notifiche in stile "Fela!"
+    function showCustomNotification(message) {
+        let notification = document.getElementById('custom-notification-toast');
+        
+        // Se non esiste, crealo dinamicamente
+        if (!notification) {
+            notification = document.createElement('div');
+            notification.id = 'custom-notification-toast';
+            notification.className = 'custom-notification';
+            document.body.appendChild(notification);
+        }
+        
+        // Inseriamo l'icona e il messaggio in un contenitore flex per allinearli
+        notification.innerHTML = `<div class="notification-content">${bellActiveIconSVG}<span>${message}</span></div>`;
+        notification.classList.add('show');
+        
+        // Nascondi automaticamente dopo 4 secondi (un po' più lungo per leggere)
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 4000);
+    }
+
     // Funzione per aggiornare l'aspetto della campanella in base allo stato reale
     async function updateBellUI() {
         if (!notificationBellBtn || !('serviceWorker' in navigator)) return;
@@ -436,7 +458,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (subscription) {
                     // --- DISATTIVAZIONE ---
                     await subscription.unsubscribe();
-                    alert('Notifiche disattivate.');
+                    showCustomNotification('Notifiche disattivate.');
                 } else {
                     // --- ATTIVAZIONE ---
                     const newSubscription = await subscribeUserToPush();
@@ -448,7 +470,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         });
                         
                         if (response.ok) {
-                            alert('Notifiche attivate! Riceverai aggiornamenti sui nuovi eventi.');
+                            showCustomNotification('Notifiche attivate! Riceverai aggiornamenti sui nuovi eventi.');
                         } else {
                             throw new Error('Errore salvataggio backend');
                         }
@@ -458,7 +480,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.error('Errore durante il toggle notifiche:', error);
                 // Non mostriamo alert se l'utente ha semplicemente annullato il prompt dei permessi
                 if (Notification.permission !== 'default') {
-                    alert('Si è verificato un errore o i permessi sono stati negati.');
+                    showCustomNotification('Si è verificato un errore o i permessi sono stati negati.');
                 }
             } finally {
                 // 3. Aggiorna l'icona in base al nuovo stato
