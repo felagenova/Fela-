@@ -2257,7 +2257,7 @@ body.home-page {
     font-family: "Red Hat Display", sans-serif;
     font-weight: 900; /* Font Heavy come i titoli */
     font-size: 18px;
-    text-transform: uppercase; /* Testo maiuscolo stile Fela */
+    text-transform: none; /* Testo normale, non maiuscolo */
     box-shadow: 0 10px 30px rgba(0,0,0,0.25); /* Ombra più decisa */
     z-index: 10005; /* Sopra a tutto */
     opacity: 0;
@@ -2273,12 +2273,4 @@ body.home-page {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(80px); /* Scende sotto la navbar */
-}
-
-/* Stile per il contenuto interno (icona + testo) */
-.notification-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
 }

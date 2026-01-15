@@ -388,8 +388,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.body.appendChild(notification);
         }
         
-        // Inseriamo l'icona e il messaggio in un contenitore flex per allinearli
-        notification.innerHTML = `<div class="notification-content">${bellActiveIconSVG}<span>${message}</span></div>`;
+        // Impostiamo solo il testo del messaggio (senza icona)
+        notification.textContent = message;
+        
+        // --- FIX ANIMAZIONE ---
+        // Rimuoviamo la classe e forziamo un "reflow" (lettura offsetWidth)
+        // Questo costringe il browser a calcolare lo stato iniziale (nascosto) prima di applicare l'animazione.
+        notification.classList.remove('show');
+        void notification.offsetWidth; 
+
         notification.classList.add('show');
         
         // Nascondi automaticamente dopo 4 secondi (un po' più lungo per leggere)
