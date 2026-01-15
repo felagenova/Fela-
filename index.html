@@ -28,8 +28,8 @@
     <meta name="view-transition" content="same-origin">
 
     <!-- 1. Precarica il file CSS completo in background -->
-    <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+    <link rel="preload" href="css/style.css?v=fix_1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css?v=fix_1"></noscript>
     <link rel="stylesheet" href="css/cookie-banner.css">
     
     <!-- Google tag (gtag.js) - INCOLLA QUI IL TUO CODICE GOOGLE ANALYTICS -->
@@ -261,6 +261,7 @@
                 navigator.serviceWorker.register('service-worker.js')
                     .then(registration => {
                         console.log('ServiceWorker registrato con successo:', registration.scope);
+                        registration.update(); // Forza l'aggiornamento
                     })
                     .catch(error => {
                         console.log('Registrazione ServiceWorker fallita:', error);

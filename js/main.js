@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             navigator.serviceWorker.register('service-worker.js')
                 .then(registration => {
                     console.log('ServiceWorker registrato con successo:', registration.scope);
+                    // Forza il controllo di aggiornamenti del Service Worker ad ogni caricamento
+                    registration.update();
                 })
                 .catch(error => {
                     console.log('Registrazione ServiceWorker fallita:', error);
