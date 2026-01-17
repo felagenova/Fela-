@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 phone: document.getElementById('phone').value,
                 booking_date: selectedEvent.booking_date, // La data è sempre quella dell'evento
                 // Usa il valore del turno selezionato se l'evento ha available_slots, altrimenti usa booking_time dell'evento
-                booking_time: (selectedEvent.available_slots && selectedEvent.available_slots.length > 0) ? brunchSlotSelector.value : selectedEvent.booking_time,
+                booking_time: (selectedEvent.available_slots && selectedEvent.available_slots.length > 0) ? brunchSlotSelector.value : (selectedEvent.booking_time || null),
                 event_id: selectedEvent.id,
                 guests: parseInt(document.getElementById('guests').value, 10),
                 notes: document.getElementById('notes').value,

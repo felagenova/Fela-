@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadBookingsBtn = document.getElementById('load-bookings-btn');
     let bookableEvents = [];
     let totalBookings = 0;
-    const bookingsPerPage = 10;
+    const bookingsPerPage = 50; // Aumentato drasticamente per evitare che le prenotazioni finiscano in pagina 2
     const MAX_EXPORT_RECORDS = 2000; // Limite massimo di record per l'esportazione PDF
 
     const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     // Altrimenti, crea una singola opzione per l'evento (speciale o con orario unico)
                     const option = document.createElement('option');
-                    option.value = event.id ? `special_${event.id}` : `brunch_${event.booking_date}|${event.booking_time || '00:00'}`;
+                    option.value = event.id ? `special_${event.id}` : `brunch_${event.booking_date}|${event.booking_time || ''}`; // Usa stringa vuota se non c'è orario
                     option.textContent = event.display_name;
                     eventFilter.appendChild(option);
                 }
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Funzione per caricare le prenotazioni con paginazione ---
     async function loadBookings(page) {
         const skip = page * bookingsPerPage;
-        let urlWithParams = `${backendBaseUrl}/api/admin/bookings?skip=${skip}&limit=${bookingsPerPage}`;
+        let urlWithParams = `${backendBaseUrl}/api/admin/bookings?skip=${skip}&limit=${bookingsPerPage}&_t=${Date.now()}`; // Aggiunto timestamp per evitare caching
 
         const filterValue = eventFilter.value;
         if (filterValue !== 'all') {
@@ -134,7 +134,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 urlWithParams += `&event_id=${eventId}`;
             } else if (filterValue.startsWith('brunch_')) {
                 const [date, time] = filterValue.substring(7).split('|');
-                urlWithParams += `&event_date=${date}&event_time=${time}`;
+                urlWithParams += `&event_date=${date}`;
+                // Aggiungi il filtro orario solo se c'è un orario specifico, altrimenti mostra tutto il giorno
+                if (time) urlWithParams += `&event_time=${time}`;
             }
         }
 
@@ -193,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     booking.email,
                     booking.phone,
                     booking.booking_date,
-                    booking.booking_time,
+                    booking.booking_time || '', // Gestisce il caso null per evitare errori visivi
                     booking.guests,
                     booking.notes || ''
                 ];
@@ -253,7 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 urlToFetchAll += `&event_id=${filterValue.substring(8)}`;
             } else if (filterValue.startsWith('brunch_')) {
                 const [date, time] = filterValue.substring(7).split('|');
-                urlToFetchAll += `&event_date=${date}&event_time=${time}`;
+                urlToFetchAll += `&event_date=${date}`;
+                if (time) urlToFetchAll += `&event_time=${time}`;
             }
         }
 
@@ -312,7 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 urlToFetch += `&event_id=${eventId}`;
             } else if (filterValue.startsWith('brunch_')) {
                 const [date, time] = filterValue.substring(7).split('|');
-                urlToFetch += `&event_date=${date}&event_time=${time}`;
+                urlToFetch += `&event_date=${date}`;
+                if (time) urlToFetch += `&event_time=${time}`;
             }
         }
 
