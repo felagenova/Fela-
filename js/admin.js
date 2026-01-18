@@ -515,7 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (events.length === 0) {
                 const row = specialEventsTableBody.insertRow();
                 const cell = row.insertCell();
-                cell.colSpan = 7; // Occupa tutte le colonne (aggiornato per Max Ospiti)
+                cell.colSpan = 8; // Occupa tutte le colonne (aggiornato per Posti Rim.)
                 cell.textContent = 'Nessun evento speciale aggiunto.';
                 cell.style.textAlign = 'center';
                 return;
@@ -551,12 +551,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td data-label="Ora">${event.booking_time ? event.booking_time.substring(0, 5) : 'N/D'}</td>
                     <td data-label="Turni">${turniText}</td>
                     <td data-label="Max Ospiti">${maxGuestsText}</td>
+                    <td data-label="Posti Rim." id="seats-remaining-${event.id}">...</td>
                     <td data-label="Stato"><span class="status ${statusClass}">${statusText}</span></td>
                     <td data-label="Azione">
                         <button class="action-btn ${toggleButtonClass}" data-event-id="${event.id}">${toggleButtonText}</button>
                         <button class="action-btn btn-delete" data-event-id="${event.id}">Elimina</button>
                     </td>
                 `;
+            });
+
+            // Calcola e aggiorna i posti rimanenti in modo asincrono
+            events.forEach(async event => {
+                const cell = document.getElementById(`seats-remaining-${event.id}`);
+                if (cell) {
+                    try {
+                        const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
+                        const res = await fetch(`${backendBaseUrl}/api/admin/bookings?event_id=${event.id}&limit=2000`, {
+                             headers: { 'Authorization': `Basic ${encodedCredentials}` }
+                        });
+                        if(res.ok) {
+                            const data = await res.json();
+                            const booked = (data.bookings || []).reduce((acc, b) => acc + (b.guests || 0), 0);
+                            const max = event.max_guests || 25;
+                            const remaining = max - booked;
+                            cell.textContent = remaining;
+                            cell.style.color = remaining <= 0 ? 'red' : 'green';
+                            cell.style.fontWeight = 'bold';
+                        }
+                    } catch(e) {
+                        console.error("Errore calcolo posti rimanenti:", e);
+                    }
+                }
             });
     
             // Aggiungi i listener per i pulsanti dopo aver creato la tabella
