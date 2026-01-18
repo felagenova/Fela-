@@ -138,6 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     eventBox.innerHTML = `
                         <h3 class="event-box-title">${event.display_name}</h3>
+                        ${event.description ? `<p style="font-size: 0.95rem; margin: 5px 0; font-style: italic; color: #444;">${event.description}</p>` : ''}
                         <p class="event-box-date">${formattedDate}</p>
                     `;
 

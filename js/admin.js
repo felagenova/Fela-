@@ -442,6 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
 
         const eventDisplayName = document.getElementById('event_display_name').value;
+        const eventDescription = document.getElementById('event_description').value;
         const eventDate = document.getElementById('event_date').value;
         const eventTime = document.getElementById('event_time').value; // Può essere vuoto
         const maxGuestsInput = document.getElementById('max_guests').value; // Recupera il valore max_guests
@@ -476,6 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({
                     display_name: eventDisplayName,
+                    description: eventDescription, // Invia la descrizione al backend
                     booking_date: eventDate,
                     booking_time: eventTime || null, // Invia null se l'ora non è specificata
                     available_slots: eventSlots, // Invia la lista di turni raccolti
@@ -546,7 +548,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const maxGuestsText = event.max_guests ? event.max_guests : '25 (Default)';
     
                 row.innerHTML = `
-                    <td data-label="Nome Evento">${event.display_name}</td>
+                    <td data-label="Nome Evento">
+                        <strong>${event.display_name}</strong>
+                        ${event.description ? `<br><small style="font-style: italic; color: #555;">${event.description}</small>` : ''}
+                    </td>
                     <td data-label="Data">${new Date(event.booking_date).toLocaleDateString()}</td>
                     <td data-label="Ora">${event.booking_time ? event.booking_time.substring(0, 5) : 'N/D'}</td>
                     <td data-label="Turni">${turniText}</td>
