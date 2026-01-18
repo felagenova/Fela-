@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const addSpecialEventForm = document.getElementById('add-special-event-form');
     const specialEventsMessageDiv = document.getElementById('special-events-message');
     const specialEventsTableBody = document.getElementById('special-events-table-body');
+    const saveEventBtn = document.getElementById('save-event-btn');
+    const cancelEditBtn = document.getElementById('cancel-edit-btn');
     
     // Elementi per le notifiche broadcast
     const broadcastForm = document.getElementById('broadcast-notification-form');
@@ -25,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalBookings = 0;
     const bookingsPerPage = 50; // Aumentato drasticamente per evitare che le prenotazioni finiscano in pagina 2
     const MAX_EXPORT_RECORDS = 2000; // Limite massimo di record per l'esportazione PDF
+    let currentSpecialEvents = []; // Store locale per gli eventi
 
     const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
     // const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale
@@ -441,6 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addSpecialEventForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        const eventId = document.getElementById('event_id').value;
         const eventDisplayName = document.getElementById('event_display_name').value;
         const eventDescription = document.getElementById('event_description').value;
         const eventDate = document.getElementById('event_date').value;
@@ -464,13 +468,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        specialEventsMessageDiv.textContent = 'Aggiunta evento in corso...';
+        const isEdit = !!eventId;
+        const url = isEdit ? `${backendBaseUrl}/api/admin/special-events/${eventId}` : `${backendBaseUrl}/api/admin/special-events`;
+        const method = isEdit ? 'PUT' : 'POST';
+
+        specialEventsMessageDiv.textContent = isEdit ? 'Aggiornamento evento...' : 'Aggiunta evento in corso...';
         specialEventsMessageDiv.style.color = '#333';
 
         try {
             const encodedCredentials = btoa(`admin:${document.getElementById('admin_password').value}`);
-            const response = await fetch(`${backendBaseUrl}/api/admin/special-events`, {
-                method: 'POST',
+            const response = await fetch(url, {
+                method: method,
                 headers: {
                     'Authorization': `Basic ${encodedCredentials}`,
                     'Content-Type': 'application/json',
@@ -487,9 +495,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                specialEventsMessageDiv.textContent = 'Evento aggiunto con successo!';
+                specialEventsMessageDiv.textContent = isEdit ? 'Evento modificato con successo!' : 'Evento aggiunto con successo!';
                 specialEventsMessageDiv.style.color = 'green';
-                addSpecialEventForm.reset();
+                resetEventForm();
                 await loadSpecialEvents(); // Ricarica la lista degli eventi speciali
                 await populateEventFilter(); // Ricarica il filtro eventi
             } else {
@@ -504,6 +512,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    function resetEventForm() {
+        addSpecialEventForm.reset();
+        document.getElementById('event_id').value = '';
+        saveEventBtn.textContent = 'Aggiungi Evento';
+        cancelEditBtn.style.display = 'none';
+        specialEventsMessageDiv.textContent = '';
+    }
+
+    cancelEditBtn.addEventListener('click', resetEventForm);
+
+    function startEditEvent(eventId) {
+        const event = currentSpecialEvents.find(e => e.id == eventId);
+        if (!event) return;
+
+        document.getElementById('event_id').value = event.id;
+        document.getElementById('event_display_name').value = event.display_name;
+        document.getElementById('event_description').value = event.description || '';
+        document.getElementById('event_date').value = event.booking_date;
+        document.getElementById('event_time').value = event.booking_time ? event.booking_time.substring(0, 5) : '';
+        document.getElementById('max_guests').value = event.max_guests || '';
+
+        // Reset turni
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById(`event_shift_${i}`).value = '';
+            document.getElementById(`event_shift_${i}_max`).value = '';
+        }
+
+        // Popola turni
+        let slots = event.available_slots;
+        if (typeof slots === 'string') {
+            try { slots = JSON.parse(slots); } catch(e) { slots = []; }
+        }
+        
+        if (Array.isArray(slots)) {
+            slots.forEach((slot, index) => {
+                if (index < 3) {
+                    // Assicurati che il formato sia HH:MM per l'input time
+                    const timeVal = slot.length > 5 ? slot.substring(0, 5) : slot;
+                    document.getElementById(`event_shift_${index + 1}`).value = timeVal;
+                    
+                    if (event.slot_capacities && event.slot_capacities[timeVal]) {
+                        document.getElementById(`event_shift_${index + 1}_max`).value = event.slot_capacities[timeVal];
+                    }
+                }
+            });
+        }
+
+        saveEventBtn.textContent = 'Aggiorna Evento';
+        cancelEditBtn.style.display = 'inline-block';
+        specialEventsMessageDiv.textContent = '';
+        document.getElementById('special-events-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
     async function loadSpecialEvents() {
         specialEventsTableBody.innerHTML = ''; // Pulisce il corpo della tabella
         try {
@@ -513,6 +574,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             if (!response.ok) throw new Error('Errore nel caricamento degli eventi speciali.');
             const events = await response.json();
+            currentSpecialEvents = events; // Salva nello store locale
     
             if (events.length === 0) {
                 const row = specialEventsTableBody.insertRow();
@@ -560,6 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td data-label="Stato"><span class="status ${statusClass}">${statusText}</span></td>
                     <td data-label="Azione">
                         <button class="action-btn ${toggleButtonClass}" data-event-id="${event.id}">${toggleButtonText}</button>
+                        <button class="action-btn btn-edit" data-event-id="${event.id}" style="background-color: #ffc107; color: #000; margin-left: 5px;">Modifica</button>
                         <button class="action-btn btn-delete" data-event-id="${event.id}">Elimina</button>
                     </td>
                 `;
@@ -611,6 +674,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleEventStatus(eventId);
             } else if (target.matches('.btn-delete')) {
                 deleteSpecialEvent(eventId);
+            } else if (target.matches('.btn-edit')) {
+                startEditEvent(eventId);
             }
         });
     }

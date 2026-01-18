@@ -83,6 +83,7 @@
                 <div id="special-events-card" class="admin-card">
                     <h2>Creazione Eventi</h2>
                     <form id="add-special-event-form">
+                        <input type="hidden" id="event_id" name="event_id">
                         <div class="form-group">
                             <label for="event_display_name">Nome Evento</label>
                             <input type="text" id="event_display_name" name="event_display_name" required>
@@ -120,7 +121,10 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-submit">Aggiungi Evento</button>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button type="submit" class="btn btn-submit" id="save-event-btn">Aggiungi Evento</button>
+                            <button type="button" class="btn" id="cancel-edit-btn" style="display: none; background-color: #6c757d; color: white;">Annulla Modifica</button>
+                        </div>
                     </form>
                     <div id="special-events-message" style="margin-top: 15px;"></div>
                     <h3 style="margin-top: 30px;">Eventi Attivi</h3>
