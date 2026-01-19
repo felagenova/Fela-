@@ -12,8 +12,8 @@ self.addEventListener('push', function(event) {
         // Opzioni per la visualizzazione della notifica.
         const options = {
             body: data.body, // Il testo principale della notifica.
-            icon: '/images/fela_favicon.svg', // Icona principale (assicurati che il percorso sia corretto).
-            badge: '/images/fela_favicon.svg', // Icona piccola per la barra di stato (es. su Android).
+            icon: 'images/appletouch_favicon_fela.png', // Icona principale (Logo Fela!)
+            badge: 'images/fela_favicon.svg', // Icona piccola per la barra di stato
             vibrate: [100, 50, 100], // Pattern di vibrazione: vibra, pausa, vibra.
             data: {
                 url: data.url || '/' // L'URL da aprire quando si clicca sulla notifica.
