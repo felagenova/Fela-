@@ -25,8 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Trova la prima puntata RIPRODUCIBILE da impostare come attiva al caricamento
-    let activeCardOnLoad = document.querySelector('.episode-card:not(.not-playable)');
+    // Trova tutte le puntate RIPRODUCIBILI
+    const playableCards = document.querySelectorAll('.episode-card:not(.not-playable)');
+    // Imposta l'ultima (la più recente aggiunta in fondo) come attiva al caricamento
+    let activeCardOnLoad = playableCards.length > 0 ? playableCards[playableCards.length - 1] : null;
 
     // Se trovata, la imposta come attiva
     if (activeCardOnLoad) {
@@ -60,17 +62,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Funzione per caricare una nuova traccia e aggiornare l'interfaccia
     function loadTrack(card) {
-        const trackUrl = card.dataset.trackUrl;
+        const embedUrl = card.dataset.trackUrl;
         const title = card.querySelector('h4').textContent;
         const artworkUrl = card.dataset.artworkUrl;
 
-        if (trackUrl && widget) {
-            // Carica e riproduce la nuova traccia
-            // Il parametro auto_play è gestito direttamente nell'URL per il primo caricamento,
-            // ma per i successivi usiamo il metodo play() dopo il caricamento.
-            widget.load(trackUrl, {
+        if (embedUrl && widget) {
+            // FIX: L'API di SoundCloud richiede l'URL della risorsa (es. https://soundcloud.com/...),
+            // non l'URL del widget di embed. Dobbiamo estrarlo.
+            let soundUrl;
+            try {
+                // Usiamo l'oggetto URL per analizzare facilmente i parametri
+                const urlObj = new URL(embedUrl);
+                soundUrl = urlObj.searchParams.get('url');
+            } catch (e) {
+                console.error("URL di embed non valido:", embedUrl, e);
+                return;
+            }
+
+            // Carica la nuova traccia usando l'URL corretto
+            widget.load(soundUrl, {
                 callback: () => {
-                    widget.play();
+                    // Una volta caricata la traccia, ne otteniamo la durata e la avviamo
+                    widget.getDuration(duration => {
+                        currentTrackDuration = duration;
+                        durationEl.textContent = formatTime(duration);
+                        widget.play();
+                    });
                 }
             });
 

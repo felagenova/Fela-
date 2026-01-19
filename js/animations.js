@@ -55,9 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
             'images/nuoviassets/asset28.webp',
             'images/nuoviassets/asset29.webp',
             'images/nuoviassets/asset30.webp',
-            'images/nuoviassets/asset31.webp',
-            'images/nuoviassets/asset32.webp',
-            'images/nuoviassets/asset33.webp',
 
             // AGGIORNA QUI I NOMI DEI TUOI FILE REALI
         ],
