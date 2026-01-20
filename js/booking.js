@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- CONFIGURAZIONE PUSH NOTIFICATION ---
     // IMPORTANTE: Sostituisci questa stringa con la tua VAPID Public Key reale
-    const VAPID_PUBLIC_KEY = "BOK07nYxyGjm-1_vsGbhmUqWM6orFC-wN3qzyZG8ljEdDtDP-o-7bsiOuqNr1efpvOzY4v5NoaZraug4Z6s1S6s"; 
+    const VAPID_PUBLIC_KEY = "BF_tmmQ0zO5rGS5JZkze_S8f7mbt9WvMTlvwfxg08Sql7ks_4kkqDa0I0RlKrgq-jVzbv1KSDjS1D1KHZ_fy8Qc"; 
 
     // Funzione di utilità per convertire la chiave VAPID da stringa base64 a Uint8Array
     function urlBase64ToUint8Array(base64String) {
