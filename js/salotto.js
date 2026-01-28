@@ -44,7 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialTrackUrl = activeCardOnLoad.dataset.trackUrl;
     const initialArtworkUrl = activeCardOnLoad.dataset.artworkUrl;
     const initialTitle = activeCardOnLoad.querySelector('h4').textContent;
-    soundcloudPlayerIframe.src = initialTrackUrl;
+
+    // FIX: Se l'URL iniziale è un link diretto, costruiamo l'URL embed per l'iframe
+    let iframeSrc = initialTrackUrl;
+    if (initialTrackUrl && !initialTrackUrl.includes('w.soundcloud.com/player')) {
+        iframeSrc = `https://w.soundcloud.com/player/?url=${encodeURIComponent(initialTrackUrl)}&color=%233a5cda&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false`;
+    }
+
+    soundcloudPlayerIframe.src = iframeSrc;
     currentTitleEl.textContent = initialTitle;
     artworkEl.src = initialArtworkUrl;
     artworkEl.alt = `Copertina per ${initialTitle}`;
@@ -74,6 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Usiamo l'oggetto URL per analizzare facilmente i parametri
                 const urlObj = new URL(embedUrl);
                 soundUrl = urlObj.searchParams.get('url');
+
+                // Se non troviamo il parametro 'url', assumiamo che sia un link diretto a SoundCloud
+                if (!soundUrl) {
+                    soundUrl = embedUrl;
+                }
             } catch (e) {
                 console.error("URL di embed non valido:", embedUrl, e);
                 return;
