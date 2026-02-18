@@ -1,0 +1,132 @@
+// js/menu-dynamic.js
+
+// Importa le funzioni necessarie da Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { firebaseConfig, MENU_COLLECTION } from "./config.js";
+
+// Inizializza Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Mappa gli ID delle categorie HTML con i nomi delle categorie nel Database
+    const categoryMap = {
+        'Vini': 'vini-list',
+        'Birre': 'birre-list',
+        'Cocktails': 'cocktails-list',
+        'Food': 'food-list'
+    };
+
+    // Mostra un caricamento iniziale
+    for (const listId of Object.values(categoryMap)) {
+        const container = document.getElementById(listId);
+        if (container) container.innerHTML = '<p style="text-align:center; color:#ff0403;">Caricamento menu...</p>';
+    }
+
+    // Ascolta i cambiamenti in tempo reale
+    onSnapshot(collection(db, MENU_COLLECTION), (querySnapshot) => {
+        const items = [];
+        querySnapshot.forEach((doc) => {
+            items.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Pulisce i contenitori
+        for (const listId of Object.values(categoryMap)) {
+            const container = document.getElementById(listId);
+            if (container) container.innerHTML = '';
+        }
+
+        if (items.length === 0) {
+             for (const listId of Object.values(categoryMap)) {
+                const container = document.getElementById(listId);
+                if (container) container.innerHTML = '<p style="text-align:center;">Nessun prodotto da mostrare.</p>';
+            }
+            return;
+        }
+
+        // Raggruppa i prodotti per Categoria -> Sotto-categoria
+        const groupedItems = items.reduce((acc, item) => {
+            if (!acc[item.category]) acc[item.category] = {};
+            const sub = item.sub_category || 'Generale';
+            if (!acc[item.category][sub]) acc[item.category][sub] = [];
+            acc[item.category][sub].push(item);
+            return acc;
+        }, {});
+
+        // Ordine di visualizzazione delle sotto-categorie (opzionale, per estetica)
+        const subCategoryOrder = [
+            'Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi', // Vini
+            'Alla spina', 'In latta', // Birre
+            'LE SBERLE DI FELA', 'I Taglieri', 'Fela Fritti', 'Bonus Track' // Food
+        ];
+
+        // Renderizza i prodotti
+        for (const [category, subCategories] of Object.entries(groupedItems)) {
+            const containerId = categoryMap[category];
+            const container = document.getElementById(containerId);
+            
+            if (!container) continue;
+
+            // Ordina le sotto-categorie: prima quelle nella lista personalizzata, poi le altre
+            const sortedSubKeys = Object.keys(subCategories).sort((a, b) => {
+                const indexA = subCategoryOrder.indexOf(a);
+                const indexB = subCategoryOrder.indexOf(b);
+                if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                if (indexA !== -1) return -1;
+                if (indexB !== -1) return 1;
+                return a.localeCompare(b);
+            });
+
+            sortedSubKeys.forEach(subCat => {
+                const section = document.createElement('section');
+                section.className = 'menu-section';
+
+                // Aggiunge il titolo della sotto-categoria se non è "Generale"
+                if (subCat !== 'Generale') {
+                    if (category === 'Food') {
+                         section.innerHTML = `<div class="menu-section-header"><h3>${subCat}</h3></div>`;
+                    } else {
+                         section.innerHTML = `<h3>${subCat}</h3>`;
+                    }
+                }
+
+                // Aggiunge i prodotti
+                subCategories[subCat].forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    const isAvailable = item.available !== false; // Default true
+                    const soldOutClass = isAvailable ? '' : 'sold-out';
+                    itemDiv.className = `menu-item ${soldOutClass}`;
+
+                    let allergensHtml = '';
+                    if (item.allergens) {
+                        const allergensList = item.allergens.split(' ');
+                        allergensList.forEach(num => {
+                            if(num.trim()) allergensHtml += `<span class="allergen-icon">${num}</span>`;
+                        });
+                    }
+
+                    const soldOutBadge = isAvailable ? '' : '<span class="sold-out-badge">ESAURITO</span>';
+
+                    itemDiv.innerHTML = `
+                        <div class="menu-item-header">
+                            <h4>${item.name} ${allergensHtml} ${soldOutBadge}</h4>
+                            <span class="price">${item.price}</span>
+                        </div>
+                        ${item.description ? `<p class="description">${item.description}</p>` : ''}
+                    `;
+                    section.appendChild(itemDiv);
+                });
+
+                container.appendChild(section);
+            });
+        }
+
+    }, (error) => {
+        console.error("Errore caricamento menu:", error);
+        for (const listId of Object.values(categoryMap)) {
+            const container = document.getElementById(listId);
+            if (container) container.innerHTML = '<p style="text-align:center; color:red;">Impossibile caricare il menu. Controlla la console del browser (F12).</p>';
+        }
+    });
+});

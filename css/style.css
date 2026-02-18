@@ -776,6 +776,28 @@ body.home-page {
     color: #ff0403;
 }
 
+/* Stili per prodotti esauriti nel menu */
+.menu-item.sold-out {
+    opacity: 0.6; /* Rende il prodotto semi-trasparente */
+}
+
+.menu-item.sold-out .price {
+    text-decoration: line-through; /* Barra il prezzo */
+    opacity: 0.7;
+}
+
+.sold-out-badge {
+    background-color: #ff0403;
+    color: #f3f0ce;
+    font-size: 0.7em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    vertical-align: middle;
+    font-weight: 700;
+    display: inline-block;
+}
+
 /* --- Stili per la Pagina Eventi --- */
 .event-card {
     display: flex;
@@ -2328,6 +2350,29 @@ body.home-page {
     color: #ff0403;
 }
 
+/* Stili unificati per i form dentro le admin cards */
+.admin-card .form-group input,
+.admin-card .form-group select,
+.admin-card .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ff0403;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    font-family: "Red Hat Display", sans-serif;
+    font-size: 16px;
+    color: #333;
+    box-sizing: border-box;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.admin-card .form-group input:focus,
+.admin-card .form-group select:focus,
+.admin-card .form-group textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 4, 3, 0.3);
+}
+
 /* Stili per i badge di stato */
 .status {
     padding: 4px 8px;
@@ -2358,7 +2403,19 @@ body.home-page {
 }
 .btn-close { background-color: #dc3545; }
 .btn-open { background-color: #28a745; }
-.btn-delete { background-color: #6c757d; }
+.btn-delete { background-color: #dc3545; } /* Rosso più scuro per eliminare */
+.btn-edit { background-color: #ffc107; color: #000; } /* Giallo per modifica */
+
+/* Stile per bottoni secondari (es. Annulla) */
+.btn.btn-secondary {
+    background-color: transparent;
+    color: #6c757d;
+    border-color: #6c757d;
+}
+.btn.btn-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+}
 
 /* Tabelle Admin */
 .admin-table {

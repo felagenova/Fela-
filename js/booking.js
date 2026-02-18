@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const backToEventsBtn = document.getElementById('back-to-events');
     const pageSubtitle = document.getElementById('page-subtitle');
     const selectedEventTitle = document.getElementById('selected-event-title');
+    const selectedEventDescription = document.getElementById('selected-event-description');
 
     // Elementi del pop-up
     const mailingListPopup = document.getElementById('mailing-list-popup-overlay');
@@ -89,6 +90,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const proceedToBookingForm = () => {
         pageSubtitle.textContent = 'Compila il modulo per completare la prenotazione.';
         selectedEventTitle.textContent = selectedEvent.display_name;
+
+        // Mostra la descrizione se presente
+        if (selectedEventDescription) {
+            if (selectedEvent.description) {
+                selectedEventDescription.textContent = selectedEvent.description;
+                selectedEventDescription.style.display = 'block';
+            } else {
+                selectedEventDescription.style.display = 'none';
+            }
+        }
         
         if (selectedEvent.available_slots && selectedEvent.available_slots.length > 0) {
             brunchSlotSelector.required = true;
@@ -138,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     eventBox.innerHTML = `
                         <h3 class="event-box-title">${event.display_name}</h3>
-                        ${event.description ? `<p style="font-size: 0.95rem; margin: 5px 0; font-style: italic; color: #444;">${event.description}</p>` : ''}
+                        ${event.description ? `<p class="event-box-description">${event.description}</p>` : ''}
                         <p class="event-box-date">${formattedDate}</p>
                     `;
 

@@ -56,8 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 adminMessageDiv.textContent = 'Accesso riuscito!';
                 adminMessageDiv.style.color = 'green';
+                
+                // Salva lo stato di login per il pannello menu
+                sessionStorage.setItem('fela_admin_logged_in', 'true');
+
                 // Nasconde l'intera card di login, non solo il form
                 loginForm.parentElement.style.display = 'none';
+                document.querySelector('.admin-nav-links').style.display = 'block'; // Mostra il link al menu
                 bookingsListDiv.style.display = 'block'; // Mostra la lista delle prenotazioni
                 await populateEventFilter(); // Popola il filtro
                 loadBookings(currentPage); // Carica la prima pagina
