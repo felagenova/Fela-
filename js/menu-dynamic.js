@@ -152,39 +152,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-    try {
-        // Logica di Caching
-        const cachedData = localStorage.getItem(CACHE_KEY);
-        const cachedTimestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
-        const now = Date.now();
-        let items = [];
-
-        // Controlla se la cache esiste ed è valida (meno di 30 minuti)
-        if (cachedData && cachedTimestamp && (now - parseInt(cachedTimestamp) < CACHE_DURATION)) {
-            console.log("Menu caricato dalla cache locale (risparmio letture Firebase).");
-            items = JSON.parse(cachedData);
-        } else {
-            console.log("Cache scaduta o assente. Scaricamento menu da Firebase...");
-            // Scarica tutti i prodotti (Lettura DB)
-            const querySnapshot = await getDocs(collection(db, MENU_COLLECTION));
-            querySnapshot.forEach((doc) => {
-                items.push({ id: doc.id, ...doc.data() });
-            });
-
-            // Salva in cache se abbiamo dati
-            if (items.length > 0) {
-                localStorage.setItem(CACHE_KEY, JSON.stringify(items));
-                localStorage.setItem(CACHE_TIMESTAMP_KEY, now.toString());
-            }
-        }
-
+    // Ascolta i cambiamenti in tempo reale (con cache attiva)
+    onSnapshot(collection(db, MENU_COLLECTION), (querySnapshot) => {
+        const items = [];
+        querySnapshot.forEach((doc) => {
+            items.push({ id: doc.id, ...doc.data() });
+        });
+        
         renderMenuItems(items);
-
-    } catch (error) {
+    }, (error) => {
         console.error("Errore caricamento menu:", error);
         for (const listId of Object.values(categoryMap)) {
             const container = document.getElementById(listId);
             if (container) container.innerHTML = '<p style="text-align:center; color:red;">Impossibile caricare il menu. Controlla la console del browser (F12).</p>';
         }
-    }
+    });
 });
