@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSpecialEvents = []; // Store locale per gli eventi
 
     const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
-    // const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale
+    //const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale
 
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -614,10 +614,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const turniText = Array.isArray(slots) && slots.length > 0 ? slots.map(s => s.substring(0, 5)).join(', ') : 'N/D';
                 const maxGuestsText = event.max_guests ? event.max_guests : '25 (Default)';
     
-                row.innerHTML = `
+                row.innerHTML = `                    
                     <td data-label="Nome Evento">
-                        <strong>${event.display_name}</strong>
-                        ${event.description ? `<br><small style="font-style: italic; color: #555;">${event.description}</small>` : ''}
+                        <strong>${event.display_name}</strong>                        
+                        ${event.description ? `<br><small style="font-style: italic; color: #555; white-space: pre-line;">${event.description}</small>` : ''}
                     </td>
                     <td data-label="Data">${new Date(event.booking_date).toLocaleDateString()}</td>
                     <td data-label="Ora">${event.booking_time ? event.booking_time.substring(0, 5) : 'N/D'}</td>

@@ -21,11 +21,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     let selectedEvent = null; // Oggetto per l'evento attualmente selezionato
 
     const backendBaseUrl = 'https://felabackend.onrender.com'; // URL di produzione
-    // const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale 
+    //const backendBaseUrl = 'http://127.0.0.1:8000'; // URL per lo sviluppo locale 
 
     // --- CONFIGURAZIONE PUSH NOTIFICATION ---
     // IMPORTANTE: Sostituisci questa stringa con la tua VAPID Public Key reale
     const VAPID_PUBLIC_KEY = "BF_tmmQ0zO5rGS5JZkze_S8f7mbt9WvMTlvwfxg08Sql7ks_4kkqDa0I0RlKrgq-jVzbv1KSDjS1D1KHZ_fy8Qc"; 
+
+    function getEventDescription(event) {
+        if (!event || typeof event !== 'object') return '';
+        const rawDescription =
+            event.description ??
+            event.event_description ??
+            event.short_description ??
+            event.details ??
+            '';
+        return typeof rawDescription === 'string' ? rawDescription.trim() : '';
+    }
 
     // Funzione di utilità per convertire la chiave VAPID da stringa base64 a Uint8Array
     function urlBase64ToUint8Array(base64String) {
@@ -93,9 +104,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Mostra la descrizione se presente
         if (selectedEventDescription) {
-            if (selectedEvent.description) {
-                selectedEventDescription.textContent = selectedEvent.description;
-                selectedEventDescription.style.display = 'block';
+            const selectedDescription = getEventDescription(selectedEvent);
+            if (selectedDescription) {
+                selectedEventDescription.textContent = selectedDescription;
+                selectedEventDescription.style.display = 'block'; // Mostra l'elemento
+                selectedEventDescription.style.whiteSpace = 'pre-line'; // Gestisce i ritorni a capo
             } else {
                 selectedEventDescription.style.display = 'none';
             }
@@ -147,11 +160,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                         month: 'long'
                     });
 
+                    const eventDescription = getEventDescription(event);
+                    console.log("Full event object for " + event.display_name + ": ", event);
+                    console.log("Event description for " + event.display_name + ": " + eventDescription);
+
                     eventBox.innerHTML = `
                         <h3 class="event-box-title">${event.display_name}</h3>
-                        ${event.description ? `<p class="event-box-description">${event.description}</p>` : ''}
+                        <p class="event-box-description">${eventDescription}</p>
                         <p class="event-box-date">${formattedDate}</p>
                     `;
+
+                    // DEBUG: controlla se la descrizione è presente nell'oggetto evento
+                    //console.log("Event Description:", event.description);
 
                     // Aggiungi evento click per mostrare il form
                     eventBox.addEventListener('click', () => showMailingListPopup(event));

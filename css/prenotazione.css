@@ -51,10 +51,15 @@
 }
 
 .event-box-description {
-    font-size: 0.95rem;
+    font-size: 1rem;
     margin: 5px 0 10px 0;
     font-style: italic;
     color: #444;
+    /* Altezza automatica per adattarsi al contenuto */
+    white-space: pre-line; /* Mantiene i ritorni a capo inseriti nell'admin */
+    word-break: break-word;
+    min-height: 1rem; /* Assicura che l'elemento abbia un'altezza minima */
+    display: block;
 }
 
 .event-box-date {
