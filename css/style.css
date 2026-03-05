@@ -2493,6 +2493,16 @@ body.home-page {
 /* --- RESPONSIVE ADMIN (Mobile) --- */
 @media (max-width: 768px) {
     .admin-page .booking-wrapper { padding: 0 10px; }
+    .admin-page .booking-wrapper > h1 {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 14px;
+        border-width: 16px;
+        font-size: clamp(24px, 7.5vw, 30px);
+        line-height: 1.1;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
     .admin-card { padding: 15px; }
 
     /* Form diventa a colonna singola */
