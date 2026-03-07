@@ -246,6 +246,21 @@
         <button id="cookie-accept-btn" class="btn">Accetta</button>
     </div>
 
+    <!-- POPUP SPECIALE CIDRE (Temporaneo) -->
+    <div id="cidre-popup">
+        <div class="popup-box">
+            <button id="cidre-close-btn" class="popup-close-btn">&times;</button>
+            <h3>Cyder Sunday!</h3>
+            <h2>Degustazione di Sidro della Normandia </h2>
+            <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 10px;">Al calice:</p>
+            <p>Cidre demi-sec Christian Drouin</p>
+            <p>Cidre Brut Christian Drouin</p>
+            <p style="margin-top: 15px;">+ Tagliere di formaggi</p>
+            <p class="price">18€</p>
+            <p class="price">Bottiglia</p>
+            <p class="price">27€</p>
+        </div>
+    </div>
 
     <script src="js/main.js" defer></script>
     <!-- 3. Carica lo script in modo differito per non bloccare il rendering -->
@@ -270,6 +285,34 @@
                     });
             });
         }
+
+        // Logica per il Popup Cidre (Domenica 8 Marzo 17:00 - Lunedì 9 Marzo 01:00)
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            // Mese 2 = Marzo (0-indexed)
+            const start = new Date(2026, 2, 8, 17, 0, 0); // 8 Marzo 17:00
+            const end = new Date(2026, 2, 9, 1, 0, 0);    // 9 Marzo 01:00
+
+            if (now >= start && now <= end) {
+                const popup = document.getElementById('cidre-popup');
+                const closeBtn = document.getElementById('cidre-close-btn');
+                
+                if (popup) {
+                    // Mostra dopo 1.5 secondi
+                    setTimeout(() => {
+                        popup.classList.add('visible');
+                    }, 1500);
+                    
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', () => popup.classList.remove('visible'));
+                    }
+                    
+                    popup.addEventListener('click', (e) => {
+                        if (e.target === popup) popup.classList.remove('visible');
+                    });
+                }
+            }
+        });
     </script>
 </body>
 </html>

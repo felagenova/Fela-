@@ -2576,3 +2576,67 @@ body.home-page {
         justify-content: center; /* Centra i bottoni */
     }
 }
+
+/* --- Stili per il Popup Cidre (Temporaneo) --- */
+#cidre-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+#cidre-popup.visible {
+    opacity: 1;
+    visibility: visible;
+}
+#cidre-popup .popup-box {
+    background-color: #f3f0ce;
+    color: #8d5fd3ff;
+    padding: 30px;
+    border-radius: 12px;
+    border: 3px solid #8d5fd3ff;
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+#cidre-popup h3 {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+#cidre-popup p {
+    font-size: 18px;
+    margin: 8px 0;
+    line-height: 1.4;
+}
+#cidre-popup .price {
+    font-weight: 700;
+    font-size: 24px;
+    margin-top: 20px;
+    color: #8d5fd3ff;
+}
+#cidre-popup .popup-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #8d5fd3ff;
+    cursor: pointer;
+    line-height: 1;
+}
