@@ -246,6 +246,26 @@
         <button id="cookie-accept-btn" class="btn">Accetta</button>
     </div>
 
+    <!-- POPUP SPECIALE PERSIANO (Temporaneo) -->
+    <div id="persian-popup" class="promo-popup-overlay">
+        <div class="promo-popup-content" style="border-image-source: none; border-color: #019e51ff; border-style: solid; border-width: 5px;">
+            <button id="persian-close-btn" class="promo-popup-close" style="color: #019e51ff;">&times;</button>
+            <h3 style="color: #019e51ff; font-weight: 900; margin-bottom: 5px;">MI SONO PERSO DA FELA</h3>
+            <p style="text-transform: uppercase; font-weight: 700; color: #019e51ff; margin-bottom: 20px;">Degustazione persiana</p>
+            
+            <ul class="promo-menu-list" style="text-align: left; color: #019e51ff; margin: 20px 0; list-style: none; padding: 0;">
+                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>Polpette di melanzane</strong> con salsa di concentrato di melograno e NOCI.</li>
+                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>SAMUSA</strong>: pasta fritta ripieno di verdure e spezie persiane.</li>
+                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>Hummus</strong>: salsa di ceci e crema di sesamo.</li>
+                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>MASTOKHIAR</strong>: yogurt denso, cetrioli, menta, pistacchio, fior di rosa.</li>
+                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>Riso basmati</strong>, crespino, uva sultanino, scorza d'arancio, zafferano.</li>
+                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>Pane libanese</strong>.</li>
+            </ul>
+            
+            <div style="font-size: 32px; font-weight: 900; color: #019e51ff; margin-bottom: 20px;">10 €</div>
+        </div>
+    </div>
+
     <!-- POPUP SPECIALE CIDRE (Temporaneo) -->
     <div id="cidre-popup">
         <div class="popup-box">
@@ -285,6 +305,29 @@
                     });
             });
         }
+
+        // Logica per il Popup Persiano (Attivo fino alle 02:00 del 26 Marzo 2026)
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            // Mese 2 = Marzo (0-indexed)
+            const startPersian = new Date(2026, 2, 18, 0, 0, 0);
+            const endPersian = new Date(2026, 2, 26, 2, 0, 0);
+
+            if (now >= startPersian && now <= endPersian) {
+                const pPopup = document.getElementById('persian-popup');
+                const pCloseBtn = document.getElementById('persian-close-btn');
+                
+                if (pPopup) {
+                    // Appare dopo 1.5 secondi per dare spazio al caricamento degli asset
+                    setTimeout(() => {
+                        pPopup.classList.add('visible');
+                    }, 1500);
+                    
+                    if (pCloseBtn) pCloseBtn.addEventListener('click', () => pPopup.classList.remove('visible'));
+                    pPopup.addEventListener('click', (e) => { if (e.target === pPopup) pPopup.classList.remove('visible'); });
+                }
+            }
+        });
 
         // Logica per il Popup Cidre (Domenica 8 Marzo 17:00 - Lunedì 9 Marzo 01:00)
         document.addEventListener('DOMContentLoaded', () => {
