@@ -111,6 +111,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const section = document.createElement('section');
                 section.className = 'menu-section';
 
+                // Aggiunge l'ID per l'anchor link se la sotto-categoria è Bonus Track
+                if (subCat === 'Bonus Track') {
+                    section.id = 'bonus-track';
+                }
+
                 // Aggiunge il titolo della sotto-categoria se non è "Generale"
                 if (subCat !== 'Generale') {
                     if (category === 'Food') {
