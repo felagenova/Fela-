@@ -266,6 +266,21 @@
         </div>
     </div>
 
+    <!-- POPUP SPECIALE BONUS TRACK (Temporaneo: 1-5 Aprile 2026) -->
+    <div id="bonustrack-popup" class="promo-popup-overlay">
+        <div class="promo-popup-content" style="border-image-source: none; border-color: #ff0403; border-style: solid; border-width: 5px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 4, 3, 0.2);">
+            <button id="bonustrack-close-btn" class="promo-popup-close" style="color: #ff0403;">&times;</button>
+            <h3 style="color: #ff0403; font-weight: 900; margin-bottom: 5px;">BONUS TRACK</h3>
+            <p style="text-transform: uppercase; font-weight: 700; color: #ff0403; margin-bottom: 20px;">X</p>
+            <h3 style="color: #ff0403; font-weight: 900;">FELA! B.DAY WEEK</h3>            
+            <ul class="promo-menu-list" style="text-align: center; color: #ff0403; margin: 20px 0; list-style: none; padding: 0;">
+                <li style="display: block; font-size: 22px; font-weight: 700; line-height: 1.4;">Lasagne ai Carciofi d'Albenga</li>
+            </ul>
+            
+            <div style="font-size: 32px; font-weight: 900; color: #ff0403; margin-bottom: 20px;">10 €</div>
+        </div>
+    </div>
+
     <!-- POPUP SPECIALE CIDRE (Temporaneo) -->
     <div id="cidre-popup">
         <div class="popup-box">
@@ -353,6 +368,29 @@
                     popup.addEventListener('click', (e) => {
                         if (e.target === popup) popup.classList.remove('visible');
                     });
+                }
+            }
+        });
+
+        // Logica per il Popup Bonus Track (Attivo dal 1 Aprile al 5 Aprile 2026)
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            // Mese 3 = Aprile (0-indexed: Gen=0, Feb=1, Mar=2, Apr=3)
+            const startBonus = new Date(2026, 3, 1, 0, 0, 0);
+            const endBonus = new Date(2026, 3, 5, 23, 59, 59);
+
+            if (now >= startBonus && now <= endBonus) {
+                const bPopup = document.getElementById('bonustrack-popup');
+                const bCloseBtn = document.getElementById('bonustrack-close-btn');
+                
+                if (bPopup) {
+                    // Appare dopo 1.5 secondi
+                    setTimeout(() => {
+                        bPopup.classList.add('visible');
+                    }, 1500);
+                    
+                    if (bCloseBtn) bCloseBtn.addEventListener('click', () => bPopup.classList.remove('visible'));
+                    bPopup.addEventListener('click', (e) => { if (e.target === bPopup) bPopup.classList.remove('visible'); });
                 }
             }
         });
