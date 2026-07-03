@@ -277,25 +277,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Gestione Modale di Dalida (logica invariata) ---
-    const dalidaTrigger = document.querySelector('.tooltip-trigger');
-    const dalidaModal = document.getElementById('dalida-modal-overlay');
-    const dalidaCloseBtn = dalidaModal ? dalidaModal.querySelector('.modal-close-btn') : null;
-
-    if (dalidaTrigger && dalidaModal && dalidaCloseBtn) {
-        dalidaTrigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            dalidaModal.classList.add('visible');
-        });
-
-        dalidaCloseBtn.addEventListener('click', () => {
-            dalidaModal.classList.remove('visible');
-        });
-
-        dalidaModal.addEventListener('click', (e) => {
-            if (e.target === dalidaModal) {
-                dalidaModal.classList.remove('visible');
-            }
-        });
-    }
 });

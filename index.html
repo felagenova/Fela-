@@ -17,6 +17,10 @@
         if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
             location.replace('https://' + location.hostname + location.pathname + location.search);
         }
+
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
     </script>
 
     <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
@@ -30,8 +34,8 @@
     <meta name="view-transition" content="same-origin">
 
     <!-- 1. Precarica il file CSS completo in background -->
-    <link rel="preload" href="css/style.css?v=fix_1" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/style.css?v=fix_1"></noscript>
+    <link rel="preload" href="css/style.css?v=varigotti_png_1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css?v=varigotti_png_1"></noscript>
     <link rel="stylesheet" href="css/cookie-banner.css">
     
     <!-- Google tag (gtag.js) - INCOLLA QUI IL TUO CODICE GOOGLE ANALYTICS -->
@@ -87,10 +91,19 @@
         }
 
         /* --- Stili Generali Critici --- */
+        html {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
         body {
-            margin: 0; padding: 0; height: 100%;
+            margin: 0; padding: 0; min-height: 100%;
             font-family: "Red Hat Display", sans-serif;
             background-color: #f3f0ce;
+            transition: background-color 1s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
         }
         body.home-page {
             background-color: #f3f0ce;
@@ -101,21 +114,31 @@
         }
 
         /* --- Stili Critici per la Landing Page --- */
+        #main-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 100vw;
+            overflow: visible;
+            overflow-x: hidden;
+            overflow-x: clip;
+            isolation: isolate;
+            box-sizing: border-box;
+        }
         .landing-container {
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            height: 100vh; text-align: center; padding: 20px;
+            min-height: 100vh; text-align: center; padding: 40px 20px;
             position: relative; z-index: 10; box-sizing: border-box;
             background-color: transparent;
-            pointer-events: none;
         }
         .glass-container {
             background: rgba(244, 190, 190, 0.066);
-            backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(12px);
             border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.18);
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
             padding: 30px 25px;
             display: flex; flex-direction: column; align-items: center;
-            pointer-events: auto;
+            width: 100%; max-width: 420px; box-sizing: border-box;
         }
         .logo {
             max-width: 180px; height: auto;
@@ -129,6 +152,7 @@
         }
         .button-container {
             display: flex; flex-direction: column; gap: 15px;
+            width: 100%;
         }
         .btn {
             display: flex; justify-content: center; align-items: center;
@@ -136,8 +160,9 @@
             background-color: #f3f0ce; color: #ff0403;
             text-decoration: none; border-radius: 8px; border: 2px solid #ff0403;
             font-size: 18px; font-family: "Red Hat Display", sans-serif; font-weight: 700;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
             text-align: center; cursor: pointer;
+            box-sizing: border-box;
         }
         .btn:hover {
             background-color: #ff0403; color: #f3f0ce; transform: scale(1.05);
@@ -147,6 +172,337 @@
         }
         .btn.btn-salotto:hover {
             background-color: #5b5bffff; color: #f3f0ce;
+        }
+        .btn.btn-varigotti,
+        .btn.btn-varigotti:hover,
+        .btn.btn-varigotti:focus,
+        .btn.btn-varigotti:active {
+            background-color: #f3f0ce;
+            color: #0000ffff;
+            border: 2px solid #0000ffff;
+        }
+        .home-page .varigotti-section {
+            background-color: transparent;
+            background-image: url('images/sfondo_varigotti.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            overflow: hidden;
+        }
+        .varigotti-side-asset {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+            user-select: none;
+            height: auto;
+        }
+        .varigotti-side-asset.asset-corallo {
+            left: clamp(10px, 5vw, 72px);
+            bottom: -30px;
+            width: clamp(150px, 24vw, 340px);
+        }
+        .varigotti-side-asset.asset-vaso {
+            right: clamp(10px, 5vw, 72px);
+            bottom: -4px;
+            width: clamp(140px, 22vw, 310px);
+        }
+        .varigotti-section .marine-glass {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Badge Archivio Genova */
+        .archive-badge {
+            background-color: rgba(255, 4, 3, 0.1);
+            color: #ff0403;
+            border: 1px solid #ff0403;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            z-index: 12;
+            pointer-events: auto;
+        }
+
+        /* Indicatore di scroll */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: #ff0403;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.8;
+            animation: bounce 2s infinite;
+            pointer-events: none;
+        }
+        .scroll-indicator svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -10px); }
+            60% { transform: translate(-50%, -5px); }
+        }
+
+        /* Sezione Nuvole */
+        .clouds-section {
+            position: relative;
+            height: 150vh;
+            width: 100%;
+            overflow: visible;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+            pointer-events: none;
+            isolation: isolate;
+        }
+        .clouds-section.visible {
+            opacity: 1;
+            pointer-events: none;
+        }
+        .clouds-bg {
+            position: absolute;
+            top: -25%;
+            left: -20%;
+            width: 140%;
+            height: 150%;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            will-change: transform;
+            pointer-events: none;
+        }
+        body.transfer-popup-open {
+            overflow: hidden;
+        }
+        /* Popup Trasferimento */
+        .transfer-popup-overlay {
+            position: fixed;
+            top: var(--transfer-vv-top, 0px);
+            left: var(--transfer-vv-left, 0px);
+            width: var(--transfer-vv-width, 100vw);
+            height: var(--transfer-vv-height, 100dvh);
+            padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+            background-color: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: grid;
+            place-items: center;
+            z-index: 2147483647;
+            isolation: isolate;
+            box-sizing: border-box;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .transfer-popup-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        .transfer-popup-content {
+            background-color: #f3f0ce;
+            border: 3px solid #ff0403;
+            border-radius: clamp(16px, 5vw, 24px);
+            padding: clamp(26px, 6vw, 35px) clamp(18px, 5vw, 30px);
+            max-width: 480px;
+            width: min(calc(var(--transfer-vv-width, 100vw) - 36px), 480px);
+            max-height: calc(var(--transfer-vv-height, 100dvh) - 36px);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transform: scale(0.85);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-sizing: border-box;
+        }
+        .transfer-popup-overlay.visible .transfer-popup-content {
+            transform: scale(1);
+        }
+        .transfer-popup-close {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: none;
+            border: none;
+            width: 44px;
+            height: 44px;
+            font-size: 32px;
+            font-weight: 700;
+            color: #ff0403;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 0 4px 0;
+            transition: transform 0.2s ease;
+        }
+        .transfer-popup-close:hover {
+            transform: scale(1.15);
+        }
+        .popup-tag {
+            display: inline-block;
+            background-color: #ff0403;
+            color: #f3f0ce;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: clamp(10px, 2.6vw, 11px);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        .transfer-popup-header h3 {
+            margin: 0 0 clamp(14px, 4vw, 20px) 0;
+            font-size: clamp(21px, 7vw, 24px);
+            font-weight: 900;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .transfer-popup-body {
+            color: #333;
+            font-size: clamp(14px, 4vw, 15px);
+            line-height: 1.6;
+            margin-bottom: clamp(18px, 5vw, 25px);
+        }
+        .transfer-highlight-box {
+            background-color: rgba(2, 136, 209, 0.1);
+            border-left: 4px solid #0288d1;
+            padding: clamp(12px, 4vw, 15px);
+            margin: clamp(16px, 5vw, 20px) 0;
+            border-radius: 0 12px 12px 0;
+            text-align: left;
+        }
+        .transfer-highlight-box p {
+            margin: 0;
+            font-weight: 700;
+            color: #01579b;
+        }
+        .popup-subtext {
+            font-size: 12px;
+            color: #666;
+            margin-top: 15px;
+        }
+        .btn-transfer-action {
+            width: 100%;
+            min-height: 48px;
+            background-color: #ff0403;
+            color: #f3f0ce;
+            border: 2px solid #ff0403;
+        }
+        .btn-transfer-action:hover {
+            background-color: #1a1a1a;
+            border-color: #1a1a1a;
+            color: #f3f0ce;
+        }
+
+        /* Stili responsive */
+        @media (max-width: 768px) {
+            html,
+            body,
+            #main-content,
+            .landing-container,
+            .site-footer {
+                width: 100vw;
+                width: 100dvw;
+                max-width: 100vw;
+                max-width: 100dvw;
+                box-sizing: border-box;
+            }
+            body.in-varigotti {
+                overscroll-behavior-y: none;
+            }
+            .clouds-section {
+                height: 100vh;
+                overflow: visible;
+                align-items: flex-start;
+            }
+            .clouds-bg {
+                top: -26%;
+                left: -150%;
+                width: 400%;
+                height: 145%;
+                background-size: contain;
+                background-position: center top;
+            }
+            .varigotti-section h2 {
+                font-size: 1.8rem;
+            }
+            .varigotti-side-asset.asset-corallo {
+                left: -36px;
+                bottom: -30px;
+                width: clamp(128px, 42vw, 188px);
+            }
+            .varigotti-side-asset.asset-vaso {
+                right: -2px;
+                bottom: -4px;
+                width: clamp(120px, 40vw, 176px);
+            }
+            .marine-glass {
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .clouds-section {
+                height: 95vh;
+            }
+            .clouds-bg {
+                top: -24%;
+                left: -185%;
+                width: 470%;
+                height: 145%;
+            }
+            .transfer-popup-content {
+                width: calc(var(--transfer-vv-width, 100vw) - 24px);
+                border-width: 2px;
+            }
+            .transfer-highlight-box {
+                text-align: center;
+                border-left: 0;
+                border-top: 4px solid #0288d1;
+                border-radius: 12px;
+            }
+        }
+
+        @media (max-height: 520px) {
+            .transfer-popup-overlay {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            .transfer-popup-content {
+                max-height: calc(var(--transfer-vv-height, 100dvh) - 20px);
+                width: calc(var(--transfer-vv-width, 100vw) - 20px);
+                padding-top: 22px;
+                padding-bottom: 18px;
+            }
+            .popup-tag {
+                margin-bottom: 8px;
+            }
+            .transfer-popup-body {
+                line-height: 1.45;
+            }
         }
     </style>
 </head>
@@ -174,66 +530,113 @@
         <img src="images/logoblack.webp" alt="Caricamento..." class="loader-logo">
     </div>
 
-    <main id="landing-background" class="landing-container">
+    <main id="main-content">
+        <!-- SEZIONE GENOVA (Sede Precedente) -->
+        <section id="section-genova" class="landing-container genova-section">
+            <div class="glass-container">
+                <img src="images/logoblack.webp" alt="Logo Fela! Genova" class="logo" fetchpriority="high">
+
+                <!-- Intestazione H1 per SEO e accessibilità, nascosta visivamente -->
+                <h1 class="visually-hidden">Fela! Music Bar - Social Hub a Genova</h1>
+
+                <p class="claim">Music Bar - Social Hub</p>
         
-        <div class="glass-container">
-            <img src="images/logoblack.webp" alt="Logo Fela!" class="logo" fetchpriority="high">
-
-            <!-- Intestazione H1 per SEO e accessibilità, nascosta visivamente -->
-            <h1 class="visually-hidden">Fela! Music Bar - Social Hub a Genova</h1>
-
-            <p class="claim">Music Bar - Social Hub</p>
-    
-            <!-- Contenitore per i bottoni -->
-            <div class="button-container">
-                <a href="menu.html" class="btn">Menu</a>
-                <a href="eventi.html" class="btn">Eventi</a>
-                <!--<a href="brunch.html" class="btn btn-brunch">Il Brunch</a> -->
-                <a href="salotto.html" class="btn btn-salotto">Il Salotto</a>
-                <a href="prenota.html" id="un-tavolo-btn" class="btn">Prenota!</a>
-                <!--
-                    target="_blank" apre il link in una nuova scheda.
-                    rel="noopener noreferrer" è per la sicurezza.
-                -->
-                <!-- <a href="transatlantica.html" id="transatlantica-btn" class="btn">Transatlantica<br>Takeover</a> -->
-                <a href="https://www.instagram.com/fela.genova/" target="_blank" rel="noopener noreferrer" class="btn">Instagram</a>
-                <!-- Pulsante Installa App (nascosto di default, visibile solo se installabile) -->
-                <button id="install-app-btn" class="btn" style="display: none;">Installa App</button>
+                <!-- Contenitore per i bottoni -->
+                <div class="button-container">
+                    <a href="menu.html" class="btn">Menu</a>
+                    <a href="eventi.html" class="btn">Eventi</a>
+                    <!--<a href="brunch.html" class="btn btn-brunch">Il Brunch</a> -->
+                    <a href="salotto.html" class="btn btn-salotto">Il Salotto</a>
+                    <a href="prenota.html" id="un-tavolo-btn" class="btn">Prenota!</a>
+                    <!--
+                        target="_blank" apre il link in una nuova scheda.
+                        rel="noopener noreferrer" è per la sicurezza.
+                    -->
+                    <!-- <a href="transatlantica.html" id="transatlantica-btn" class="btn">Transatlantica<br>Takeover</a> -->
+                    <a href="https://www.instagram.com/fela.genova/" target="_blank" rel="noopener noreferrer" class="btn">Instagram</a>
+                    <!-- Pulsante Installa App (nascosto di default, visibile solo se installabile) -->
+                    <button id="install-app-btn" class="btn" style="display: none;">Installa App</button>
+                </div>
             </div>
-        </div>
+            
+            <div class="scroll-indicator">
+                <span>Scopri Fela! Varigotti</span>
+                <svg class="arrow-down" viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- SEZIONE DI TRANSIZIONE (Nuvole) -->
+        <section id="section-clouds" class="clouds-section">
+            <div class="clouds-bg" style="background-image: url('images/nuvole_transizione.svg');"></div>
+        </section>
+
+        <!-- SEZIONE VARIGOTTI (Nuova Sede) -->
+        <section id="section-varigotti" class="landing-container varigotti-section">
+            <img src="images/corallo.webp" alt="" class="varigotti-side-asset asset-corallo" aria-hidden="true" loading="lazy">
+            <img src="images/vaso.webp" alt="" class="varigotti-side-asset asset-vaso" aria-hidden="true" loading="lazy">
+            <div class="glass-container marine-glass">
+                <img src="images/tritticologhi.svg" alt="Logo Fela! Varigotti" class="logo" style="filter: none;">
+                <div class="button-container">
+                    <!-- Bottone 1: Prenotazioni (Stile primary) -->
+                    <a href="prenota.html" class="btn btn-varigotti">Prenotazioni</a>
+                    <!-- Bottone 2: Shop Maglie (Stile secondary) -->
+                    <a href="https://www.instagram.com/fela.genova/" target="_blank" rel="noopener noreferrer" class="btn btn-shop">Shop Maglie</a>
+                </div>
+
+                <!-- Music Player -->
+                <div id="music-player-container">
+                    <audio id="soma-player" src="https://ice1.somafm.com/reggae-256-mp3" preload="none"></audio>
+                    <button id="play-pause-btn" class="player-btn" aria-label="Play/Pause">
+                        <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                    </button>
+                    <div id="track-info">
+                        <div class="track-title">Radio Fela</div>
+                        <div class="track-artist">Powered by SomaFM</div>
+                    </div>
+                    <div class="volume-control">
+                        <svg class="volume-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" aria-label="Volume">
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Music Player -->
-    <div id="music-player-container">
-        <audio id="soma-player" src="https://ice1.somafm.com/reggae-256-mp3" preload="none"></audio>
-        <button id="play-pause-btn" class="player-btn" aria-label="Play/Pause">
-            <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-        </button>
-        <div id="track-info">
-            <div class="track-title">Radio Fela</div>
-            <div class="track-artist">Powered by SomaFM</div>
-        </div>
-        <div class="volume-control">
-            <svg class="volume-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-            <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" aria-label="Volume">
+    <!-- POPUP TRASFERIMENTO VARIGOTTI -->
+    <div id="transfer-popup" class="transfer-popup-overlay" role="dialog" aria-modal="true" aria-labelledby="transfer-popup-title">
+        <div class="transfer-popup-content">
+            <button id="transfer-close-btn" class="transfer-popup-close" aria-label="Chiudi popup">&times;</button>
+            <div class="transfer-popup-header">
+                <span class="popup-tag">Stagione Estiva ☀️</span>
+                <h3 id="transfer-popup-title">Fela va al mare!</h3>
+            </div>
+            <div class="transfer-popup-body">
+                <p>Da Giugno a Settembre fela! si trasferisce a Varigotti nella splendida cornice dei <strong>20Riviera</strong>.</p>
+                <div class="transfer-highlight-box">
+                    <p><strong>Aperti tutti i giorni dalle 11:00 alle 00:00</strong></p>
+                </div>
+            </div>
+            <div class="transfer-popup-footer">
+                <button id="transfer-btn-explore" class="btn btn-transfer-action">OK</button>
+            </div>
         </div>
     </div>
 
     <footer class="site-footer">
         <div class="footer-left">
-            <p><strong>Fela!<br>Music Bar - Social Hub</strong></p>
-            <a href="https://maps.app.goo.gl/zhNrFjCBpWnWwXuP9" target="_blank" rel="noopener noreferrer">
-                <p>Via di S. Cosimo, 6r, 16128 Genova GE</p>
+            <p><strong>Fela! ai 20Riviera</strong></p>
+            <a href="https://www.google.com/maps/search/?api=1&query=20Riviera%20Varigotti" target="_blank" rel="noopener noreferrer">
+                <p>20Riviera, Varigotti</p>
             </a>
         </div>
         <div class="footer-right">
             <p>
                 <strong>Orari:</strong><br>
-                Mer-Gio: 18:00 - 01:00<br>
-                Ven-Sab: 18:00 - 02:00<br>
-                Dom: 17:00 - 00:00<br>
-                Lun-Mar: FELAKIUDI
+                Da Giugno a Settembre<br>
+                Tutti i giorni: 11:00 - 00:00
             </p>
         </div>
     </footer>
@@ -244,57 +647,6 @@
             Questo sito utilizza cookie tecnici e di terze parti per migliorare la tua esperienza. Cliccando su "Accetta", acconsenti all'uso di tutti i cookie. Per saperne di più, consulta la nostra <a href="privacy.html" target="_blank">Privacy Policy</a>.
         </p>
         <button id="cookie-accept-btn" class="btn">Accetta</button>
-    </div>
-
-    <!-- POPUP SPECIALE PERSIANO (Temporaneo) -->
-    <div id="persian-popup" class="promo-popup-overlay">
-        <div class="promo-popup-content" style="border-image-source: none; border-color: #019e51ff; border-style: solid; border-width: 5px;">
-            <button id="persian-close-btn" class="promo-popup-close" style="color: #019e51ff;">&times;</button>
-            <h3 style="color: #019e51ff; font-weight: 900; margin-bottom: 5px;">MI SONO PERSO DA FELA</h3>
-            <p style="text-transform: uppercase; font-weight: 700; color: #019e51ff; margin-bottom: 20px;">Degustazione persiana</p>
-            
-            <ul class="promo-menu-list" style="text-align: left; color: #019e51ff; margin: 20px 0; list-style: none; padding: 0;">
-                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>Polpette di melanzane</strong> con salsa di concentrato di melograno e NOCI.</li>
-                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>SAMUSA</strong>: pasta fritta ripieno di verdure e spezie persiane.</li>
-                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>Hummus</strong>: salsa di ceci e crema di sesamo.</li>
-                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>MASTOKHIAR</strong>: yogurt denso, cetrioli, menta, pistacchio, fior di rosa.</li>
-                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>Riso basmati</strong>, crespino, uva sultanino, scorza d'arancio, zafferano.</li>
-                <li style="display: block; margin-bottom: 12px; line-height: 1.4;">• <strong>Pane libanese</strong>.</li>
-            </ul>
-            
-            <div style="font-size: 32px; font-weight: 900; color: #019e51ff; margin-bottom: 20px;">10 €</div>
-        </div>
-    </div>
-
-    <!-- POPUP SPECIALE BONUS TRACK (Temporaneo: 1-5 Aprile 2026) -->
-    <div id="bonustrack-popup" class="promo-popup-overlay">
-        <div class="promo-popup-content" style="border-image-source: none; border-color: #ff0403; border-style: solid; border-width: 5px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 4, 3, 0.2);">
-            <button id="bonustrack-close-btn" class="promo-popup-close" style="color: #ff0403;">&times;</button>
-            <h3 style="color: #ff0403; font-weight: 900; margin-bottom: 5px;">BONUS TRACK</h3>
-            <p style="text-transform: uppercase; font-weight: 700; color: #ff0403; margin-bottom: 20px;">X</p>
-            <h3 style="color: #ff0403; font-weight: 900;">FELA! B.DAY WEEK</h3>            
-            <ul class="promo-menu-list" style="text-align: center; color: #ff0403; margin: 20px 0; list-style: none; padding: 0;">
-                <li style="display: block; font-size: 22px; font-weight: 700; line-height: 1.4;">Lasagne ai Carciofi d'Albenga</li>
-            </ul>
-            
-            <div style="font-size: 32px; font-weight: 900; color: #ff0403; margin-bottom: 20px;">8 €</div>
-        </div>
-    </div>
-
-    <!-- POPUP SPECIALE CIDRE (Temporaneo) -->
-    <div id="cidre-popup">
-        <div class="popup-box">
-            <button id="cidre-close-btn" class="popup-close-btn">&times;</button>
-            <h3>Cyder Sunday!</h3>
-            <h2>Degustazione di Sidro della Normandia </h2>
-            <p style="font-weight: 700; text-transform: uppercase; margin-bottom: 10px;">Al calice:</p>
-            <p>Cidre demi-sec Christian Drouin</p>
-            <p>Cidre Brut Christian Drouin</p>
-            <p style="margin-top: 15px;">+ Tagliere di formaggi</p>
-            <p class="price">18€</p>
-            <p class="price">Bottiglia</p>
-            <p class="price">27€</p>
-        </div>
     </div>
 
     <script src="js/main.js" defer></script>
@@ -321,77 +673,283 @@
             });
         }
 
-        // Logica per il Popup Persiano (Attivo fino alle 02:00 del 26 Marzo 2026)
+        // Logica di transizione, Parallasse Nuvole e Popup Trasferimento Varigotti
         document.addEventListener('DOMContentLoaded', () => {
-            const now = new Date();
-            // Mese 2 = Marzo (0-indexed)
-            const startPersian = new Date(2026, 2, 18, 0, 0, 0);
-            const endPersian = new Date(2026, 2, 26, 2, 0, 0);
+            // 1. Popup di trasferimento Varigotti
+            const tPopup = document.getElementById('transfer-popup');
+            const tCloseBtn = document.getElementById('transfer-close-btn');
+            const tExploreBtn = document.getElementById('transfer-btn-explore');
+            const genovaSec = document.getElementById('section-genova');
+            const varigottiSec = document.getElementById('section-varigotti');
+            const cloudsSection = document.getElementById('section-clouds');
+            const varigottiTarget = document.querySelector('#section-varigotti .marine-glass .logo');
+            const siteHeader = document.querySelector('.site-header-nav');
+            let varigottiScrollLocked = false;
+            let varigottiClampFrame = null;
+            let lastTouchY = null;
+            let varigottiLockTop = null;
+            const mobileVarigottiLockOffset = 24;
+            const mobileVarigottiLockSlack = 80;
 
-            if (now >= startPersian && now <= endPersian) {
-                const pPopup = document.getElementById('persian-popup');
-                const pCloseBtn = document.getElementById('persian-close-btn');
-                
-                if (pPopup) {
-                    // Appare dopo 1.5 secondi per dare spazio al caricamento degli asset
-                    setTimeout(() => {
-                        pPopup.classList.add('visible');
-                    }, 1500);
-                    
-                    if (pCloseBtn) pCloseBtn.addEventListener('click', () => pPopup.classList.remove('visible'));
-                    pPopup.addEventListener('click', (e) => { if (e.target === pPopup) pPopup.classList.remove('visible'); });
+            const isMobileViewport = () => window.matchMedia('(max-width: 768px)').matches;
+
+            const syncTransferViewport = () => {
+                const viewport = window.visualViewport;
+                const root = document.documentElement;
+                root.style.setProperty('--transfer-vv-top', `${viewport ? viewport.offsetTop : 0}px`);
+                root.style.setProperty('--transfer-vv-left', `${viewport ? viewport.offsetLeft : 0}px`);
+                root.style.setProperty('--transfer-vv-width', `${viewport ? viewport.width : window.innerWidth}px`);
+                root.style.setProperty('--transfer-vv-height', `${viewport ? viewport.height : window.innerHeight}px`);
+            };
+
+            const lockVarigottiScroll = () => {
+                if (!varigottiSec) return;
+                varigottiLockTop = isMobileViewport()
+                    ? Math.max(0, getCurrentScrollTop() - mobileVarigottiLockOffset)
+                    : getVarigottiTop();
+                varigottiScrollLocked = true;
+                document.body.classList.add('in-varigotti');
+                const lockTop = getVarigottiLockTop();
+                if (getCurrentScrollTop() < lockTop) {
+                    window.scrollTo({ top: lockTop, left: 0, behavior: 'auto' });
                 }
-            }
-        });
+            };
 
-        // Logica per il Popup Cidre (Domenica 8 Marzo 17:00 - Lunedì 9 Marzo 01:00)
-        document.addEventListener('DOMContentLoaded', () => {
-            const now = new Date();
-            // Mese 2 = Marzo (0-indexed)
-            const start = new Date(2026, 2, 8, 17, 0, 0); // 8 Marzo 17:00
-            const end = new Date(2026, 2, 9, 1, 0, 0);    // 9 Marzo 01:00
+            const getVarigottiTop = () => {
+                const target = varigottiTarget || varigottiSec;
+                if (!target) return 0;
 
-            if (now >= start && now <= end) {
-                const popup = document.getElementById('cidre-popup');
-                const closeBtn = document.getElementById('cidre-close-btn');
-                
-                if (popup) {
-                    // Mostra dopo 1.5 secondi
+                const headerOffset = siteHeader ? siteHeader.getBoundingClientRect().height : 0;
+                return Math.max(0, Math.round(target.getBoundingClientRect().top + window.scrollY - headerOffset - 16));
+            };
+
+            const getCurrentScrollTop = () => {
+                const viewport = window.visualViewport;
+                const scrollValues = [
+                    window.scrollY,
+                    document.documentElement.scrollTop,
+                    document.body.scrollTop
+                ].filter(Number.isFinite);
+
+                if (viewport) {
+                    if (Number.isFinite(viewport.pageTop)) scrollValues.push(viewport.pageTop);
+                    if (Number.isFinite(viewport.offsetTop)) scrollValues.push(viewport.offsetTop);
+                }
+
+                return Math.round(Math.max(0, ...scrollValues));
+            };
+
+            const getVarigottiLockTop = () => {
+                if (isMobileViewport()) {
+                    return varigottiLockTop ?? getCurrentScrollTop();
+                }
+
+                return getVarigottiTop();
+            };
+
+            const getVarigottiMinimumTop = () => {
+                const lockTop = getVarigottiLockTop();
+                return isMobileViewport() ? Math.max(0, lockTop - mobileVarigottiLockSlack) : lockTop;
+            };
+
+            const clampScrollToVarigotti = () => {
+                if (!varigottiSec) return;
+                const activationTop = getVarigottiTop();
+
+                if (!varigottiScrollLocked && getCurrentScrollTop() >= activationTop) {
+                    lockVarigottiScroll();
+                }
+
+                const varigottiTop = getVarigottiMinimumTop();
+                if (!varigottiScrollLocked || getCurrentScrollTop() >= varigottiTop - 1) return;
+                if (varigottiClampFrame) return;
+
+                varigottiClampFrame = requestAnimationFrame(() => {
+                    window.scrollTo({ top: varigottiTop, left: 0, behavior: 'auto' });
+                    varigottiClampFrame = null;
+                });
+            };
+
+            const trackTouchStart = (event) => {
+                lastTouchY = event.touches && event.touches.length ? event.touches[0].clientY : null;
+            };
+
+            const blockTouchAboveVarigotti = (event) => {
+                if (!varigottiScrollLocked || !event.touches || !event.touches.length) return;
+
+                const currentTouchY = event.touches[0].clientY;
+                const isTryingToScrollUpPage = lastTouchY !== null && currentTouchY > lastTouchY;
+                const varigottiTop = getVarigottiMinimumTop();
+                const intendedScrollTop = lastTouchY === null
+                    ? getCurrentScrollTop()
+                    : getCurrentScrollTop() - (currentTouchY - lastTouchY);
+
+                if (isTryingToScrollUpPage && intendedScrollTop <= varigottiTop + 2) {
+                    event.preventDefault();
+                    window.scrollTo({ top: varigottiTop, left: 0, behavior: 'auto' });
+                }
+
+                lastTouchY = currentTouchY;
+            };
+
+            const blockWheelAboveVarigotti = (event) => {
+                if (!varigottiScrollLocked || event.deltaY >= 0) return;
+
+                const varigottiTop = getVarigottiMinimumTop();
+                if (getCurrentScrollTop() + event.deltaY <= varigottiTop + 2) {
+                    event.preventDefault();
+                    window.scrollTo({ top: varigottiTop, left: 0, behavior: 'auto' });
+                }
+            };
+
+            const scrollToVarigotti = () => {
+                document.body.classList.remove('transfer-popup-open');
+                if (!varigottiSec) return;
+
+                requestAnimationFrame(() => {
+                    const target = varigottiTarget || varigottiSec;
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
                     setTimeout(() => {
-                        popup.classList.add('visible');
-                    }, 1500);
-                    
-                    if (closeBtn) {
-                        closeBtn.addEventListener('click', () => popup.classList.remove('visible'));
+                        const correctedTop = getVarigottiTop();
+                        window.scrollTo({ top: correctedTop, left: 0, behavior: 'auto' });
+                    }, 700);
+
+                    setTimeout(() => {
+                        lockVarigottiScroll();
+                    }, 850);
+                });
+            };
+
+            const resetToGenova = () => {
+                varigottiScrollLocked = false;
+                varigottiLockTop = null;
+                document.body.classList.remove('in-varigotti');
+                const animContainer = document.getElementById('animation-container');
+                if (animContainer) {
+                    animContainer.style.opacity = '1';
+                }
+
+                window.scrollTo({
+                    top: genovaSec ? genovaSec.offsetTop : 0,
+                    left: 0,
+                    behavior: 'auto'
+                });
+            };
+            
+            if (tPopup) {
+                // A ogni caricamento riparte da Genova, anche se il browser prova a ripristinare lo scroll.
+                resetToGenova();
+                syncTransferViewport();
+                if (window.visualViewport) {
+                    window.visualViewport.addEventListener('resize', syncTransferViewport);
+                    window.visualViewport.addEventListener('scroll', syncTransferViewport);
+                } else {
+                    window.addEventListener('resize', syncTransferViewport);
+                }
+
+                // Mostra il popup su Genova.
+                requestAnimationFrame(() => {
+                    resetToGenova();
+                    syncTransferViewport();
+                    document.body.classList.add('transfer-popup-open');
+                    tPopup.classList.add('visible');
+                });
+                
+                // Sincronizza il popup al completamento del loader (backup)
+                window.addEventListener('loaderComplete', () => {
+                    console.log('loaderComplete event received');
+                }, { once: true });
+                
+                const closePopup = () => {
+                    tPopup.classList.remove('visible');
+                    // Auto-scroll verso Varigotti
+                    if (varigottiSec) {
+                        setTimeout(scrollToVarigotti, 250); // Piccolo delay per permettere al popup di chiudersi
                     }
-                    
-                    popup.addEventListener('click', (e) => {
-                        if (e.target === popup) popup.classList.remove('visible');
+                };
+                
+                if (tCloseBtn) tCloseBtn.addEventListener('click', closePopup);
+                tPopup.addEventListener('click', (e) => {
+                    if (e.target === tPopup) closePopup();
+                });
+                
+                if (tExploreBtn) {
+                    tExploreBtn.addEventListener('click', () => {
+                        closePopup();
                     });
                 }
             }
-        });
 
-        // Logica per il Popup Bonus Track (Attivo dal 1 Aprile al 5 Aprile 2026)
-        document.addEventListener('DOMContentLoaded', () => {
-            const now = new Date();
-            // Mese 3 = Aprile (0-indexed: Gen=0, Feb=1, Mar=2, Apr=3)
-            const startBonus = new Date(2026, 3, 1, 0, 0, 0);
-            const endBonus = new Date(2026, 3, 5, 23, 59, 59);
+            if (varigottiSec) {
+                window.addEventListener('scroll', clampScrollToVarigotti, { passive: true });
+                window.addEventListener('touchstart', trackTouchStart, { passive: true });
+                window.addEventListener('touchmove', blockTouchAboveVarigotti, { passive: false });
+                window.addEventListener('wheel', blockWheelAboveVarigotti, { passive: false });
+            }
 
-            if (now >= startBonus && now <= endBonus) {
-                const bPopup = document.getElementById('bonustrack-popup');
-                const bCloseBtn = document.getElementById('bonustrack-close-btn');
+            // 2. Intersection Observer per cambio background al passaggio a Varigotti
+            if (varigottiSec && 'IntersectionObserver' in window) {
+                const bgObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            document.body.classList.add('in-varigotti');
+                            // Attenua gli asset di sfondo di Genova per far risaltare il mare
+                            const animContainer = document.getElementById('animation-container');
+                            if (animContainer) {
+                                animContainer.style.opacity = '0.15';
+                                animContainer.style.transition = 'opacity 1s ease';
+                            }
+                        } else {
+                            // Se siamo sopra (Genova), toglie la classe
+                            if (!varigottiScrollLocked && window.scrollY < varigottiSec.offsetTop - 100) {
+                                document.body.classList.remove('in-varigotti');
+                                const animContainer = document.getElementById('animation-container');
+                                if (animContainer) {
+                                    animContainer.style.opacity = '1';
+                                }
+                            }
+                        }
+                    });
+                }, {
+                    threshold: 0.2,
+                    rootMargin: "0px 0px -10% 0px"
+                });
+                bgObserver.observe(varigottiSec);
+            }
+
+            // 3. Parallasse e caricamento fluido delle nuvole
+            const cloudsBg = document.querySelector('.clouds-bg');
+            const genovaSection = document.getElementById('section-genova');
+            const varigottiSection = document.getElementById('section-varigotti');
+            
+            if (cloudsSection && genovaSection && varigottiSection) {
+                // Rendi sempre visibili le nuvole
+                cloudsSection.classList.add('visible');
                 
-                if (bPopup) {
-                    // Appare dopo 1.5 secondi
-                    setTimeout(() => {
-                        bPopup.classList.add('visible');
-                    }, 1500);
+                // Funzione per applicare il parallax delle nuvole
+                const updateCloudsParallax = () => {
+                    const cloudsRect = cloudsSection.getBoundingClientRect();
+                    const viewHeight = window.innerHeight;
                     
-                    if (bCloseBtn) bCloseBtn.addEventListener('click', () => bPopup.classList.remove('visible'));
-                    bPopup.addEventListener('click', (e) => { if (e.target === bPopup) bPopup.classList.remove('visible'); });
-                }
+                    // Applica sempre il parallax alle nuvole
+                    if (cloudsBg) {
+                        if (cloudsRect.top < viewHeight && cloudsRect.bottom > 0) {
+                            const total = cloudsRect.height + viewHeight;
+                            const progress = (viewHeight - cloudsRect.top) / total;
+                            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+                            const translateY = (progress - 0.5) * (isMobile ? 44 : 150);
+                            const scale = isMobile ? 1.02 : 1.1;
+                            cloudsBg.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                        }
+                    }
+                };
+                
+                // Aggiungi listener scroll
+                window.addEventListener('scroll', updateCloudsParallax, { passive: true });
+                
+                // Esegui il controllo iniziale
+                updateCloudsParallax();
             }
         });
     </script>

@@ -30,7 +30,6 @@
   <meta name="view-transition" content="same-origin">
 
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/popup.css">
   <link rel="stylesheet" href="css/cookie-banner.css">
 
   <style>
@@ -57,37 +56,6 @@
       .page-container:first-of-type {
         padding-top: 5px; /* Aggiunge spazio sopra l'immagine per fare posto al pulsante */
       }
-    }
-
-    /* Stili per il popup di sold-out */
-    .popup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      display: none; /* Nascosto di default */
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .popup-content {
-      background-color: #f3f0ce;
-      color: #006a68;
-      padding: 30px;
-      border-radius: 10px;
-      text-align: center;
-      position: relative;
-      max-width: 90%;
-      width: 400px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-
-    .popup-content .close-btn {
-      cursor: pointer;
-      position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold;
     }
   </style>
 
@@ -122,7 +90,7 @@
 
   <!-- Bottone Prenotazione Tavolo -->
   <div class="book-table-button-container">
-    <a href="#" id="book-table-soldout-btn" class="btn book-table-btn">
+    <a href="prenota.html" class="btn book-table-btn">
       Prenota Qui Il Tuo Tavolo
     </a>
   </div>
@@ -169,22 +137,10 @@
       </p>
       <button id="cookie-accept-btn" class="btn">Accetta</button>
   </div>
-
-  <!-- Popup per Sold Out -->
-  <div id="sold-out-popup" class="popup-overlay">
-    <div class="popup-content">
-      <span class="close-btn">&times;</span>
-      <h2>Posti Esauriti!</h2>
-      <p>Le prenotazioni per la degustazione sono al completo.</p>
-      <p>L'ingresso al party rimane libero e gratuito per tutti!</p>
-    </div>
-  </div>
-
   <script src="js/animations.js"></script>
   <script src="js/main.js" defer></script>
   <script src="js/autoscroll.js"></script> 
   <script src="js/cookie-banner.js" defer></script>
-  <script src="js/popup-soldout.js" defer></script>
 
   <!-- Registrazione Service Worker per PWA e supporto Offline -->
   <script>

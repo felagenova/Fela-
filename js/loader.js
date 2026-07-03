@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (event.propertyName === 'opacity') {
                 loader.style.visibility = 'hidden';
                 loader.removeEventListener('transitionend', handleTransitionEnd);
+                // Notifica che il loader è completamente nascosto
+                window.dispatchEvent(new Event('loaderComplete'));
             }
         };
         loader.addEventListener('transitionend', handleTransitionEnd);

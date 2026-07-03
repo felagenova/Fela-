@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const closePopupBtn = document.getElementById('close-popup-btn');
     const skipToBookingBtn = document.getElementById('skip-to-booking-btn');
     const mailingListMessage = document.getElementById('mailing-list-message');
+    const mailingListPopupEnabled = false;
 
     let allBookableEvents = []; // Array per memorizzare TUTTI gli eventi dal backend
     let selectedEvent = null; // Oggetto per l'evento attualmente selezionato
@@ -87,6 +88,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Funzione per mostrare il pop-up della mailing list
     const showMailingListPopup = (event) => {
         selectedEvent = event;
+        if (!mailingListPopupEnabled) {
+            proceedToBookingForm();
+            return;
+        }
         mailingListPopup.classList.add('visible');
     };
 
