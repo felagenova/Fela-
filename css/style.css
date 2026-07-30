@@ -368,16 +368,15 @@ body.in-varigotti #animation-container {
 }
 
 .btn-shop {
-    display: none !important;
-    background-color: transparent;
-    color: #0f4c5c;
-    border: 2px solid #0f4c5c;
+    background-color: #f3f0ce;
+    color: #ff0403;
+    border: 2px solid #ff0403;
 }
 
 .btn-shop:hover {
-    background-color: #0f4c5c;
-    color: #e8f4f8;
-    border-color: #0f4c5c;
+    background-color: #ff0403;
+    color: #f3f0ce;
+    border-color: #ff0403;
 }
 
 /* Stile specifico per il bottone "Il Brunch" nella homepage */

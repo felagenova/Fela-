@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="F-Shirt, la collezione di t-shirt Fela! State of Mind. Scopri foto, video e dettagli della collezione.">
+    <meta name="theme-color" content="#f3f0ce">
+    <meta name="view-transition" content="same-origin">
+    <title>F-Shirt | Fela! State of Mind</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="stylesheet" href="css/f-shirt.css?v=2">
+</head>
+<body>
+    <header class="fshirt-header">
+        <a class="fshirt-logo" href="index.html#section-varigotti" aria-label="Torna a Fela! Varigotti">
+            <img src="images/f!_logo_rosso.svg" alt="Fela!">
+        </a>
+        <a class="header-link" href="index.html#section-varigotti">Varigotti</a>
+    </header>
+
+    <main>
+        <section class="hero" aria-labelledby="fshirt-title">
+            <img class="hero-image" src="images/felakuti/6.jpg" alt="Dettaglio della grafica rossa F-Shirt" fetchpriority="high">
+            <div class="hero-shade" aria-hidden="true"></div>
+            <div class="hero-copy">
+                <p class="eyebrow">Fela! State of Mind</p>
+                <h1 id="fshirt-title">F-Shirt</h1>
+                <a class="hero-link" href="#lookbook">Scopri la collezione</a>
+            </div>
+        </section>
+
+        <section class="intro" aria-label="Presentazione della collezione">
+            <p class="intro-index">01 / F-Shirt</p>
+            <h2>Non una divisa.<br>Uno stato d'animo.</h2>
+            <p class="intro-copy">Bianca con stampa rossa oppure nera con scritte verdi. Davanti un segno, dietro tutto il mondo Fela!: la F-Shirt è fatta per stare insieme, dal mare alla città.</p>
+        </section>
+
+        <section class="lookbook" id="lookbook" aria-label="Lookbook F-Shirt">
+            <figure class="media media-photo media-tall">
+                <img src="images/felakuti/1.jpg" alt="F-Shirt bianca con grafica rossa indossata a Varigotti" loading="lazy">
+                <figcaption>F! for Fela</figcaption>
+            </figure>
+
+            <figure class="media media-video">
+                <video muted loop playsinline preload="metadata" poster="images/felakuti/3.jpg" aria-label="F-Shirt in movimento">
+                    <source src="images/felakuti/2.mp4" type="video/mp4">
+                </video>
+                <figcaption>State of Mind / 01</figcaption>
+            </figure>
+
+            <figure class="media media-photo">
+                <img src="images/felakuti/3.jpg" alt="F-Shirt bianca Fela! State of Mind" loading="lazy">
+                <figcaption>White / Red</figcaption>
+            </figure>
+
+            <figure class="media media-photo">
+                <img src="images/felakuti/4.JPG" alt="F-Shirt bianca con stampa nera posteriore" loading="lazy">
+                <figcaption>Back print / Black</figcaption>
+            </figure>
+
+            <figure class="media media-video media-wide">
+                <video muted loop playsinline preload="metadata" poster="images/felakuti/4.JPG" aria-label="Dettagli della collezione F-Shirt">
+                    <source src="images/felakuti/5.mp4" type="video/mp4">
+                </video>
+                <figcaption>State of Mind / 02</figcaption>
+            </figure>
+
+            <figure class="statement" aria-label="Claim della collezione">
+                <p>Flow<br>Frequency<br>Freestyle<br>Funk<br>Fela!</p>
+            </figure>
+
+            <figure class="media media-photo">
+                <img src="images/felakuti/8.JPG" alt="F-Shirt nera Fela! State of Mind" loading="lazy">
+                <figcaption>Black / White</figcaption>
+            </figure>
+
+            <figure class="media media-video">
+                <video muted loop playsinline preload="metadata" poster="images/felakuti/8.JPG" aria-label="F-Shirt nera in movimento">
+                    <source src="images/felakuti/7.mp4" type="video/mp4">
+                </video>
+                <figcaption>State of Mind / 03</figcaption>
+            </figure>
+        </section>
+
+        <section class="shop">
+            <p class="eyebrow">Disponibile da Fela!</p>
+            <h2>Porta Fela!<br>con te.</h2>
+            <p>Disponibile anche nera con scritte verdi. Scrivici su Instagram per taglie e disponibilità.</p>
+            <a class="shop-link" href="https://www.instagram.com/fela.genova/" target="_blank" rel="noopener noreferrer">Chiedi la tua F-Shirt</a>
+        </section>
+    </main>
+
+    <footer class="fshirt-footer">
+        <img src="images/f!_logo_rosso.svg" alt="Fela!">
+        <p>Fela! State of Mind</p>
+        <a href="index.html#section-varigotti">Torna a Varigotti</a>
+    </footer>
+
+    <script>
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reducedMotion && 'IntersectionObserver' in window) {
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.play().catch(() => {});
+                    } else {
+                        entry.target.pause();
+                    }
+                });
+            }, { threshold: 0.45 });
+
+            document.querySelectorAll('.lookbook video').forEach((video) => videoObserver.observe(video));
+        }
+    </script>
+</body>
+</html>
