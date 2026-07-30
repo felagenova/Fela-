@@ -687,12 +687,12 @@ body.in-varigotti #animation-container {
     }
     .varigotti-side-asset.asset-corallo {
         left: -36px;
-        bottom: -30px;
+        bottom: -8px;
         width: clamp(128px, 42vw, 188px);
     }
     .varigotti-side-asset.asset-vaso {
         right: -2px;
-        bottom: -4px;
+        bottom: 0;
         width: clamp(120px, 40vw, 176px);
     }
     .site-footer p {
