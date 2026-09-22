@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="Lascia il tuo segno su Fela! Disegna liberamente con il dito o con il mouse.">
+    <title>Lascia il tuo segno — Fela!</title>
+    <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red: #ff0403;
+            --blue: #0000ff;
+            --ink: #171717;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            color: var(--ink);
+            background: var(--white);
+            font-family: "Be Vietnam Pro", sans-serif;
+        }
+
+        .site-header-nav {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            padding: 10px 20px;
+            background: var(--white);
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo { display: inline-flex; }
+        .nav-logo img { display: block; width: auto; height: 45px; }
+
+        .back-link {
+            color: var(--red);
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        main {
+            min-height: 0;
+            padding: 8px 20px 24px;
+        }
+
+        .drawing-page {
+            width: min(100%, 1100px);
+            height: 100%;
+            min-height: 520px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-rows: auto minmax(360px, 1fr) auto;
+            gap: 14px;
+        }
+
+        .drawing-header { text-align: center; }
+
+        h1 {
+            margin: 0;
+            color: var(--red);
+            font-size: clamp(25px, 5vw, 46px);
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .drawing-header p {
+            margin: 4px 0 0;
+            font-size: clamp(12px, 2vw, 15px);
+        }
+
+        .paper {
+            position: relative;
+            min-height: 0;
+            overflow: hidden;
+            background: var(--white);
+            box-shadow: 0 8px 34px rgba(0, 0, 0, 0.12);
+        }
+
+        #drawing-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        .drawing-tools {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tool-button {
+            border: 0;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .tool-button {
+            min-height: 40px;
+            padding: 10px 16px;
+            border-radius: 7px;
+            color: var(--red);
+            background: #f4f4f4;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .tool-button:hover,
+        .tool-button:focus-visible {
+            color: var(--white);
+            background: var(--red);
+            outline: none;
+        }
+
+        .site-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+            padding: 25px 40px;
+            color: var(--ink);
+            background: var(--white);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer-right { text-align: right; }
+        .site-footer p { margin: 0 0 5px; }
+        .site-footer a { color: inherit; text-decoration: none; }
+        .site-footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 767px) {
+            .site-header-nav { padding: 5px 18px; }
+            .nav-logo img { height: 35px; }
+            .back-link { font-size: 11px; }
+            main { padding: 4px 12px 18px; }
+
+            .drawing-page {
+                min-height: 500px;
+                grid-template-rows: auto minmax(350px, 1fr) auto;
+                gap: 10px;
+            }
+
+            .site-footer {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                padding: 16px 15px;
+                font-size: 11px;
+                line-height: 1.4;
+                text-align: center;
+            }
+
+            .footer-left,
+            .footer-right { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" aria-label="Fela! — Home">
+                <img src="images/f!_logo_rosso.svg" alt="Logo Fela!">
+            </a>
+            <a class="back-link" href="index.html">Torna alla home</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="drawing-page">
+            <header class="drawing-header">
+                <h1>Lascia il tuo segno</h1>
+                <p>Disegna liberamente con il dito o con il mouse.</p>
+            </header>
+
+            <div class="paper" id="paper">
+                <canvas id="drawing-canvas" aria-label="Foglio da disegno"></canvas>
+            </div>
+
+            <div class="drawing-tools" aria-label="Strumenti da disegno">
+                <button id="clear-canvas" class="tool-button" type="button">Cancella</button>
+                <button id="save-canvas" class="tool-button" type="button">Invia il tuo segno</button>
+            </div>
+            <p id="save-message" role="status" style="min-height:1.4em;margin:0;text-align:center;font-size:13px;font-weight:700"></p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-left">
+            <p><strong>Fela!<br>Music Bar - Social Hub</strong></p>
+            <a href="https://maps.app.goo.gl/zhNrFjCBpWnWwXuP9" target="_blank" rel="noopener noreferrer">
+                <p>Via di S. Cosimo, 6r, 16128 Genova GE</p>
+            </a>
+        </div>
+        <div class="footer-right">
+            <p><strong>Orari:</strong><br>Mer-Gio: 18:00 - 01:00<br>Ven-Sab: 18:00 - 02:00<br>Dom: 17:00 - 00:00<br>Lun-Mar: FELAKIUDI</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        import { firebaseConfig } from './js/config.js';
+
+        const app = initializeApp(firebaseConfig);
+        const database = getFirestore(app);
+        const canvas = document.querySelector('#drawing-canvas');
+        const paper = document.querySelector('#paper');
+        const context = canvas.getContext('2d');
+        const saveButton = document.querySelector('#save-canvas');
+        const saveMessage = document.querySelector('#save-message');
+        let drawing = false;
+        const color = '#000000';
+        let lastPoint = null;
+        let currentStroke = null;
+        let strokes = [];
+
+        function configureBrush() {
+            context.lineCap = 'round';
+            context.lineJoin = 'round';
+            context.lineWidth = Math.max(30, Math.min(58, Math.min(canvas.clientWidth, canvas.clientHeight) * 0.075));
+            context.strokeStyle = color;
+            context.globalAlpha = 1;
+            context.globalCompositeOperation = 'source-over';
+        }
+
+        function resizeCanvas() {
+            const snapshot = document.createElement('canvas');
+            snapshot.width = canvas.width;
+            snapshot.height = canvas.height;
+            if (snapshot.width && snapshot.height) snapshot.getContext('2d').drawImage(canvas, 0, 0);
+
+            const ratio = Math.min(window.devicePixelRatio || 1, 2);
+            const rect = paper.getBoundingClientRect();
+            canvas.width = Math.round(rect.width * ratio);
+            canvas.height = Math.round(rect.height * ratio);
+            context.setTransform(ratio, 0, 0, ratio, 0, 0);
+            if (snapshot.width && snapshot.height) {
+                context.drawImage(snapshot, 0, 0, snapshot.width, snapshot.height, 0, 0, rect.width, rect.height);
+            }
+            configureBrush();
+        }
+
+        function pointFromEvent(event) {
+            const rect = canvas.getBoundingClientRect();
+            return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+        }
+
+        canvas.addEventListener('pointerdown', (event) => {
+            drawing = true;
+            lastPoint = pointFromEvent(event);
+            currentStroke = {
+                size: context.lineWidth / Math.min(canvas.clientWidth, canvas.clientHeight),
+                points: [{ x: lastPoint.x / canvas.clientWidth, y: lastPoint.y / canvas.clientHeight }]
+            };
+            strokes.push(currentStroke);
+            canvas.setPointerCapture(event.pointerId);
+            const brushSize = context.lineWidth;
+            context.beginPath();
+            context.arc(lastPoint.x, lastPoint.y, brushSize / 2, 0, Math.PI * 2);
+            context.fillStyle = color;
+            context.fill();
+        });
+
+        canvas.addEventListener('pointermove', (event) => {
+            if (!drawing) return;
+            const points = event.getCoalescedEvents ? event.getCoalescedEvents() : [event];
+            points.forEach((pointerEvent) => {
+                const point = pointFromEvent(pointerEvent);
+                context.beginPath();
+                context.moveTo(lastPoint.x, lastPoint.y);
+                context.lineTo(point.x, point.y);
+                context.stroke();
+                lastPoint = point;
+                currentStroke.points.push({ x: point.x / canvas.clientWidth, y: point.y / canvas.clientHeight });
+            });
+        });
+
+        function stopDrawing() {
+            drawing = false;
+            lastPoint = null;
+            currentStroke = null;
+        }
+
+        canvas.addEventListener('pointerup', stopDrawing);
+        canvas.addEventListener('pointercancel', stopDrawing);
+
+        document.querySelector('#clear-canvas').addEventListener('click', () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            strokes = [];
+            saveMessage.textContent = '';
+        });
+
+        saveButton.addEventListener('click', async () => {
+            if (!strokes.length) {
+                saveMessage.textContent = 'Prima lascia il tuo segno sul foglio.';
+                return;
+            }
+
+            saveButton.disabled = true;
+            saveMessage.textContent = 'Invio in corso…';
+
+            try {
+                await addDoc(collection(database, 'segni'), {
+                    strokes,
+                    createdAt: serverTimestamp()
+                });
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                strokes = [];
+                saveMessage.textContent = 'Grazie! Il tuo segno è arrivato a Fela!';
+            } catch (error) {
+                console.error('Invio del segno non riuscito:', error);
+                saveMessage.textContent = error.code === 'permission-denied'
+                    ? 'Il servizio non è ancora attivo. Riprova più tardi.'
+                    : 'Invio non riuscito. Riprova tra poco.';
+            } finally {
+                saveButton.disabled = false;
+            }
+        });
+
+        new ResizeObserver(resizeCanvas).observe(paper);
+    </script>
+</body>
+</html>

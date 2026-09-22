@@ -17,7 +17,7 @@ body {
     margin: 0;
     color: var(--ink);
     background: var(--cream);
-    font-family: "Red Hat Display", sans-serif;
+    font-family: "Be Vietnam Pro", sans-serif;
 }
 
 img,
@@ -43,11 +43,13 @@ a {
 }
 
 .fshirt-logo {
-    display: block;
-    width: 58px;
+    display: inline-flex;
+    width: auto;
 }
 
 .fshirt-logo img {
+    width: auto;
+    height: 45px;
     filter: brightness(0) invert(1);
 }
 
@@ -140,6 +142,7 @@ a {
     gap: clamp(28px, 5vw, 80px);
     align-items: end;
     padding: clamp(64px, 10vw, 150px) clamp(20px, 5vw, 72px);
+    background: var(--white);
 }
 
 .intro h2,
@@ -337,7 +340,7 @@ a {
     border: 0;
     color: var(--white);
     background: transparent;
-    font: 400 40px/1 "Red Hat Display", sans-serif;
+    font: 400 40px/1 "Be Vietnam Pro", sans-serif;
     cursor: pointer;
 }
 
@@ -351,9 +354,7 @@ a {
         min-height: 68px;
     }
 
-    .fshirt-logo {
-        width: 48px;
-    }
+    .fshirt-logo img { height: 35px; }
 
     .hero {
         min-height: 88vh;

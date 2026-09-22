@@ -8,7 +8,7 @@
     <!-- Google Fonts: Red Hat Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Favicon -->
     <link rel="icon" href="images/favicon.ico" sizes="any">
     <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/cookie-banner.css">
 
     <!-- Abilita le View Transitions per animazioni fluide tra le pagine -->
-    <meta name="theme-color" content="#f3f0ce">
+    <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="view-transition" content="same-origin">
@@ -34,6 +34,37 @@
         gtag('config', 'G-79CC36NDY9');
     </script>
     <style>
+        html,
+        body.uniform-white-page,
+        body.uniform-white-page .site-header-nav,
+        body.uniform-white-page .main-nav,
+        body.uniform-white-page .page-container,
+        body.uniform-white-page .page-container h1,
+        body.uniform-white-page .category-title,
+        body.uniform-white-page .menu-item-header h4,
+        body.uniform-white-page .price,
+        body.uniform-white-page .btn,
+        body.uniform-white-page .site-footer {
+            background-color: #ffffff;
+            background-image: none;
+        }
+
+        body.uniform-white-page .site-header-nav {
+            border-bottom: 0;
+        }
+
+        body.uniform-white-page .page-container {
+            box-shadow: none;
+        }
+
+        body.uniform-white-page .page-container > h1 {
+            border: 0;
+        }
+
+        body.uniform-white-page .site-footer {
+            color: #171717;
+        }
+
         /* Stile per evidenziare le categorie dei vini */
         #vini .menu-section h3, #birre .menu-section h3 {
             color: #ff0403;
@@ -47,7 +78,7 @@
         }
     </style>
 </head>
-<body>    
+<body class="uniform-white-page">
     
     <header class="site-header-nav">
         <div class="nav-container">
@@ -62,8 +93,9 @@
             <nav class="main-nav">
                 <a href="index.html">Home</a>
                 <a href="menu.html" class="active">Menu</a>
-                <a href="salotto.html">Il Salotto</a>
-                <a href="eventi.html">Eventi</a>
+                <a href="f-shirt.html">F!-Shirt</a>
+                <a href="eventi.html">Calendario</a>
+                <a href="lascia-il-tuo-segno.html">Lascia il tuo segno</a>
                 <button id="navbar-notification-btn" class="notification-bell-btn" aria-label="Attiva Notifiche" style="display: none;">
                     <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
                 </button>

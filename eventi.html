@@ -1,641 +1,186 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Scopri il calendario eventi di Fela! a Genova. DJ set, musica dal vivo, degustazioni e serate a tema. Non perderti i prossimi appuntamenti nel nostro social hub.">
-    <title>I Nostri Eventi</title>
-    <!-- Google Fonts: Red Hat Display -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-    <link rel="icon" href="images/favicon.ico" sizes="any">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Il nuovo calendario degli eventi di Fela! sarà presto online.">
+    <meta name="theme-color" content="#ffffff">
+    <title>Calendario — Fela!</title>
     <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/cookie-banner.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff;
+            --red: #ff0403;
+            --ink: #171717;
+        }
 
-    <!-- Abilita le View Transitions per animazioni fluide tra le pagine -->
-    <meta name="theme-color" content="#f3f0ce">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="view-transition" content="same-origin">
+        * { box-sizing: border-box; }
 
-    <!-- Google tag (gtag.js) - INCOLLA QUI IL TUO CODICE GOOGLE ANALYTICS -->
-    <!-- Sostituisci G-XXXXXXXXXX con il tuo ID di misurazione reale -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-79CC36NDY9"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+        }
 
-        gtag('config', 'G-79CC36NDY9');
-    </script>
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            color: var(--ink);
+            background: var(--white);
+            font-family: "Be Vietnam Pro", sans-serif;
+        }
+
+        .site-header-nav {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            padding: 10px 20px;
+            background: var(--white);
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo { display: inline-flex; }
+        .nav-logo img { display: block; width: auto; height: 45px; }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .main-nav a {
+            color: var(--red);
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .main-nav a:not(.active) { opacity: 0.58; }
+
+        main {
+            min-height: 420px;
+            display: grid;
+            place-items: center;
+            padding: 40px 20px;
+        }
+
+        .calendar-placeholder {
+            max-width: 680px;
+            text-align: center;
+        }
+
+        .calendar-placeholder h1 {
+            margin: 0;
+            color: var(--red);
+            font-size: clamp(38px, 9vw, 92px);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+        }
+
+        .calendar-placeholder p {
+            max-width: 480px;
+            margin: 24px auto 0;
+            font-size: clamp(15px, 3vw, 20px);
+            line-height: 1.45;
+        }
+
+        .site-footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+            padding: 25px 40px;
+            color: var(--ink);
+            background: var(--white);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer-right { text-align: right; }
+        .site-footer p { margin: 0 0 5px; }
+        .site-footer a { color: inherit; text-decoration: none; }
+        .site-footer a:hover { text-decoration: underline; }
+
+        .hamburger-menu { display: none; }
+
+        @media (max-width: 767px) {
+            .site-header-nav { padding: 5px 18px; }
+            .nav-logo img { height: 35px; }
+            .main-nav { gap: 14px; }
+            .main-nav a { font-size: 10px; }
+
+            main {
+                min-height: 380px;
+                padding-inline: 24px;
+            }
+
+            .site-footer {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                padding: 16px 15px;
+                font-size: 11px;
+                line-height: 1.4;
+                text-align: center;
+            }
+
+            .footer-left,
+            .footer-right { text-align: center; }
+        }
+    </style>
 </head>
-<body class="inner-page-bg">
-    <div id="animation-container"></div>
+<body>
     <header class="site-header-nav">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">
-                <!-- Logo Fela! Music Bar Genova -->
-                <img src="images/f!_logo_rosso.svg" alt="Logo Fela! Music Bar Genova">
+            <a href="index.html" class="nav-logo" aria-label="Fela! — Home">
+                <img src="images/f!_logo_rosso.svg" alt="Logo Fela!">
             </a>
-            <button class="hamburger-menu" aria-label="Apri menu" aria-expanded="false">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
-            <nav class="main-nav">
+            <nav class="main-nav" aria-label="Navigazione principale">
                 <a href="index.html">Home</a>
                 <a href="menu.html">Menu</a>
-                <a href="salotto.html">Il Salotto</a>
-                <a href="eventi.html" class="active">Eventi</a>
+                <a href="eventi.html" class="active">Calendario</a>
             </nav>
         </div>
     </header>
-    <div class="page-container">
-        <h1>I Nostri Eventi</h1>
 
-        <div class="calendar-nav">
-            <button id="prev-month" class="nav-arrow" aria-label="Mese precedente">‹</button>
-            <span id="current-month-display"></span>
-            <button id="next-month" class="nav-arrow" aria-label="Mese successivo">›</button>
-        </div>
+    <main>
+        <section class="calendar-placeholder">
+            <h1>Nuovo calendario</h1>
+            <p>Stiamo preparando i prossimi appuntamenti di Fela! Torna presto per scoprire la nuova programmazione.</p>
+        </section>
+    </main>
 
-        <div id="calendar-october" class="calendar-container active" data-year="2025" data-month="9"> <!-- Mese 9 = Ottobre (0-indexed) -->
-            <div class="calendar-header">
-                <h2>Ottobre 2025</h2>
-            </div>
-            <div class="calendar-grid">
-                <!-- Intestazioni giorni della settimana -->
-                <div class="weekday-header">Lun</div>
-                <div class="weekday-header">Mar</div>
-                <div class="weekday-header">Mer</div>
-                <div class="weekday-header">Gio</div>
-                <div class="weekday-header">Ven</div>
-                <div class="weekday-header">Sab</div>
-                <div class="weekday-header">Dom</div>
-
-                <!-- Giorni del mese -->
-                 <!-- Settimana 1 (Ottobre 2025 inizia di Mercoledì) -->
-                 <div class="day-cell"></div>
-                 <div class="day-cell has-event">30 <span class="event-marker">Homies...</span>
-                    <div class="event-details-content"><h3>Homies Selection</h3><p>Music, drink & Food for soul!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">1 <span class="event-marker">OUTPUMP...</span>
-                     <div class="event-details-content"><h3>OUTPUMP on tour!</h3><p>w/ Supersonido Crew x Complefela!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">2 <span class="event-marker">Homies...</span>
-                     <div class="event-details-content"><h3>Homies Selection</h3><p>Music, drink & Food for soul!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">3 <span class="event-marker">BOEM...</span>
-                     <div class="event-details-content"><h3>BOEM FESTIVAL Soundsystem</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">4 <span class="event-marker">Albici Dj Set</span>
-                     <div class="event-details-content"><h3>Albici Dj Set (Extravaganza)</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">5 <span class="event-marker">Homies...</span>
-                     <div class="event-details-content"><h3>Homies Selection</h3><p>Music, drink & Food for soul!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
- 
-                 <!-- Settimana 2 -->
-                 <div class="day-cell in-month closing-day">6 <span class="event-marker">FELAKIUDI</span></div>
-                 <div class="day-cell in-month has-event">7 <span class="event-marker">Ernesto...</span>
-                     <div class="event-details-content"><h3>Ernesto vien da Fela!</h3><p>Percorso di Degustazione vini</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">8 <span class="event-marker">FiloQ...</span>
-                     <div class="event-details-content"><h3>FiloQ plays his record x Complefela!</h3><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">9 <span class="event-marker">NoOXpres...</span>
-                     <div class="event-details-content"><h3>NoOXpres.: “Sound as Identity and Resistance”</h3><p>TALK + Alassane Badboy LIVE</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">10 <span class="event-marker">Andrea P...</span>
-                     <div class="event-details-content"><h3>Andrea Passenger All Night Long</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">11 <span class="event-marker">Reggae...</span>
-                     <div class="event-details-content"><h3>Carlito & Frenci Vibes - Reggae Night</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">12 <span class="event-marker">DI GIORNO!</span>
-                     <div class="event-details-content"><h3>DI GIORNO!</h3><p>Northern Soul, Modern Soul, R’n’B w/ Adri, Babs & Kriupan</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
- 
-                 <!-- Settimana 3 -->
-                 <div class="day-cell in-month closing-day">13 <span class="event-marker">FELAKIUDI</span></div>
-                 <div class="day-cell in-month has-event">14 <span class="event-marker">Homies...</span>
-                     <div class="event-details-content"><h3>Homies Selection</h3><p>Music, drink & Food for soul!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">15 <span class="event-marker">Pecer...</span>
-                     <div class="event-details-content"><h3>Pecer selecta x Complefela! (DiscoRiviera)</h3><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">16 <span class="event-marker">Homies...</span>
-                     <div class="event-details-content"><h3>Homies Selection</h3><p>Music, drink & Food for soul!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">17 <span class="event-marker">SUPER...</span>
-                     <div class="event-details-content"><h3>SUPERSONIDO w/ ???</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">18 <span class="event-marker">HipHop...</span>
-                     <div class="event-details-content"><h3>Dj Kamo - HipHop Night</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">19 <span class="event-marker">BRUNCH</span>
-                     <div class="event-details-content"><h3>KALAKUTA BRUNCH</h3><p class="event-time">dalle 11.00</p></div>
-                 </div>
- 
-                 <!-- Settimana 4 -->
-                 <div class="day-cell in-month closing-day">20 <span class="event-marker">FELAKIUDI</span></div>
-                 <div class="day-cell in-month has-event">21 <span class="event-marker">Homies...</span>
-                     <div class="event-details-content"><h3>Homies Selection</h3><p>Music, drink & Food for soul!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">22 <span class="event-marker">Quiet a...</span>
-                     <div class="event-details-content"><h3>Quiet a Village selecta x Complefela!</h3><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">23 <span class="event-marker">Salotto...</span>
-                     <div class="event-details-content"><h3>“Il Salotto di Fela”</h3><p>talk & ascolto di vinili con Dalida</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">24 <span class="event-marker">Adventure...</span>
-                     <div class="event-details-content"><h3>Adventures Soundsystem</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">25 <span class="event-marker">Disco...</span>
-                     <div class="event-details-content"><h3>Discomoderni</h3><p>Tropical Lover, Afro electro, Latin bass & Italian trips</p><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">26 <span class="event-marker">Homies...</span>
-                     <div class="event-details-content"><h3>Homies Selection</h3><p>Music, drink & Food for soul!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
- 
-                 <!-- Settimana 5 -->
-                 <div class="day-cell in-month closing-day">27 <span class="event-marker">FELAKIUDI</span></div>
-                 <div class="day-cell in-month has-event">28 <span class="event-marker">La Pesa...</span>
-                     <div class="event-details-content"><h3>Fela! meets La Pesa</h3><p>Percorso gastronomico a cura di Davide Pastorino</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">29 <span class="event-marker">Federico F...</span>
-                     <div class="event-details-content"><h3>Federico F selecta x Complefela!</h3><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">30 <span class="event-marker">Homies...</span>
-                     <div class="event-details-content"><h3>Homies Selection</h3><p>Music, drink & Food for soul!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">31 <span class="event-marker">Reggae...</span>
-                     <div class="event-details-content"><h3>Ganja Farmers Sound - Reggae Night</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell"></div><div class="day-cell"></div>
-
-            </div>
-        </div>
-
-        <!-- Calendario Novembre -->
-        <div id="calendar-november" class="calendar-container" data-year="2025" data-month="10"> <!-- Mese 10 = Novembre (0-indexed) -->
-            <div class="calendar-header">
-                <h2>Novembre 2025</h2>
-            </div>
-            <div class="calendar-grid">
-                <!-- Intestazioni giorni della settimana -->
-                <div class="weekday-header">Lun</div>
-                <div class="weekday-header">Mar</div>
-                <div class="weekday-header">Mer</div>
-                <div class="weekday-header">Gio</div>
-                <div class="weekday-header">Ven</div>
-                <div class="weekday-header">Sab</div>
-                <div class="weekday-header">Dom</div>
-
-                <!-- Giorni del mese -->
-                 <!-- Settimana 1 (Novembre 2025 inizia di Sabato) -->
-                 <div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div>
-                 <div class="day-cell in-month has-event">1 <span class="event-marker">Gianluca P...</span>
-                    <div class="event-details-content"><h3>Gianluca Petrella all night long</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">2 <span class="event-marker">Homies...</span>
-                    <div class="event-details-content"><h3>Homies Selection</h3><p>Music, drink & Food for soul!</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-
-                 <!-- Settimana 2 -->
-                 <div class="day-cell in-month closing-day">3 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                 <div class="day-cell in-month closing-day">4 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                 <div class="day-cell in-month has-event">5 <span class="event-marker">Complefela!</span>
-                    <div class="event-details-content"><h3>Complefela! w/ Capasoul selecta</h3><p>+ degustazione Cantina Crealto a cura del mitico Ernesto</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">6 <span class="event-marker">KORALLE</span>
-                    <div class="event-details-content"><h3>KORALLE</h3><p>Live Beats in Salotto</p><p class="event-time">Dalle 21.30</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">7 <span class="event-marker">TELECLUB</span>
-                    <div class="event-details-content"><h3>TELECLUB Italian Tour</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">8 <span class="event-marker">Grow</span>
-                    <div class="event-details-content"><h3>Grow w/ Pierre Picozzi</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">9 <span class="event-marker">Brunch</span>
-                    <div class="event-details-content"><h3>Kalakuta Brunch</h3><p class="event-time">dalle 11.00</p></div>
-                 </div>
-
-                 <!-- Settimana 3 -->
-                 <div class="day-cell in-month closing-day">10 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                 <div class="day-cell in-month closing-day">11 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                 <div class="day-cell in-month has-event">12 <span class="event-marker">Complefela!</span>
-                    <div class="event-details-content"><h3>Complefela! w/ Feeldamusic selecta</h3><p>+ Shai cooking experience</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">13 <span class="event-marker">Piacere Polonia!</span>
-                    <div class="event-details-content"><h3>Piacere Polonia!</h3><p>Bokobrody Polish Funk selecta & aperitivo polacco</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">14 <span class="event-marker">Pierka</span>
-                    <div class="event-details-content"><h3>Pierka all night long</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">15 <span class="event-marker">Little Beat More</span>
-                    <div class="event-details-content"><h3>Little Beat More takeover w/ Woxow (Vienna)</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">16 <span class="event-marker">Brunch</span>
-                    <div class="event-details-content"><h3>Kalakuta Brunch</h3><p class="event-time">dalle 11.00</p></div>
-                 </div>
-
-                 <!-- Settimana 4 -->
-                 <div class="day-cell in-month closing-day">17 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                 <div class="day-cell in-month closing-day">18 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                 <div class="day-cell in-month has-event">19 <span class="event-marker">Transatlantica</span>
-                    <div class="event-details-content"><h3>Transatlantica Takeover!</h3><p>Music by Nickodemus (NYC) & Ma Nu</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">20 <span class="event-marker">Stand Up</span>
-                    <div class="event-details-content"><h3>Patty Pravda</h3><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">21 <span class="event-marker">Disordine</span>
-                    <div class="event-details-content"><h3>Disordine pres: Auditus Motus</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">22 <span class="event-marker">Pride Party</span>
-                    <div class="event-details-content"><h3>Liguria Pride Party</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">23 <span class="event-marker">Brunch</span>
-                    <div class="event-details-content"><h3>Kalakuta Brunch</h3><p class="event-time">dalle 11.00</p></div>
-                 </div>
-
-                 <!-- Settimana 5 -->
-                 <div class="day-cell in-month closing-day">24 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                 <div class="day-cell in-month closing-day">25 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                 <div class="day-cell in-month has-event">26 <span class="event-marker">Complefela!</span>
-                    <div class="event-details-content"><h3>Complefela! w/ OFM pres. Repubblica 8Spensierata8</h3><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">27 <span class="event-marker">Salotto di Fela!</span>
-                    <div class="event-details-content"><h3>“Il salotto di fela!”</h3><p>Vinyl listening & Talk w/ Dalida & Carlo Bordone</p><p class="event-time">Dalle 18.00 Bar Room</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">28 <span class="event-marker">Antonio Aiello</span>
-                    <div class="event-details-content"><h3>Antonio Aiello all night long (Roma)</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">29 <span class="event-marker">No Diggity</span>
-                    <div class="event-details-content"><h3>No Diggity: Rarities & Banane Bangers of R’n’B, Hip Hop (Bologna)</h3><p class="event-time">Dalle 18.00 Bar Room</p><p class="event-time">Dalle 22.00 Mini Club</p></div>
-                 </div>
-                 <div class="day-cell in-month has-event">30 <span class="event-marker">Brunch</span>
-                    <div class="event-details-content"><h3>Kalakuta Brunch</h3><p class="event-time">dalle 11.00</p></div>
-                 </div>
-
-            </div>
-        </div>
-
-        <!-- Calendario Dicembre -->
-        <div id="calendar-december" class="calendar-container" data-year="2025" data-month="11"> <!-- Mese 11 = Dicembre (0-indexed) -->
-            <div class="calendar-header">
-                <h2>Dicembre 2025</h2>
-            </div>
-            <div class="calendar-grid">
-                <!-- Intestazioni giorni della settimana -->
-                <div class="weekday-header">Lun</div>
-                <div class="weekday-header">Mar</div>
-                <div class="weekday-header">Mer</div>
-                <div class="weekday-header">Gio</div>
-                <div class="weekday-header">Ven</div>
-                <div class="weekday-header">Sab</div>
-                <div class="weekday-header">Dom</div>
-
-                <!-- Giorni del mese -->
-                <!-- Settimana 1 -->
-                <div class="day-cell in-month closing-day">1 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">2 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">3 <span class="event-marker">ERNESTO...</span><div class="event-details-content"><h3>ERNESTO VIEN DA FELA!</h3><p>Azienda Agricola "La Travandasca" Dj set by KHAFF ROOTS</p></div></div>
-                <div class="day-cell in-month closing-day">4 <span class="event-marker">Chiuso</span><div class="event-details-content"><h3>CHIUSI PER EVENTO PRIVATO</h3></div></div>
-                <div class="day-cell in-month has-event">5 <span class="event-marker">ANDREA...</span><div class="event-details-content"><h3>ANDREA INTROVIGNE</h3><p>All Night Long</p></div></div>
-                <div class="day-cell in-month has-event">6 <span class="event-marker">FRED SIMON</span><div class="event-details-content"><h3>FRED SIMON</h3><p>All Night Long</p></div></div>
-                <div class="day-cell in-month has-event">7 <span class="event-marker">SPICY TUM</span><div class="event-details-content"><h3>SPICY TUM</h3><p>w/ Gambo, Marco Mou, Geena</p></div></div>
-                <!-- Settimana 2 -->
-                <div class="day-cell in-month closing-day">8 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">9 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">10 <span class="event-marker">LA SOVVERSIVA</span><div class="event-details-content"><h3>LA SOVVERSIVA</h3><p>West Coast Liguria Wine Tasting + Slavo dj-set on 45's</p></div></div>
-                <div class="day-cell in-month has-event">11 <span class="event-marker">SALOTTO...</span><div class="event-details-content"><h3>IL SALOTTO DI FELA</h3><p>con Dalida & Damir Ivic</p></div></div>
-                <div class="day-cell in-month has-event">12 <span class="event-marker">DJ SMOKE...</span><div class="event-details-content"><h3>DJ SMOKE L.E.S. from NYC</h3><p>x Ricky Powell powered by R + Dj Smooth</p></div></div>
-                <div class="day-cell in-month has-event">13 <span class="event-marker">DEVOZIONI...</span><div class="event-details-content"><h3>DEVOZIONI BALEARI</h3></div></div>
-                <div class="day-cell in-month has-event">14 <span class="event-marker">BRUNCH</span><div class="event-details-content"><h3>KALAKUTA BRUNCH</h3></div></div>
-                <!-- Settimana 3 -->
-                <div class="day-cell in-month closing-day">15 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">16 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">17 <span class="event-marker">FELA! MEETS...</span><div class="event-details-content"><h3>FELA! MEETS SUNNYFOOD</h3><p>Tapas by Giorgio Servetto, Cocktails by Paolo Schivo + Bruno Bolla pres. 20 years of Blacktronic</p></div></div>
-                <div class="day-cell in-month has-event">18 <span class="event-marker">DAMZE...</span><div class="event-details-content"><h3>DAMZE FASHION ROOM</h3><p>DAMZE w/ Juma, Leo Elle & Vago live + Moli dj-set</p></div></div>
-                <div class="day-cell in-month has-event">19 <span class="event-marker">DJ KAMO...</span><div class="event-details-content"><h3>DJ KAMO + CIMO MARIANO</h3></div></div>
-                <div class="day-cell in-month has-event">20 <span class="event-marker">OUR VINYL...</span><div class="event-details-content"><h3>"OUR VINYL WEIGHTS A TON"</h3><p>Squalo Selecta</p></div></div>
-                <div class="day-cell in-month has-event" id="event-dec-21">21 <span class="event-marker">JAMAICAN...</span><div class="event-details-content"><h3>MERENDA GIAMAICANA</h3><p>for Jamaican Relief Week<br>Dalle 16.00</p></div></div>
-                <!-- Settimana 4 -->
-                <div class="day-cell in-month closing-day">22 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">23 <span class="event-marker">SUPERSONIDO</span><div class="event-details-content"><h3>Supersonido Special Christmas Tasting</h3></div></div>
-                <div class="day-cell in-month has-event">24 <span class="event-marker">XMAS...</span><div class="event-details-content"><h3>Fela Christmas Special Giveaway</h3><p>(Vieni a prenderti un regalo!)</p></div></div>
-                <div class="day-cell in-month has-event">25 <span class="event-marker">ALL TOGETHER</span><div class="event-details-content"><h3>ALL TOGETHER</h3><p>w/ Capasoul, Fabio De Luca, Ugo Sabatino</p></div></div>
-                <div class="day-cell in-month has-event">26 <span class="event-marker">MARIE BEYLE</span><div class="event-details-content"><h3>MARIE BEYLE</h3><p>All Night Long</p></div></div>
-                <div class="day-cell in-month has-event">27 <span class="event-marker">LIGURIA...</span><div class="event-details-content"><h3>LIGURIA PRIDE PARTY</h3></div></div>
-                <div class="day-cell in-month has-event">28 <span class="event-marker">COZY SUNDAY</span><div class="event-details-content"><h3>Cozy Sunday Afternoon</h3><p>Tisane, Torte & Giochi in Scatola</p><p>+ Night with DJ FALAFEL for Al Raseef After Concert</p></div></div>
-                <!-- Settimana 5 -->
-                <div class="day-cell in-month has-event">29 <span class="event-marker">ZIBBA</span><div class="event-details-content"><h3>"Solo Canzoni D'Amore"</h3><p>ZIBBA ACUSTIC LIVE</p></div></div>
-                <div class="day-cell in-month has-event">30 <span class="event-marker">STAND UP...</span><div class="event-details-content"><h3>SIMONETTA MUSITANO</h3><p>Stand Up Comedy Night (w/ Liguria Pride)</p></div></div>
-                <div class="day-cell in-month closing-day">31 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell"></div>
-                <div class="day-cell"></div>
-                <div class="day-cell"></div>
-                <div class="day-cell"></div>
-            </div>
-        </div>
-
-        <!-- Calendario Gennaio -->
-        <div id="calendar-january" class="calendar-container" data-year="2026" data-month="0"> <!-- Mese 0 = Gennaio (0-indexed) -->
-            <div class="calendar-header">
-                <h2>Gennaio 2026</h2>
-            </div>
-            <div class="calendar-grid">
-                <!-- Intestazioni giorni della settimana -->
-                <div class="weekday-header">Lun</div>
-                <div class="weekday-header">Mar</div>
-                <div class="weekday-header">Mer</div>
-                <div class="weekday-header">Gio</div>
-                <div class="weekday-header">Ven</div>
-                <div class="weekday-header">Sab</div>
-                <div class="weekday-header">Dom</div>
-
-                <!-- Giorni del mese -->
-                <!-- Settimana 1 -->
-                <div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div>
-                <div class="day-cell in-month closing-day">1 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">2 <span class="event-marker">JAZZ & WINE</span><div class="event-details-content"><h3>JAZZ & WINE</h3><p>w/ Bernard Glenat + Denis Noego & Fish djset</p></div></div>
-                <div class="day-cell in-month has-event">3 <span class="event-marker">REGGAE PARTY</span><div class="event-details-content"><h3>RUDE REGGAE PARTY</h3><p>w/ Matteo Manini & Daniel Jamaica</p></div></div>
-                <div class="day-cell in-month has-event">4 <span class="event-marker">SALOTTO & COZY</span>
-                    <div class="event-details-content"><h3>Il Salotto di Fela! & Cozy Sunday</h3><p>w/ Dalida & Fabio De Luca</p><p>Tisane, dolci & Giochi in Scatola</p></div>
-                </div>
-                <!-- Settimana 2 -->
-                <div class="day-cell in-month has-event">5 <span class="event-marker">MR PUMA...</span>
-                    <div class="event-details-content">
-                        <h3>MR PUMA NIGHT</h3>
-                        <p>h21.30 proiezione “Savona Mia, Savona Mai”</p><p>h22.30 Soundsystem Night w/ Mr Puma and guest</p>
-                    </div>
-                </div>
-                <div class="day-cell in-month closing-day">6 <span class="event-marker">FELAKIUDI</span>
-                    <div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month">7</div>
-                <div class="day-cell in-month">8</div>
-                <div class="day-cell in-month">9</div>
-                <div class="day-cell in-month">10</div>
-                <div class="day-cell in-month">11</div>
-                <!-- Settimana 3 -->
-                <div class="day-cell in-month closing-day">12 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">13 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">14 <span class="event-marker">Degustazione...</span>
-                    <div class="event-details-content"><h3>Degustazione Tapas</h3><p>by La Madeleine Alassio (bar Room)</p><p>+ Calypso live (miniclub room)</p></div>
-                </div>
-                <div class="day-cell in-month has-event">15 <span class="event-marker">FELACUSTIC!</span>
-                    <div class="event-details-content"><h3>FELACUSTIC!</h3><p>A cura di ZIbba & Lab22 con LOBINA + opening act by sòl</p></div>
-                </div>
-                <div class="day-cell in-month has-event">16 <span class="event-marker">MASS PROD</span>
-                    <div class="event-details-content"><h3>MASS PROD</h3><p>All Night Long</p></div>
-                </div>
-                <div class="day-cell in-month has-event">17 <span class="event-marker">Adventures</span>
-                    <div class="event-details-content"><h3>Adventures</h3><p>w/ JAMES FALCO</p></div>
-                </div>
-                <div class="day-cell in-month has-event">18 <span class="event-marker">CINEFELA!</span>
-                    <div class="event-details-content"><h3>CINEFELA!</h3><p>"ANIMALHOUSE" di John Landis</p></div>
-                </div>
-                <!-- Settimana 4 -->
-                <div class="day-cell in-month closing-day">19 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">20 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">21 <span class="event-marker">Fela! meets...</span>
-                    <div class="event-details-content"><h3>Fela! meets SCRAP</h3><p>Degustazione Tapas</p></div>
-                </div>
-                <div class="day-cell in-month has-event">22 <span class="event-marker">IL SALOTTO...</span>
-                    <div class="event-details-content"><h3>IL SALOTTO DI FELA</h3><p>Dalida host GIORGIO VALLETTA</p><p>(club2club /Radio Raheem / Rumore)</p></div>
-                </div>
-                <div class="day-cell in-month has-event">23 <span class="event-marker">Disordine</span>
-                    <div class="event-details-content"><h3>Disordine</h3><p>All Night Long</p></div>
-                </div>
-                <div class="day-cell in-month has-event">24 <span class="event-marker">Dj Panino</span>
-                    <div class="event-details-content"><h3>Dj Panino</h3><p>all night long</p></div>
-                </div>
-                <div class="day-cell in-month has-event">25 <span class="event-marker">CINEFELA!</span>
-                    <div class="event-details-content"><h3>CINEFELA!</h3><p>"FA' LA COSA GIUSTA" di Spike Lee</p></div>
-                </div>
-                <!-- Settimana 5 -->
-                <div class="day-cell in-month closing-day">26 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">27 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">28 <span class="event-marker">Transatlantica</span>
-                    <div class="event-details-content"><h3>Transatlantica Night</h3><p>w/ LEFTO EARLY BIRD & A5k4</p><p>+ "Il Masetto" special tasting & Pablo from "Taskita"</p></div>
-                </div>
-                <div class="day-cell in-month has-event">29 <span class="event-marker">Ruben Lombroso</span>
-                    <div class="event-details-content"><h3>Ruben Lombroso Live</h3></div>
-                </div>
-                <div class="day-cell in-month has-event">30 <span class="event-marker">Puerto Richi</span>
-                    <div class="event-details-content"><h3>Puerto Richi</h3><p>All Night Long</p></div>
-                </div>
-                <div class="day-cell in-month has-event">31 <span class="event-marker">Discoamor...</span>
-                    <div class="event-details-content"><h3>Discoamor / Wolf / Funelli Bros</h3></div>
-                </div>
-                <div class="day-cell"></div>
-            </div>
-        </div>
-
-        <!-- Calendario Febbraio -->
-        <div id="calendar-february" class="calendar-container" data-year="2026" data-month="1"> <!-- Mese 1 = Febbraio (0-indexed) -->
-            <div class="calendar-header">
-                <h2>Febbraio 2026</h2>
-            </div>
-            <div class="calendar-grid">
-                <!-- Intestazioni giorni della settimana -->
-                <div class="weekday-header">Lun</div>
-                <div class="weekday-header">Mar</div>
-                <div class="weekday-header">Mer</div>
-                <div class="weekday-header">Gio</div>
-                <div class="weekday-header">Ven</div>
-                <div class="weekday-header">Sab</div>
-                <div class="weekday-header">Dom</div>
-
-                <!-- Giorni del mese -->
-                <!-- Settimana 1 (Febbraio 2026 inizia di Domenica) -->
-                <div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div>
-                <div class="day-cell in-month has-event">1 <span class="event-marker">Discomerenda</span>
-                    <div class="event-details-content"><h3>Tempo press. "Discomerenda"</h3><p>W/ San Ignacio live + FiloQ djset</p></div>
-                </div>
-                
-                <!-- Placeholder per il resto di Febbraio -->
-                <div class="day-cell in-month closing-day">2 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">3 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">4 <span class="event-marker">ASPETTANDO...</span><div class="event-details-content"><h3>ASPETTANDO VINNATUR</h3><p>con ERNESTO</p></div></div>
-                <div class="day-cell in-month has-event">5 <span class="event-marker">FELACOUSTIC!</span><div class="event-details-content"><h3>FELACOUSTIC!</h3><p>A cura di Zibba & Lab22 w/ LEANDRO + opening act NIRO ì</p></div></div>
-                <div class="day-cell in-month has-event">6 <span class="event-marker">FRENCY...</span><div class="event-details-content"><h3>FRENCY aka FRIENDZONE</h3><p>all night long</p></div></div>
-                <div class="day-cell in-month has-event">7 <span class="event-marker">BACI SPAZIÆLI</span><div class="event-details-content"><h3>BACI SPAZIÆLI</h3><p>Didi + Giulietta</p></div></div>
-                <div class="day-cell in-month has-event">8 <span class="event-marker">VINNATUR OFF</span><div class="event-details-content"><h3>VINNATUR OFF</h3><p>degustazione Soc. Agr. “Il Moralizzatore” + Perro Jimbo dj-set (Perros Mediterraneos, BCN)</p></div></div>
-                
-                <!-- Settimana 3 -->
-                <div class="day-cell in-month closing-day">9 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">10 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">11 <span class="event-marker">Santi Tapas...</span><div class="event-details-content"><h3>Santi Tapas Night</h3><p>from Barcelona w/ Supersonido</p></div></div>
-                <div class="day-cell in-month has-event">12 <span class="event-marker">Il Salotto...</span><div class="event-details-content"><h3>Il Salotto Di fela!</h3><p>w/ Dalida & ANTONIO BACCIOCCHI</p></div></div>
-                <div class="day-cell in-month has-event">13 <span class="event-marker">KUDD + KREGGO</span><div class="event-details-content"><h3>KUDD + KREGGO</h3><p>all night long</p></div></div>
-                <div class="day-cell in-month has-event">14 <span class="event-marker">D’ARABIA</span><div class="event-details-content"><h3>D’ARABIA live</h3></div></div>
-                <div class="day-cell in-month has-event">15 <span class="event-marker">j00inx...</span><div class="event-details-content"><h3>j00inx - j00ining the universe</h3><p>Release Event!</p></div></div>
-
-                <!-- Settimana 4 -->
-                <div class="day-cell in-month closing-day">16 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">17 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">18 <span class="event-marker">JAM SESSION</span><div class="event-details-content"><h3>JAM SESSION NIGHT</h3></div></div>
-                <div class="day-cell in-month has-event">19 <span class="event-marker">Stand Down...</span><div class="event-details-content"><h3>Stand Down Comedy</h3><p>comici giu in saletta a cura di Enrique Balbontin</p></div></div>
-                <div class="day-cell in-month has-event">20 <span class="event-marker">Radiomare...</span><div class="event-details-content"><h3>Fela meets Radiomare</h3><p>w/ Slowsea + Naska</p></div></div>
-                <div class="day-cell in-month has-event">21 <span class="event-marker">Leat’s dance!</span><div class="event-details-content"><h3>Leat’s dance!</h3><p>Liguria Pride Party</p></div></div>
-                <div class="day-cell in-month has-event">22 <span class="event-marker">BRUNCH...</span><div class="event-details-content"><h3>BRUNCH & MARKET</h3></div></div>
-
-                <!-- Settimana 5 -->
-                <div class="day-cell in-month closing-day">23 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">24 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">25 <span class="event-marker">MASTAFIVE</span><div class="event-details-content"><h3>MASTAFIVE dj-set</h3><p>for SHAI-WEEK</p></div></div>
-                <div class="day-cell in-month has-event">26 <span class="event-marker">Stand Down...</span><div class="event-details-content"><h3>Stand Down Comedy</h3><p>comici giu in saletta a cura di Enrique Balbontin</p></div></div>
-                <div class="day-cell in-month has-event">27 <span class="event-marker">BANTU...</span><div class="event-details-content"><h3>BANTU KEMISTRY</h3></div></div>
-                <div class="day-cell in-month has-event">28 <span class="event-marker">DISCORIVIERA</span><div class="event-details-content"><h3>DISCORIVIERA</h3></div></div>
-                <div class="day-cell"></div>
-            </div>
-        </div>
-
-        <!-- Calendario Marzo -->
-        <div id="calendar-march" class="calendar-container" data-year="2026" data-month="2"> <!-- Mese 2 = Marzo (0-indexed) -->
-            <div class="calendar-header">
-                <h2>Marzo 2026</h2>
-            </div>
-            <div class="calendar-grid">
-                <!-- Intestazioni giorni della settimana -->
-                <div class="weekday-header">Lun</div>
-                <div class="weekday-header">Mar</div>
-                <div class="weekday-header">Mer</div>
-                <div class="weekday-header">Gio</div>
-                <div class="weekday-header">Ven</div>
-                <div class="weekday-header">Sab</div>
-                <div class="weekday-header">Dom</div>
-
-                <!-- Giorni del mese -->
-                <!-- Settimana 1 (Marzo 2026 inizia di Domenica) -->
-                <div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div>
-                <div class="day-cell in-month">1</div>
-
-                <!-- Settimana 2 -->
-                <div class="day-cell in-month closing-day">2 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">3 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">4 <span class="event-marker">Fausto da Fela!</span><div class="event-details-content"><h3>Fausto da Fela!</h3><p>Degustazione Poderi Cellario + Bollito del Sindaco</p></div></div>
-                <div class="day-cell in-month has-event">5 <span class="event-marker">Stand Down...</span><div class="event-details-content"><h3>Stand Down Comedy</h3><p>a cura di Enrique Balbontin / Alessandro Bianchi / Fabrizio Casalino</p></div></div>
-                <div class="day-cell in-month has-event">6 <span class="event-marker">Kynto live</span><div class="event-details-content"><h3>Kynto live</h3></div></div>
-                <div class="day-cell in-month has-event">7 <span class="event-marker">Free Soul</span><div class="event-details-content"><h3>Free Soul</h3><p>w/ Giorgio Gazzo, Stefano Martinelli, Alex T</p></div></div>
-                <div class="day-cell in-month has-event">8 <span class="event-marker">Cyder Sunday!</span><div class="event-details-content"><h3>Cyder Sunday!</h3><p>Degustazione di Sidro</p></div></div>
-
-                <!-- Settimana 3 -->
-                <div class="day-cell in-month closing-day">9 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">10 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">11 <span class="event-marker">Giacomino...</span><div class="event-details-content"><h3>Giacomino + Milkborg</h3></div></div>
-                <div class="day-cell in-month has-event">12 <span class="event-marker">Stand Down...</span><div class="event-details-content"><h3>Stand Down Comedy</h3><p>a cura di Enrique Balbontin / Alessandro Bianchi / Fabrizio Casalino</p></div></div>
-                <div class="day-cell in-month has-event">13 <span class="event-marker">Angie...</span><div class="event-details-content"><h3>Angie Back To Mono</h3><p>all night long</p></div></div>
-                <div class="day-cell in-month has-event">14 <span class="event-marker">Adventures</span><div class="event-details-content"><h3>Adventures</h3><p>w/ Dj Sandwich</p></div></div>
-                <div class="day-cell in-month has-event">15 <span class="event-marker">Oldies Sunday</span><div class="event-details-content"><h3>Oldies Sunday</h3></div></div>
-
-                <!-- Settimana 4 -->
-                <div class="day-cell in-month closing-day">16 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">17 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">18 <span class="event-marker">Felacoustic!</span><div class="event-details-content"><h3>Felacoustic!</h3><p>w/ Gioacchino Costa + opening act Michele Bisio / Marwane (powered by Zibba & Lab22)</p></div></div>
-                <div class="day-cell in-month has-event">19 <span class="event-marker">Stand Down...</span><div class="event-details-content"><h3>Stand Down Comedy</h3><p>a cura di Enrique Balbontin / Alessandro Bianchi / Fabrizio Casalino</p></div></div>
-                <div class="day-cell in-month has-event">20 <span class="event-marker">Randomplay</span><div class="event-details-content"><h3>Randomplay</h3><p>all night long</p></div></div>
-                <div class="day-cell in-month has-event">21 <span class="event-marker">Keller...</span><div class="event-details-content"><h3>Keller + danny lo scippo</h3></div></div>
-                <div class="day-cell in-month has-event">22 <span class="event-marker">Sunday...</span><div class="event-details-content"><h3>Sunday Special Selecta</h3></div></div>
-
-                <!-- Settimana 5 -->
-                <div class="day-cell in-month closing-day">23 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">24 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month has-event">25 <span class="event-marker">mi sono Perso...</span><div class="event-details-content"><h3>“mi sono Perso da Fela!”</h3><p>Degustazione cucina persiana con Saied</p></div></div>
-                <div class="day-cell in-month has-event">26 <span class="event-marker">Il Salotto...</span><div class="event-details-content"><h3>Il Salotto di Fela</h3><p>con Dalida e MASO (Flamingo Records)</p></div></div>
-                <div class="day-cell in-month has-event">27 <span class="event-marker">BOEM...</span><div class="event-details-content"><h3>BOEM festival</h3><p>Festone di annuncio Lineup</p></div></div>
-                <div class="day-cell in-month has-event">28 <span class="event-marker">El Profe...</span><div class="event-details-content"><h3>El Profe + Luconbass</h3></div></div>
-                <div class="day-cell in-month has-event">29 <span class="event-marker">Beva! Beva!</span><div class="event-details-content"><h3>Beva! Beva!</h3></div></div>
-
-                <!-- Settimana 6 -->
-                <div class="day-cell in-month closing-day">30 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell in-month closing-day">31 <span class="event-marker">FELAKIUDI</span><div class="event-details-content"><h3>FELA KIUDI</h3></div></div>
-                <div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div><div class="day-cell"></div>
-            </div>
-        </div>
-
-        <!-- Area dove verranno mostrati i dettagli dell'evento cliccato -->
-        <div id="event-display-area">
-            <!-- I dettagli dell'evento verranno inseriti qui da JavaScript -->
-        </div>
-
-    </div>
     <footer class="site-footer">
         <div class="footer-left">
-            <p><strong>Fela! - Music Bar - Social Hub</strong></p>            
+            <p><strong>Fela!<br>Music Bar - Social Hub</strong></p>
             <a href="https://maps.app.goo.gl/zhNrFjCBpWnWwXuP9" target="_blank" rel="noopener noreferrer">
                 <p>Via di S. Cosimo, 6r, 16128 Genova GE</p>
             </a>
         </div>
         <div class="footer-right">
-            <p>
-                <strong>Orari:</strong><br>
-                Mer-Gio: 18:00 - 01:00<br>
-                Ven-Sab: 18:00 - 02:00<br>
-                Dom: 17:00 - 00:00<br>
-                Lun-Mar: FELAKIUDI
-            </p>
+            <p><strong>Orari:</strong><br>Mer-Gio: 18:00 - 01:00<br>Ven-Sab: 18:00 - 02:00<br>Dom: 17:00 - 00:00<br>Lun-Mar: FELAKIUDI</p>
         </div>
     </footer>
-
-    <!-- Banner per il consenso dei cookie -->
-    <div id="cookie-banner" class="cookie-banner">
-        <p>
-            Questo sito utilizza cookie tecnici e di terze parti per migliorare la tua esperienza. Cliccando su "Accetta", acconsenti all'uso di tutti i cookie. Per saperne di più, consulta la nostra <a href="privacy.html" target="_blank">Privacy Policy</a>.
-        </p>
-        <button id="cookie-accept-btn" class="btn">Accetta</button>
-    </div>
-
-    <script src="js/animations.js"></script>
-    <script src="js/events.js" defer></script>
-    <script src="js/brunch-logic.js" defer></script>
-    <script src="js/main.js" defer></script>
-    <script src="js/cookie-banner.js" defer></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Controlla se c'è un hash nell'URL
-            if (window.location.hash) {
-                const targetId = window.location.hash.substring(1);
-                const targetElement = document.getElementById(targetId);
-
-                if (targetElement) {
-                    // Trova il contenitore del calendario genitore
-                    const calendarContainer = targetElement.closest('.calendar-container');
-
-                    if (calendarContainer) {
-                        // Nascondi tutti i calendari e mostra solo quello giusto
-                        document.querySelectorAll('.calendar-container').forEach(c => c.classList.remove('active'));
-                        calendarContainer.classList.add('active');
-
-                        // Scorri fino all'elemento dopo un breve ritardo per garantire che sia visibile
-                        setTimeout(() => {
-                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }, 100);
-                    }
-                }
-            }
-        });
-
-        // Registrazione Service Worker per PWA e supporto Offline
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registrato con successo:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Registrazione ServiceWorker fallita:', error);
-                    });
-            });
-        }
-    </script>
-
 </body>
 </html>

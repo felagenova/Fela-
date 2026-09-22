@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Segni ricevuti — Fela!</title>
+    <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box}body{margin:0;background:#fff;color:#171717;font-family:"Red Hat Display",sans-serif}.top{display:flex;justify-content:space-between;align-items:center;padding:12px 24px}.top img{height:42px}.top a{color:#ff0403;font-weight:900;text-decoration:none}main{width:min(1200px,calc(100% - 32px));margin:20px auto 60px}h1{color:#ff0403;text-align:center;text-transform:uppercase}.card{max-width:480px;margin:30px auto;padding:24px;background:#f5f5f5;border-radius:12px}.card input,.card button{width:100%;margin-top:10px;padding:12px;border:0;border-radius:7px;font:inherit}.card input{background:#fff}.card button,.delete{color:#fff;background:#ff0403;font-weight:900;cursor:pointer}.toolbar{display:flex;justify-content:flex-end;margin-bottom:18px}.toolbar button{padding:9px 14px;border:0;border-radius:6px;color:#ff0403;background:#f3f3f3;font-weight:900;cursor:pointer}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}.sign{padding:10px;background:#f5f5f5;border-radius:10px}.sign canvas{display:block;width:100%;aspect-ratio:4/3;background:#fff}.sign footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:9px;font-size:11px}.delete{padding:7px 10px;border:0;border-radius:5px}.message{text-align:center} [hidden]{display:none!important}
+        body,button,input{font-family:"Be Vietnam Pro",sans-serif!important}
+    </style>
+</head>
+<body>
+    <header class="top"><a href="index.html"><img src="images/f!_logo_rosso.svg" alt="Fela!"></a><a href="admin-menu.html">Gestione menu</a></header>
+    <main>
+        <h1>Segni ricevuti</h1>
+        <section id="login" class="card">
+            <form id="login-form">
+                <label>Email<input id="email" type="email" required></label>
+                <label>Password<input id="password" type="password" required></label>
+                <button type="submit">Accedi</button>
+            </form>
+            <p id="login-message" class="message"></p>
+        </section>
+        <section id="private-area" hidden>
+            <div class="toolbar"><button id="logout" type="button">Logout</button></div>
+            <p id="gallery-message" class="message">Caricamento…</p>
+            <div id="gallery" class="gallery"></div>
+        </section>
+    </main>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getFirestore, collection, query, orderBy, onSnapshot, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        import { firebaseConfig } from './js/config.js';
+
+        const app = initializeApp(firebaseConfig);
+        const database = getFirestore(app);
+        const auth = getAuth(app);
+        const login = document.querySelector('#login');
+        const privateArea = document.querySelector('#private-area');
+        const gallery = document.querySelector('#gallery');
+        const galleryMessage = document.querySelector('#gallery-message');
+        let unsubscribe = null;
+
+        function renderDrawing(canvas, strokes) {
+            const ratio = 2;
+            canvas.width = 600 * ratio;
+            canvas.height = 450 * ratio;
+            const ctx = canvas.getContext('2d');
+            ctx.scale(ratio, ratio);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#000';
+            (strokes || []).forEach((stroke) => {
+                const points = stroke.points || [];
+                if (!points.length) return;
+                ctx.lineWidth = Math.max(8, (stroke.size || .06) * 450);
+                ctx.beginPath();
+                ctx.moveTo(points[0].x * 600, points[0].y * 450);
+                if (points.length === 1) ctx.lineTo(points[0].x * 600 + .1, points[0].y * 450 + .1);
+                points.slice(1).forEach((point) => ctx.lineTo(point.x * 600, point.y * 450));
+                ctx.stroke();
+            });
+        }
+
+        function listenForDrawings() {
+            if (unsubscribe) unsubscribe();
+            unsubscribe = onSnapshot(query(collection(database, 'segni'), orderBy('createdAt', 'desc')), (snapshot) => {
+                gallery.innerHTML = '';
+                galleryMessage.textContent = snapshot.empty ? 'Non è ancora arrivato nessun segno.' : '';
+                snapshot.forEach((drawingDoc) => {
+                    const data = drawingDoc.data();
+                    const item = document.createElement('article');
+                    item.className = 'sign';
+                    const canvas = document.createElement('canvas');
+                    const footer = document.createElement('footer');
+                    const date = document.createElement('span');
+                    date.textContent = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleString('it-IT') : 'Appena ricevuto';
+                    const remove = document.createElement('button');
+                    remove.className = 'delete';
+                    remove.textContent = 'Elimina';
+                    remove.addEventListener('click', async () => {
+                        if (confirm('Eliminare definitivamente questo segno?')) await deleteDoc(doc(database, 'segni', drawingDoc.id));
+                    });
+                    footer.append(date, remove);
+                    item.append(canvas, footer);
+                    gallery.append(item);
+                    renderDrawing(canvas, data.strokes);
+                });
+            }, () => { galleryMessage.textContent = 'Impossibile caricare i segni.'; });
+        }
+
+        document.querySelector('#login-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const message = document.querySelector('#login-message');
+            message.textContent = 'Accesso in corso…';
+            try {
+                await signInWithEmailAndPassword(auth, document.querySelector('#email').value, document.querySelector('#password').value);
+                message.textContent = '';
+            } catch { message.textContent = 'Credenziali non valide.'; }
+        });
+
+        document.querySelector('#logout').addEventListener('click', () => signOut(auth));
+        onAuthStateChanged(auth, (user) => {
+            login.hidden = Boolean(user);
+            privateArea.hidden = !user;
+            if (user) listenForDrawings();
+            else if (unsubscribe) unsubscribe();
+        });
+    </script>
+</body>
+</html>

@@ -1,957 +1,558 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Music Bar e Social Hub nel cuore di Genova. Scopri il nostro menu e gli eventi musicali. Un punto di riferimento per drink, cultura e buona musica.">
-    <title>Fela! Music Bar - Social Hub</title>
-    <!-- Google Fonts: Red Hat Display -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Favicon -->
-    <link rel="icon" href="images/favicon.ico" sizes="any">
-    
-    <!-- Force HTTPS Redirect (Esclude localhost per lo sviluppo) -->
-    <script>
-        if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-            location.replace('https://' + location.hostname + location.pathname + location.search);
-        }
-
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-    </script>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Fela! Music Bar — Social Hub.">
+    <meta name="theme-color" content="#ffffff">
+    <title>Fela! Music Bar — Social Hub</title>
     <link rel="icon" href="images/fela_favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="images/appletouch_favicon_fela.png">
     <link rel="manifest" href="site.webmanifest">
-    
-    <!-- Abilita le View Transitions per animazioni fluide tra le pagine -->
-    <meta name="theme-color" content="#f3f0ce">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="view-transition" content="same-origin">
-
-    <!-- 1. Precarica il file CSS completo in background -->
-    <link rel="preload" href="css/style.css?v=fshirt_2" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/style.css?v=fshirt_2"></noscript>
-    <link rel="stylesheet" href="css/cookie-banner.css">
-    
-    <!-- Google tag (gtag.js) - INCOLLA QUI IL TUO CODICE GOOGLE ANALYTICS -->
-    <!-- Sostituisci G-XXXXXXXXXX con il tuo ID di misurazione reale -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-79CC36NDY9"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-79CC36NDY9');
-    </script>
-
-    <!-- Script bloccante per prevenire il "flash" del loader (FOUC) -->
-    <script>
-        // Questo script viene eseguito immediatamente. Se l'utente ha già visitato la homepage
-        // in questa sessione, aggiunge una classe all'elemento <html> per nascondere
-        // il loader tramite CSS prima ancora che il body venga renderizzato.
-        if (sessionStorage.getItem('hasVisitedHomepage') === 'true') { document.documentElement.classList.add('loader-hidden'); }
-    </script>
-
-    <!-- OTTIMIZZAZIONE: Critical CSS Inlining -->
-    <!-- Questi stili sono necessari per il rendering immediato della parte "above-the-fold" della homepage. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js"></script>
     <style>
-        /* --- Stili per il Loading Screen --- */
-        #loader-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #1a1a1aff;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 9999;
-            transition: opacity 0.7s ease, visibility 0.7s ease;
-        }
-        html.loader-hidden #loader-wrapper {
-            opacity: 0; visibility: hidden; transition: none;
-        }
-        .loader-logo {
-            width: 100px; height: auto;
-            animation: wobble 1.8s ease-in-out infinite, reveal-bottom-to-top 1s ease-out forwards;
-            filter: invert(1);
-            clip-path: inset(100% 0 0 0);
-        }
-        @keyframes wobble {
-          0%, 100% { transform: translateX(0%) rotate(0deg); }
-          15% { transform: translateX(-15%) rotate(-5deg); }
-          30% { transform: translateX(10%) rotate(3deg); }
-          45% { transform: translateX(-10%) rotate(-3deg); }
-          60% { transform: translateX(5%) rotate(2deg); }
-          75% { transform: translateX(-2%) rotate(-1deg); }
-        }
-        @keyframes reveal-bottom-to-top {
-            0% { clip-path: inset(100% 0 0 0); }
-            100% { clip-path: inset(0 0 0 0); }
+        :root {
+            --cream: #f3f0ce;
+            --white: #ffffff;
+            --red: #ff0403;
+            --blue: #0000ff;
+            --ink: #171717;
         }
 
-        /* --- Stili Generali Critici --- */
-        html {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: hidden;
-        }
+        * { box-sizing: border-box; }
+
+        html,
         body {
-            margin: 0; padding: 0; min-height: 100%;
-            font-family: "Red Hat Display", sans-serif;
-            background-color: #f3f0ce;
-            transition: background-color 1s cubic-bezier(0.25, 1, 0.5, 1);
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
             overflow-x: hidden;
-            width: 100%;
-            max-width: 100%;
-        }
-        body.home-page {
-            background-color: #f3f0ce;
-        }
-        .visually-hidden {
-            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
         }
 
-        /* --- Stili Critici per la Landing Page --- */
-        #main-content {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            max-width: 100vw;
-            overflow: visible;
-            overflow-x: hidden;
-            overflow-x: clip;
-            isolation: isolate;
-            box-sizing: border-box;
-        }
-        .landing-container {
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            min-height: 100vh; text-align: center; padding: 40px 20px;
-            position: relative; z-index: 10; box-sizing: border-box;
-            background-color: transparent;
-        }
-        .glass-container {
-            background: rgba(244, 190, 190, 0.066);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(12px);
-            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-            padding: 30px 25px;
-            display: flex; flex-direction: column; align-items: center;
-            width: 100%; max-width: 420px; box-sizing: border-box;
-        }
-        .logo {
-            max-width: 180px; height: auto;
-        }
-        .home-page .logo {
-            filter: none;
-        }
-        .claim {
-            color: #333; font-size: 12px; font-weight: 500;
-            margin: 15px 0 30px 0; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .button-container {
-            display: flex; flex-direction: column; gap: 15px;
-            width: 100%;
-        }
-        .btn {
-            display: flex; justify-content: center; align-items: center;
-            padding: 12px 25px; min-width: 200px;
-            background-color: #f3f0ce; color: #ff0403;
-            text-decoration: none; border-radius: 8px; border: 2px solid #ff0403;
-            font-size: 18px; font-family: "Red Hat Display", sans-serif; font-weight: 700;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
-            text-align: center; cursor: pointer;
-            box-sizing: border-box;
-        }
-        .btn:hover {
-            background-color: #ff0403; color: #f3f0ce; transform: scale(1.05);
-        }
-        .btn.btn-salotto {
-            color: #5b5bffff; border-color: #5b5bffff;
-        }
-        .btn.btn-salotto:hover {
-            background-color: #5b5bffff; color: #f3f0ce;
-        }
-        .btn.btn-varigotti,
-        .btn.btn-varigotti:hover,
-        .btn.btn-varigotti:focus,
-        .btn.btn-varigotti:active {
-            background-color: #f3f0ce;
-            color: #0000ffff;
-            border: 2px solid #0000ffff;
-        }
-        .home-page .varigotti-section {
-            background-color: transparent;
-            background-image: url('images/sfondo_varigotti.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            overflow: hidden;
-        }
-        .varigotti-side-asset {
-            position: absolute;
-            z-index: 1;
-            pointer-events: none;
-            user-select: none;
-            height: auto;
-        }
-        .varigotti-side-asset.asset-corallo {
-            left: clamp(10px, 5vw, 72px);
-            bottom: -30px;
-            width: clamp(150px, 24vw, 340px);
-        }
-        .varigotti-side-asset.asset-vaso {
-            right: clamp(10px, 5vw, 72px);
-            bottom: -4px;
-            width: clamp(140px, 22vw, 310px);
-        }
-        .varigotti-section .marine-glass {
-            position: relative;
-            z-index: 2;
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            font-family: "Be Vietnam Pro", sans-serif;
+            color: var(--ink);
+            background: var(--white);
         }
 
-        /* Badge Archivio Genova */
-        .archive-badge {
-            background-color: rgba(255, 4, 3, 0.1);
-            color: #ff0403;
-            border: 1px solid #ff0403;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 20px;
-            z-index: 12;
-            pointer-events: auto;
-        }
+        body.is-loading { overflow: hidden; }
 
-        /* Indicatore di scroll */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            color: #ff0403;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            opacity: 0.8;
-            animation: bounce 2s infinite;
-            pointer-events: none;
-        }
-        .scroll-indicator svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
-            40% { transform: translate(-50%, -10px); }
-            60% { transform: translate(-50%, -5px); }
-        }
-
-        /* Sezione Nuvole */
-        .clouds-section {
-            position: relative;
-            height: 150vh;
-            width: 100%;
-            overflow: visible;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 5;
-            opacity: 0;
-            transition: opacity 1.5s cubic-bezier(0.25, 1, 0.5, 1);
-            pointer-events: none;
-            isolation: isolate;
-        }
-        .clouds-section.visible {
-            opacity: 1;
-            pointer-events: none;
-        }
-        .clouds-bg {
-            position: absolute;
-            top: -25%;
-            left: -20%;
-            width: 140%;
-            height: 150%;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            will-change: transform;
-            pointer-events: none;
-        }
-        body.transfer-popup-open {
-            overflow: hidden;
-        }
-        /* Popup Trasferimento */
-        .transfer-popup-overlay {
+        .page-loader {
             position: fixed;
-            top: var(--transfer-vv-top, 0px);
-            left: var(--transfer-vv-left, 0px);
-            width: var(--transfer-vv-width, 100vw);
-            height: var(--transfer-vv-height, 100dvh);
-            padding: max(18px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
-            background-color: rgba(26, 26, 26, 0.8);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            inset: 0;
+            z-index: 9999;
             display: grid;
             place-items: center;
-            z-index: 2147483647;
-            isolation: isolate;
-            box-sizing: border-box;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            background: var(--white);
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+
+        .page-loader.is-hidden {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
-        .transfer-popup-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
+
+        .page-loader img {
+            width: 82px;
+            height: auto;
+            animation: loader-pulse 1.1s ease-in-out infinite alternate;
         }
-        .transfer-popup-content {
-            background-color: #f3f0ce;
-            border: 3px solid #ff0403;
-            border-radius: clamp(16px, 5vw, 24px);
-            padding: clamp(26px, 6vw, 35px) clamp(18px, 5vw, 30px);
-            max-width: 480px;
-            width: min(calc(var(--transfer-vv-width, 100vw) - 36px), 480px);
-            max-height: calc(var(--transfer-vv-height, 100dvh) - 36px);
-            overflow-y: auto;
-            overscroll-behavior: contain;
+
+        @keyframes loader-pulse {
+            from { transform: scale(0.94); opacity: 0.5; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .site-header-nav {
             position: relative;
-            z-index: 1;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            transform: scale(0.85);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-sizing: border-box;
+            z-index: 10;
+            width: 100%;
+            padding: 10px 20px;
+            background: var(--white);
+            border-bottom: 2px solid var(--red);
         }
-        .transfer-popup-overlay.visible .transfer-popup-content {
-            transform: scale(1);
+
+        .nav-container {
+            width: 100%;
+            max-width: none;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .transfer-popup-close {
+
+        .nav-logo {
+            display: inline-flex;
+            margin-left: 20px;
+        }
+
+        .nav-logo img {
+            display: block;
+            width: auto;
+            height: 45px;
+        }
+
+        .hamburger-menu,
+        .notification-bell-btn { display: none; }
+
+        main {
+            position: relative;
+            min-height: 0;
+        }
+
+        .totem-stage {
             position: absolute;
-            top: 8px;
-            right: 10px;
-            background: none;
-            border: none;
-            width: 44px;
-            height: 44px;
-            font-size: 32px;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            min-height: 420px;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .totem-stage::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 6%;
+            width: min(68vw, 620px);
+            aspect-ratio: 3 / 1;
+            border-radius: 50%;
+            background: rgba(23, 23, 23, 0.08);
+            filter: blur(34px);
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .signs-marquee {
+            position: absolute;
+            inset: 50% 0 auto;
+            z-index: 0;
+            width: 100%;
+            height: clamp(82px, 15vw, 150px);
+            overflow: hidden;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .signs-track {
+            width: max-content;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            animation: signs-scroll-right 28s linear infinite;
+            will-change: transform;
+        }
+
+        .signs-track img {
+            display: block;
+            width: auto;
+            height: 100%;
+            max-width: none;
+            flex: none;
+        }
+
+        @keyframes signs-scroll-right {
+            from { transform: translateX(-50%); }
+            to { transform: translateX(0); }
+        }
+
+        model-viewer {
+            width: min(100%, 980px);
+            height: 100%;
+            min-height: 420px;
+            z-index: 1;
+            background: transparent;
+            pointer-events: none;
+            user-select: none;
+            --poster-color: transparent;
+            --progress-bar-height: 0px;
+        }
+
+        .model-status {
+            position: absolute;
+            left: 50%;
+            bottom: 18px;
+            z-index: 2;
+            margin: 0;
+            padding: 7px 12px;
+            border: 1px solid var(--red);
+            border-radius: 999px;
+            color: var(--red);
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 10px;
             font-weight: 700;
-            color: #ff0403;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            transform: translateX(-50%);
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .model-status.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .stage-control {
+            position: absolute;
+            z-index: 3;
+            min-width: 128px;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: 0;
+            border-radius: 8px;
+            color: var(--red);
+            background: var(--white);
+            font: 900 14px/1 "Be Vietnam Pro", sans-serif;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .stage-control:hover,
+        .stage-control:focus-visible {
+            color: var(--white);
+            background: var(--red);
+            transform: scale(1.04);
+            outline: none;
+        }
+
+        .control-menu { top: 24px; left: 24px; }
+        .control-shirt { top: 24px; left: 50%; transform: translateX(-50%); }
+        .control-booking { top: 24px; right: 24px; }
+        .control-calendar { bottom: 24px; left: 24px; }
+
+        .control-shirt:hover,
+        .control-shirt:focus-visible {
+            transform: translateX(-50%) scale(1.04);
+        }
+
+        .control-draw {
+            right: 24px;
+            bottom: 24px;
+            background: transparent;
+        }
+
+        #music-player-container {
+            width: 150px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 6px 10px;
+            color: var(--red);
+            background: transparent;
+        }
+
+        .player-btn {
+            width: 32px;
+            height: 32px;
+            flex: 0 0 32px;
+            display: grid;
+            place-items: center;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            color: var(--white);
+            background: var(--red);
             cursor: pointer;
-            line-height: 1;
-            padding: 0 0 4px 0;
             transition: transform 0.2s ease;
         }
-        .transfer-popup-close:hover {
-            transform: scale(1.15);
+
+        .player-btn:hover,
+        .player-btn:focus-visible {
+            transform: scale(1.08);
+            outline: none;
         }
-        .popup-tag {
-            display: inline-block;
-            background-color: #ff0403;
-            color: #f3f0ce;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: clamp(10px, 2.6vw, 11px);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+
+        .player-btn svg {
+            width: 17px;
+            height: 17px;
+            fill: currentColor;
         }
-        .transfer-popup-header h3 {
-            margin: 0 0 clamp(14px, 4vw, 20px) 0;
-            font-size: clamp(21px, 7vw, 24px);
+
+        #track-info {
+            min-width: 0;
+            width: 112px;
+            overflow: hidden;
+        }
+
+        .track-title,
+        .track-artist {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .track-title {
+            font-size: 11px;
             font-weight: 900;
-            color: #1a1a1a;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
-        .transfer-popup-body {
-            color: #333;
-            font-size: clamp(14px, 4vw, 15px);
-            line-height: 1.6;
-            margin-bottom: clamp(18px, 5vw, 25px);
+
+        .track-artist {
+            margin-top: 2px;
+            font-size: 8px;
+            font-weight: 500;
         }
-        .transfer-highlight-box {
-            background-color: rgba(2, 136, 209, 0.1);
-            border-left: 4px solid #0288d1;
-            padding: clamp(12px, 4vw, 15px);
-            margin: clamp(16px, 5vw, 20px) 0;
-            border-radius: 0 12px 12px 0;
-            text-align: left;
+
+        .volume-control {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
         }
-        .transfer-highlight-box p {
-            margin: 0;
-            font-weight: 700;
-            color: #01579b;
-        }
-        .popup-subtext {
-            font-size: 12px;
-            color: #666;
-            margin-top: 15px;
-        }
-        .btn-transfer-action {
+
+        .site-footer {
+            position: relative;
+            z-index: 10;
             width: 100%;
-            min-height: 48px;
-            background-color: #ff0403;
-            color: #f3f0ce;
-            border: 2px solid #ff0403;
-        }
-        .btn-transfer-action:hover {
-            background-color: #1a1a1a;
-            border-color: #1a1a1a;
-            color: #f3f0ce;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+            padding: 25px 40px;
+            color: var(--ink);
+            background: var(--white);
+            font-size: 14px;
+            line-height: 1.6;
         }
 
-        /* Stili responsive */
-        @media (max-width: 768px) {
-            html,
-            body,
-            #main-content,
-            .landing-container,
+        .footer-left,
+        .footer-right { text-align: left; }
+
+        .footer-right { text-align: right; }
+        .site-footer p { margin: 0 0 5px; }
+
+        .site-footer a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .site-footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 767px) {
+            .site-header-nav { padding: 5px 20px; }
+            .nav-logo { margin-left: 9px; }
+            .nav-logo img { height: 35px; }
+            .totem-stage { min-height: 360px; }
+
+            model-viewer {
+                width: 68vw;
+                width: 68dvw;
+                height: 68%;
+                min-height: 0;
+            }
+
+            .stage-control {
+                min-width: 0;
+                min-height: 38px;
+                padding: 8px 11px;
+                border-radius: 6px;
+                font-size: 11px;
+            }
+
+            .control-menu { top: 16px; left: 18px; }
+            .control-shirt { top: 16px; left: 50%; }
+            .control-booking { top: 16px; right: 18px; }
+            .control-calendar { bottom: 16px; left: 18px; }
+
+            .control-draw { right: 18px; bottom: 16px; }
+
+            #music-player-container {
+                width: 118px;
+                min-height: 34px;
+                gap: 6px;
+                padding: 4px 5px;
+            }
+
+            .player-btn {
+                width: 28px;
+                height: 28px;
+                flex-basis: 28px;
+            }
+
+            .player-btn svg { width: 15px; height: 15px; }
+            #track-info { width: 72px; }
+            .track-title { font-size: 9px; }
+            .track-artist { display: none; }
+
             .site-footer {
-                width: 100vw;
-                width: 100dvw;
-                max-width: 100vw;
-                max-width: 100dvw;
-                box-sizing: border-box;
-            }
-            body.in-varigotti {
-                overscroll-behavior-y: none;
-            }
-            .clouds-section {
-                height: 100vh;
-                overflow: visible;
-                align-items: flex-start;
-            }
-            .clouds-bg {
-                top: -26%;
-                left: -150%;
-                width: 400%;
-                height: 145%;
-                background-size: contain;
-                background-position: center top;
-            }
-            .varigotti-section h2 {
-                font-size: 1.8rem;
-            }
-            .varigotti-side-asset.asset-corallo {
-                left: -36px;
-                bottom: -8px;
-                width: clamp(128px, 42vw, 188px);
-            }
-            .varigotti-side-asset.asset-vaso {
-                right: -2px;
-                bottom: 0;
-                width: clamp(120px, 40vw, 176px);
-            }
-            .marine-glass {
-                padding: 25px 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .clouds-section {
-                height: 95vh;
-            }
-            .clouds-bg {
-                top: -24%;
-                left: -185%;
-                width: 470%;
-                height: 145%;
-            }
-            .transfer-popup-content {
-                width: calc(var(--transfer-vv-width, 100vw) - 24px);
-                border-width: 2px;
-            }
-            .transfer-highlight-box {
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                padding: 16px 15px;
+                font-size: 11px;
+                line-height: 1.4;
                 text-align: center;
-                border-left: 0;
-                border-top: 4px solid #0288d1;
-                border-radius: 12px;
             }
+
+            .footer-left,
+            .footer-right { text-align: center; }
+
+            .site-footer p { margin-bottom: 2px; }
         }
 
-        @media (max-height: 520px) {
-            .transfer-popup-overlay {
-                padding-top: 10px;
-                padding-bottom: 10px;
+        @media (max-height: 700px) and (max-width: 767px) {
+            .site-footer {
+                flex-direction: row;
+                justify-content: space-around;
+                gap: 10px;
+                padding-block: 10px;
             }
-            .transfer-popup-content {
-                max-height: calc(var(--transfer-vv-height, 100dvh) - 20px);
-                width: calc(var(--transfer-vv-width, 100vw) - 20px);
-                padding-top: 22px;
-                padding-bottom: 18px;
-            }
-            .popup-tag {
-                margin-bottom: 8px;
-            }
-            .transfer-popup-body {
-                line-height: 1.45;
-            }
+
+            .totem-stage { min-height: 280px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .signs-track { animation-play-state: paused; }
         }
     </style>
 </head>
-<body class="home-page">
+<body class="is-loading">
+    <div id="page-loader" class="page-loader" role="status" aria-label="Caricamento del modello 3D">
+        <img src="images/f!_logo_rosso.svg" alt="">
+    </div>
 
-    <!-- Loading Screen -->
     <header class="site-header-nav">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">
+            <a href="index.html" class="nav-logo" aria-label="Fela! — Home">
                 <img src="images/f!_logo_rosso.svg" alt="Logo Fela! Music Bar Genova">
             </a>
-            <button class="hamburger-menu" aria-label="Apri menu" aria-expanded="false">
+            <div id="music-player-container" aria-label="Radio Fela">
+                <audio id="soma-player" src="https://ice1.somafm.com/reggae-256-mp3" preload="none"></audio>
+                <button id="play-pause-btn" class="player-btn" type="button" aria-label="Play">
+                    <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                    <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M6 19h4V5H6v14Zm8-14v14h4V5h-4Z"/></svg>
+                </button>
+                <div id="track-info">
+                    <div class="track-title">Radio Fela</div>
+                    <div class="track-artist">Music Selection</div>
+                </div>
+                <div class="volume-control">
+                    <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" aria-label="Volume">
+                </div>
+            </div>
+            <button class="hamburger-menu" type="button" aria-label="Apri menu" aria-expanded="false">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
-            <button id="navbar-notification-btn" class="notification-bell-btn" aria-label="Attiva Notifiche" style="display: none;">
-                <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
-            </button>
+            <button id="navbar-notification-btn" class="notification-bell-btn" type="button" aria-label="Attiva notifiche"></button>
         </div>
     </header>
 
-    <div id="animation-container"></div>
-    <div id="loader-wrapper">
-        <img src="images/logoblack.webp" alt="Caricamento..." class="loader-logo">
-    </div>
-
-    <main id="main-content">
-        <!-- SEZIONE GENOVA (Sede Precedente) -->
-        <section id="section-genova" class="landing-container genova-section">
-            <div class="glass-container">
-                <img src="images/logoblack.webp" alt="Logo Fela! Genova" class="logo" fetchpriority="high">
-
-                <!-- Intestazione H1 per SEO e accessibilità, nascosta visivamente -->
-                <h1 class="visually-hidden">Fela! Music Bar - Social Hub a Genova</h1>
-
-                <p class="claim">Music Bar - Social Hub</p>
-        
-                <!-- Contenitore per i bottoni -->
-                <div class="button-container">
-                    <a href="menu.html" class="btn">Menu</a>
-                    <a href="eventi.html" class="btn">Eventi</a>
-                    <!--<a href="brunch.html" class="btn btn-brunch">Il Brunch</a> -->
-                    <a href="salotto.html" class="btn btn-salotto">Il Salotto</a>
-                    <a href="prenota.html" id="un-tavolo-btn" class="btn">Prenota!</a>
-                    <!--
-                        target="_blank" apre il link in una nuova scheda.
-                        rel="noopener noreferrer" è per la sicurezza.
-                    -->
-                    <!-- <a href="transatlantica.html" id="transatlantica-btn" class="btn">Transatlantica<br>Takeover</a> -->
-                    <a href="https://www.instagram.com/fela.genova/" target="_blank" rel="noopener noreferrer" class="btn">Instagram</a>
-                    <!-- Pulsante Installa App (nascosto di default, visibile solo se installabile) -->
-                    <button id="install-app-btn" class="btn" style="display: none;">Installa App</button>
+    <main>
+        <section class="totem-stage" aria-label="Totem Fela! interattivo in 3D">
+            <h1 hidden>Fela! Music Bar — Social Hub</h1>
+            <div class="signs-marquee" aria-hidden="true">
+                <div class="signs-track">
+                    <img src="images/segni_background.svg" alt="">
+                    <img src="images/segni_background.svg" alt="">
                 </div>
             </div>
-            
-            <div class="scroll-indicator">
-                <span>Scopri Fela! Varigotti</span>
-                <svg class="arrow-down" viewBox="0 0 24 24">
-                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-                </svg>
-            </div>
-        </section>
+            <model-viewer
+                id="fela-totem"
+                src="images/TOTEMFELASTICO_X_SITO_WEB.glb"
+                alt="Totem Fela! tridimensionale"
+                auto-rotate
+                auto-rotate-delay="0"
+                rotation-per-second="22deg"
+                interaction-prompt="none"
+                shadow-intensity="1"
+                shadow-softness="0.9"
+                exposure="1"
+                environment-image="neutral"
+                camera-orbit="0deg 75deg auto"
+                min-camera-orbit="auto 35deg auto"
+                max-camera-orbit="auto 145deg auto"
+                min-field-of-view="20deg"
+                max-field-of-view="50deg"
+                interpolation-decay="120"
+                loading="eager">
+                <div slot="progress-bar" hidden></div>
+            </model-viewer>
+            <p id="model-status" class="model-status" role="status">Caricamento totem 3D…</p>
 
-        <!-- SEZIONE DI TRANSIZIONE (Nuvole) -->
-        <section id="section-clouds" class="clouds-section">
-            <div class="clouds-bg" style="background-image: url('images/nuvole_transizione.svg');"></div>
-        </section>
+            <a class="stage-control control-menu" href="menu.html">Menu</a>
+            <a class="stage-control control-shirt" href="f-shirt.html">F!-Shirt</a>
+            <a class="stage-control control-booking" href="prenota.html">Prenotazioni</a>
+            <a class="stage-control control-calendar" href="eventi.html" aria-label="Calendario eventi">
+                <span>Calendario</span>
+            </a>
 
-        <!-- SEZIONE VARIGOTTI (Nuova Sede) -->
-        <section id="section-varigotti" class="landing-container varigotti-section">
-            <img src="images/corallo.webp" alt="" class="varigotti-side-asset asset-corallo" aria-hidden="true" loading="lazy">
-            <img src="images/vaso.webp" alt="" class="varigotti-side-asset asset-vaso" aria-hidden="true" loading="lazy">
-            <div class="glass-container marine-glass">
-                <img src="images/tritticologhi.svg" alt="Logo Fela! Varigotti" class="logo" style="filter: none;">
-                <div class="button-container">
-                    <!-- Bottone 1: Prenotazioni (Stile primary) -->
-                    <a href="prenota.html" class="btn btn-varigotti">Prenotazioni</a>
-                    <!-- Collezione F-Shirt -->
-                    <a href="f-shirt.html" class="btn btn-shop">F-Shirt</a>
-                </div>
-
-                <!-- Music Player -->
-                <div id="music-player-container">
-                    <audio id="soma-player" src="https://ice1.somafm.com/reggae-256-mp3" preload="none"></audio>
-                    <button id="play-pause-btn" class="player-btn" aria-label="Play/Pause">
-                        <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                    </button>
-                    <div id="track-info">
-                        <div class="track-title">Radio Fela</div>
-                        <div class="track-artist">Powered by SomaFM</div>
-                    </div>
-                    <div class="volume-control">
-                        <svg class="volume-icon" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-                        <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" aria-label="Volume">
-                    </div>
-                </div>
-            </div>
+            <a class="stage-control control-draw" href="lascia-il-tuo-segno.html">
+                <span>Lascia il tuo segno</span>
+            </a>
         </section>
     </main>
 
-    <!-- POPUP TRASFERIMENTO VARIGOTTI -->
-    <div id="transfer-popup" class="transfer-popup-overlay" role="dialog" aria-modal="true" aria-labelledby="transfer-popup-title">
-        <div class="transfer-popup-content">
-            <button id="transfer-close-btn" class="transfer-popup-close" aria-label="Chiudi popup">&times;</button>
-            <div class="transfer-popup-header">
-                <span class="popup-tag">Stagione Estiva ☀️</span>
-                <h3 id="transfer-popup-title">Fela va al mare!</h3>
-            </div>
-            <div class="transfer-popup-body">
-                <p>Da Giugno a Settembre fela! si trasferisce a Varigotti nella splendida cornice dei <strong>20Riviera</strong>.</p>
-                <div class="transfer-highlight-box">
-                    <p><strong>Aperti tutti i giorni dalle 11:00 alle 00:00</strong></p>
-                </div>
-            </div>
-            <div class="transfer-popup-footer">
-                <button id="transfer-btn-explore" class="btn btn-transfer-action">OK</button>
-            </div>
-        </div>
-    </div>
-
     <footer class="site-footer">
         <div class="footer-left">
-            <p><strong>Fela! ai 20Riviera</strong></p>
-            <a href="https://www.google.com/maps/search/?api=1&query=20Riviera%20Varigotti" target="_blank" rel="noopener noreferrer">
-                <p>20Riviera, Varigotti</p>
+            <p><strong>Fela!<br>Music Bar - Social Hub</strong></p>
+            <a href="https://maps.app.goo.gl/zhNrFjCBpWnWwXuP9" target="_blank" rel="noopener noreferrer">
+                <p>Via di S. Cosimo, 6r, 16128 Genova GE</p>
             </a>
         </div>
         <div class="footer-right">
             <p>
                 <strong>Orari:</strong><br>
-                Da Giugno a Settembre<br>
-                Tutti i giorni: 11:00 - 00:00
+                Mer-Gio: 18:00 - 01:00<br>
+                Ven-Sab: 18:00 - 02:00<br>
+                Dom: 17:00 - 00:00<br>
+                Lun-Mar: FELAKIUDI
             </p>
         </div>
     </footer>
 
-    <!-- Banner per il consenso dei cookie -->
-    <div id="cookie-banner" class="cookie-banner">
-        <p>
-            Questo sito utilizza cookie tecnici e di terze parti per migliorare la tua esperienza. Cliccando su "Accetta", acconsenti all'uso di tutti i cookie. Per saperne di più, consulta la nostra <a href="privacy.html" target="_blank">Privacy Policy</a>.
-        </p>
-        <button id="cookie-accept-btn" class="btn">Accetta</button>
-    </div>
-
-    <script src="js/main.js" defer></script>
-    <!-- 3. Carica lo script in modo differito per non bloccare il rendering -->
-    <script src="js/loader.js" defer></script>
-    <script src="js/music-player.js" defer></script>
-    <script src="js/cookie-banner.js" defer></script>
-    <script src="js/animations.js" defer></script>
-    <script src="js/booking.js" defer></script> <!-- Contiene la logica per le notifiche -->
-    <script src="js/pwa.js?v=2" defer></script>
-
-    <!-- Registrazione Service Worker per PWA e supporto Offline -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registrato con successo:', registration.scope);
-                        registration.update(); // Forza l'aggiornamento
-                    })
-                    .catch(error => {
-                        console.log('Registrazione ServiceWorker fallita:', error);
-                    });
-            });
+        const totem = document.querySelector('#fela-totem');
+        const status = document.querySelector('#model-status');
+        const loader = document.querySelector('#page-loader');
+
+        function closeLoader() {
+            loader.classList.add('is-hidden');
+            document.body.classList.remove('is-loading');
         }
 
-        // Logica di transizione, Parallasse Nuvole e Popup Trasferimento Varigotti
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. Popup di trasferimento Varigotti
-            const tPopup = document.getElementById('transfer-popup');
-            const tCloseBtn = document.getElementById('transfer-close-btn');
-            const tExploreBtn = document.getElementById('transfer-btn-explore');
-            const genovaSec = document.getElementById('section-genova');
-            const varigottiSec = document.getElementById('section-varigotti');
-            const cloudsSection = document.getElementById('section-clouds');
-            const varigottiTarget = document.querySelector('#section-varigotti .marine-glass .logo');
-            const siteHeader = document.querySelector('.site-header-nav');
-            let varigottiScrollLocked = false;
-            let varigottiClampFrame = null;
-            let lastTouchY = null;
-            let varigottiLockTop = null;
-            const mobileVarigottiLockOffset = 24;
-            const mobileVarigottiLockSlack = 80;
-
-            const isMobileViewport = () => window.matchMedia('(max-width: 768px)').matches;
-
-            const syncTransferViewport = () => {
-                const viewport = window.visualViewport;
-                const root = document.documentElement;
-                root.style.setProperty('--transfer-vv-top', `${viewport ? viewport.offsetTop : 0}px`);
-                root.style.setProperty('--transfer-vv-left', `${viewport ? viewport.offsetLeft : 0}px`);
-                root.style.setProperty('--transfer-vv-width', `${viewport ? viewport.width : window.innerWidth}px`);
-                root.style.setProperty('--transfer-vv-height', `${viewport ? viewport.height : window.innerHeight}px`);
-            };
-
-            const lockVarigottiScroll = () => {
-                if (!varigottiSec) return;
-                varigottiLockTop = isMobileViewport()
-                    ? Math.max(0, getCurrentScrollTop() - mobileVarigottiLockOffset)
-                    : getVarigottiTop();
-                varigottiScrollLocked = true;
-                document.body.classList.add('in-varigotti');
-                const lockTop = getVarigottiLockTop();
-                if (getCurrentScrollTop() < lockTop) {
-                    window.scrollTo({ top: lockTop, left: 0, behavior: 'auto' });
-                }
-            };
-
-            const getVarigottiTop = () => {
-                const target = varigottiTarget || varigottiSec;
-                if (!target) return 0;
-
-                const headerOffset = siteHeader ? siteHeader.getBoundingClientRect().height : 0;
-                return Math.max(0, Math.round(target.getBoundingClientRect().top + window.scrollY - headerOffset - 16));
-            };
-
-            const getCurrentScrollTop = () => {
-                const viewport = window.visualViewport;
-                const scrollValues = [
-                    window.scrollY,
-                    document.documentElement.scrollTop,
-                    document.body.scrollTop
-                ].filter(Number.isFinite);
-
-                if (viewport) {
-                    if (Number.isFinite(viewport.pageTop)) scrollValues.push(viewport.pageTop);
-                    if (Number.isFinite(viewport.offsetTop)) scrollValues.push(viewport.offsetTop);
-                }
-
-                return Math.round(Math.max(0, ...scrollValues));
-            };
-
-            const getVarigottiLockTop = () => {
-                if (isMobileViewport()) {
-                    return varigottiLockTop ?? getCurrentScrollTop();
-                }
-
-                return getVarigottiTop();
-            };
-
-            const getVarigottiMinimumTop = () => {
-                const lockTop = getVarigottiLockTop();
-                return isMobileViewport() ? Math.max(0, lockTop - mobileVarigottiLockSlack) : lockTop;
-            };
-
-            const clampScrollToVarigotti = () => {
-                if (!varigottiSec) return;
-                const activationTop = getVarigottiTop();
-
-                if (!varigottiScrollLocked && getCurrentScrollTop() >= activationTop) {
-                    lockVarigottiScroll();
-                }
-
-                const varigottiTop = getVarigottiMinimumTop();
-                if (!varigottiScrollLocked || getCurrentScrollTop() >= varigottiTop - 1) return;
-                if (varigottiClampFrame) return;
-
-                varigottiClampFrame = requestAnimationFrame(() => {
-                    window.scrollTo({ top: varigottiTop, left: 0, behavior: 'auto' });
-                    varigottiClampFrame = null;
-                });
-            };
-
-            const trackTouchStart = (event) => {
-                lastTouchY = event.touches && event.touches.length ? event.touches[0].clientY : null;
-            };
-
-            const blockTouchAboveVarigotti = (event) => {
-                if (!varigottiScrollLocked || !event.touches || !event.touches.length) return;
-
-                const currentTouchY = event.touches[0].clientY;
-                const isTryingToScrollUpPage = lastTouchY !== null && currentTouchY > lastTouchY;
-                const varigottiTop = getVarigottiMinimumTop();
-                const intendedScrollTop = lastTouchY === null
-                    ? getCurrentScrollTop()
-                    : getCurrentScrollTop() - (currentTouchY - lastTouchY);
-
-                if (isTryingToScrollUpPage && intendedScrollTop <= varigottiTop + 2) {
-                    event.preventDefault();
-                    window.scrollTo({ top: varigottiTop, left: 0, behavior: 'auto' });
-                }
-
-                lastTouchY = currentTouchY;
-            };
-
-            const blockWheelAboveVarigotti = (event) => {
-                if (!varigottiScrollLocked || event.deltaY >= 0) return;
-
-                const varigottiTop = getVarigottiMinimumTop();
-                if (getCurrentScrollTop() + event.deltaY <= varigottiTop + 2) {
-                    event.preventDefault();
-                    window.scrollTo({ top: varigottiTop, left: 0, behavior: 'auto' });
-                }
-            };
-
-            const scrollToVarigotti = () => {
-                document.body.classList.remove('transfer-popup-open');
-                if (!varigottiSec) return;
-
-                requestAnimationFrame(() => {
-                    const target = varigottiTarget || varigottiSec;
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-                    setTimeout(() => {
-                        const correctedTop = getVarigottiTop();
-                        window.scrollTo({ top: correctedTop, left: 0, behavior: 'auto' });
-                    }, 700);
-
-                    setTimeout(() => {
-                        lockVarigottiScroll();
-                    }, 850);
-                });
-            };
-
-            const resetToGenova = () => {
-                varigottiScrollLocked = false;
-                varigottiLockTop = null;
-                document.body.classList.remove('in-varigotti');
-                const animContainer = document.getElementById('animation-container');
-                if (animContainer) {
-                    animContainer.style.opacity = '1';
-                }
-
-                window.scrollTo({
-                    top: genovaSec ? genovaSec.offsetTop : 0,
-                    left: 0,
-                    behavior: 'auto'
-                });
-            };
-            
-            if (tPopup) {
-                // A ogni caricamento riparte da Genova, anche se il browser prova a ripristinare lo scroll.
-                resetToGenova();
-                syncTransferViewport();
-                if (window.visualViewport) {
-                    window.visualViewport.addEventListener('resize', syncTransferViewport);
-                    window.visualViewport.addEventListener('scroll', syncTransferViewport);
-                } else {
-                    window.addEventListener('resize', syncTransferViewport);
-                }
-
-                // Mostra il popup su Genova.
-                requestAnimationFrame(() => {
-                    resetToGenova();
-                    syncTransferViewport();
-                    document.body.classList.add('transfer-popup-open');
-                    tPopup.classList.add('visible');
-                });
-                
-                // Sincronizza il popup al completamento del loader (backup)
-                window.addEventListener('loaderComplete', () => {
-                    console.log('loaderComplete event received');
-                }, { once: true });
-                
-                const closePopup = () => {
-                    tPopup.classList.remove('visible');
-                    // Auto-scroll verso Varigotti
-                    if (varigottiSec) {
-                        setTimeout(scrollToVarigotti, 250); // Piccolo delay per permettere al popup di chiudersi
-                    }
-                };
-                
-                if (tCloseBtn) tCloseBtn.addEventListener('click', closePopup);
-                tPopup.addEventListener('click', (e) => {
-                    if (e.target === tPopup) closePopup();
-                });
-                
-                if (tExploreBtn) {
-                    tExploreBtn.addEventListener('click', () => {
-                        closePopup();
-                    });
-                }
-            }
-
-            if (varigottiSec) {
-                window.addEventListener('scroll', clampScrollToVarigotti, { passive: true });
-                window.addEventListener('touchstart', trackTouchStart, { passive: true });
-                window.addEventListener('touchmove', blockTouchAboveVarigotti, { passive: false });
-                window.addEventListener('wheel', blockWheelAboveVarigotti, { passive: false });
-            }
-
-            // 2. Intersection Observer per cambio background al passaggio a Varigotti
-            if (varigottiSec && 'IntersectionObserver' in window) {
-                const bgObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            document.body.classList.add('in-varigotti');
-                            // Attenua gli asset di sfondo di Genova per far risaltare il mare
-                            const animContainer = document.getElementById('animation-container');
-                            if (animContainer) {
-                                animContainer.style.opacity = '0.15';
-                                animContainer.style.transition = 'opacity 1s ease';
-                            }
-                        } else {
-                            // Se siamo sopra (Genova), toglie la classe
-                            if (!varigottiScrollLocked && window.scrollY < varigottiSec.offsetTop - 100) {
-                                document.body.classList.remove('in-varigotti');
-                                const animContainer = document.getElementById('animation-container');
-                                if (animContainer) {
-                                    animContainer.style.opacity = '1';
-                                }
-                            }
-                        }
-                    });
-                }, {
-                    threshold: 0.2,
-                    rootMargin: "0px 0px -10% 0px"
-                });
-                bgObserver.observe(varigottiSec);
-            }
-
-            // 3. Parallasse e caricamento fluido delle nuvole
-            const cloudsBg = document.querySelector('.clouds-bg');
-            const genovaSection = document.getElementById('section-genova');
-            const varigottiSection = document.getElementById('section-varigotti');
-            
-            if (cloudsSection && genovaSection && varigottiSection) {
-                // Rendi sempre visibili le nuvole
-                cloudsSection.classList.add('visible');
-                
-                // Funzione per applicare il parallax delle nuvole
-                const updateCloudsParallax = () => {
-                    const cloudsRect = cloudsSection.getBoundingClientRect();
-                    const viewHeight = window.innerHeight;
-                    
-                    // Applica sempre il parallax alle nuvole
-                    if (cloudsBg) {
-                        if (cloudsRect.top < viewHeight && cloudsRect.bottom > 0) {
-                            const total = cloudsRect.height + viewHeight;
-                            const progress = (viewHeight - cloudsRect.top) / total;
-                            const isMobile = window.matchMedia('(max-width: 768px)').matches;
-                            const translateY = (progress - 0.5) * (isMobile ? 44 : 150);
-                            const scale = isMobile ? 1.02 : 1.1;
-                            cloudsBg.style.transform = `translateY(${translateY}px) scale(${scale})`;
-                        }
-                    }
-                };
-                
-                // Aggiungi listener scroll
-                window.addEventListener('scroll', updateCloudsParallax, { passive: true });
-                
-                // Esegui il controllo iniziale
-                updateCloudsParallax();
-            }
+        totem.addEventListener('load', () => {
+            status.classList.add('is-hidden');
+            totem.setAttribute('camera-orbit', '0deg 75deg auto');
+            if (typeof totem.jumpCameraToGoal === 'function') totem.jumpCameraToGoal();
+            requestAnimationFrame(() => requestAnimationFrame(closeLoader));
         });
+
+        totem.addEventListener('error', () => {
+            status.textContent = 'Totem 3D non disponibile';
+            closeLoader();
+        });
+
+        if (totem.loaded) {
+            totem.setAttribute('camera-orbit', '0deg 75deg auto');
+            if (typeof totem.jumpCameraToGoal === 'function') totem.jumpCameraToGoal();
+            closeLoader();
+        }
     </script>
+    <script src="js/music-player.js" defer></script>
 </body>
 </html>
