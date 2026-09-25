@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const subCategoriesMap = {
         'Vini': ['Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi'],
         'Birre': ['Alla spina', 'In latta'],
-        'Cocktails': [], // I cocktail solitamente non hanno sottocategorie nel tuo menu
+        'Cocktails': ['No/Low Alcohol'],
         'Food': ['LE SBERLE DI FELA', 'I Taglieri', 'Fela Fritti', 'Bonus Track']
     };
 
@@ -177,7 +177,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     return acc;
                 }, {});
 
-                for (const subCategory in groupedBySubCategory) {
+                const orderedSubCategories = Object.keys(groupedBySubCategory).sort((a, b) => {
+                    const cocktailOrder = ['Generale', 'No/Low Alcohol'];
+                    const foodOrder = ['LE SBERLE DI FELA', 'I Taglieri', 'Fela Fritti', 'Bonus Track'];
+                    const wineOrder = ['Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi'];
+                    const beerOrder = ['Alla spina', 'In latta'];
+                    const orderMap = {
+                        'Vini': wineOrder,
+                        'Birre': beerOrder,
+                        'Cocktails': cocktailOrder,
+                        'Food': foodOrder
+                    };
+
+                    const order = orderMap[category] || [];
+                    const indexA = order.indexOf(a);
+                    const indexB = order.indexOf(b);
+                    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                    if (indexA !== -1) return -1;
+                    if (indexB !== -1) return 1;
+                    return a.localeCompare(b);
+                });
+
+                orderedSubCategories.forEach(subCategory => {
                     if (subCategory !== 'Generale') {
                          categoryWrapper.innerHTML += `<h4 style="font-style: italic; margin-top: 15px; margin-bottom: 10px;">${subCategory}</h4>`;
                     }

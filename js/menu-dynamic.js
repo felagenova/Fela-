@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const subCategoryOrder = [
             'Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi', // Vini
             'Alla spina', 'In latta', // Birre
+            'Generale', 'No/Low Alcohol', // Cocktails
             'LE SBERLE DI FELA', 'I Taglieri', 'Fela Fritti', 'Bonus Track' // Food
         ];
 

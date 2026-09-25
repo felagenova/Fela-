@@ -846,6 +846,10 @@ body.in-varigotti #animation-container {
     margin: 0; /* Rimuoviamo il margine per avvicinarlo al sottotitolo */
 }
 
+#cocktails-list .menu-section > h3 {
+    text-transform: uppercase;
+}
+
 .menu-item {
     margin-bottom: 25px;
 }
