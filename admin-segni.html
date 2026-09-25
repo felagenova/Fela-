@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        *{box-sizing:border-box}body{margin:0;background:#fff;color:#171717;font-family:"Red Hat Display",sans-serif}.top{display:flex;justify-content:space-between;align-items:center;padding:12px 24px}.top img{height:42px}.top a{color:#ff0403;font-weight:900;text-decoration:none}main{width:min(1200px,calc(100% - 32px));margin:20px auto 60px}h1{color:#ff0403;text-align:center;text-transform:uppercase}.card{max-width:480px;margin:30px auto;padding:24px;background:#f5f5f5;border-radius:12px}.card input,.card button{width:100%;margin-top:10px;padding:12px;border:0;border-radius:7px;font:inherit}.card input{background:#fff}.card button,.delete{color:#fff;background:#ff0403;font-weight:900;cursor:pointer}.toolbar{display:flex;justify-content:flex-end;margin-bottom:18px}.toolbar button{padding:9px 14px;border:0;border-radius:6px;color:#ff0403;background:#f3f3f3;font-weight:900;cursor:pointer}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}.sign{padding:10px;background:#f5f5f5;border-radius:10px}.sign canvas{display:block;width:100%;aspect-ratio:4/3;background:#fff}.sign footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:9px;font-size:11px}.delete{padding:7px 10px;border:0;border-radius:5px}.message{text-align:center} [hidden]{display:none!important}
+        *{box-sizing:border-box}body{margin:0;background:#fff;color:#171717;font-family:"Red Hat Display",sans-serif}.top{display:flex;justify-content:space-between;align-items:center;padding:12px 24px}.top img{height:42px}.top a{color:#ff0403;font-weight:900;text-decoration:none}main{width:min(1200px,calc(100% - 32px));margin:20px auto 60px}h1{color:#ff0403;text-align:center;text-transform:uppercase}.card{max-width:480px;margin:30px auto;padding:24px;background:#f5f5f5;border-radius:12px}.card input,.card button{width:100%;margin-top:10px;padding:12px;border:0;border-radius:7px;font:inherit}.card input{background:#fff}.card button,.delete{color:#fff;background:#ff0403;font-weight:900;cursor:pointer}.toolbar{display:flex;justify-content:flex-end;margin-bottom:18px}.toolbar button{padding:9px 14px;border:0;border-radius:6px;color:#ff0403;background:#f3f3f3;font-weight:900;cursor:pointer}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}.sign{padding:10px;background:#f5f5f5;border-radius:10px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease}.sign:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08)}.sign canvas{display:block;width:100%;aspect-ratio:4/3;background:#fff}.sign footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:9px;font-size:11px}.sign-actions{display:flex;align-items:center;gap:8px}.download-btn,.delete{padding:7px 10px;border:0;border-radius:5px;cursor:pointer}.download-btn{background:#171717;color:#fff;font-weight:700}.delete{padding:7px 10px;border:0;border-radius:5px}.message{text-align:center}.viewer-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:grid;place-items:center;padding:20px;z-index:50}.viewer-modal[hidden]{display:none}.viewer-panel{background:#fff;border-radius:16px;max-width:min(92vw,900px);width:100%;padding:16px;box-shadow:0 25px 70px rgba(0,0,0,.25)}.viewer-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.viewer-header h2{margin:0;color:#ff0403;font-size:1.1rem}.viewer-close,.viewer-download{border:0;border-radius:8px;padding:10px 12px;cursor:pointer;font:inherit}.viewer-close{background:#f3f3f3;color:#171717;font-weight:700}.viewer-download{background:#ff0403;color:#fff;font-weight:900}.viewer-image-wrap{background:#f6f6f6;border-radius:12px;padding:12px}.viewer-image-wrap img{display:block;width:100%;max-height:72vh;object-fit:contain;background:#fff;border-radius:8px}[hidden]{display:none!important}
         body,button,input{font-family:"Be Vietnam Pro",sans-serif!important}
     </style>
 </head>
@@ -32,6 +32,22 @@
             <div id="gallery" class="gallery"></div>
         </section>
     </main>
+
+    <div id="viewer-modal" class="viewer-modal" hidden>
+        <div class="viewer-panel" role="dialog" aria-modal="true" aria-label="Anteprima segno">
+            <div class="viewer-header">
+                <h2>Anteprima segno</h2>
+                <button id="viewer-close" type="button" class="viewer-close">Chiudi</button>
+            </div>
+            <div class="viewer-image-wrap">
+                <img id="viewer-image" alt="Segno ingrandito">
+            </div>
+            <div class="viewer-header" style="margin-top:12px; margin-bottom:0; justify-content:flex-end;">
+                <button id="viewer-download" type="button" class="viewer-download">Scarica PNG</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
         import { getFirestore, collection, query, orderBy, onSnapshot, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
@@ -45,7 +61,12 @@
         const privateArea = document.querySelector('#private-area');
         const gallery = document.querySelector('#gallery');
         const galleryMessage = document.querySelector('#gallery-message');
+        const viewerModal = document.querySelector('#viewer-modal');
+        const viewerImage = document.querySelector('#viewer-image');
+        const viewerDownload = document.querySelector('#viewer-download');
+        const viewerClose = document.querySelector('#viewer-close');
         let unsubscribe = null;
+        let activeDownloadUrl = '';
 
         function renderDrawing(canvas, strokes) {
             const ratio = 2;
@@ -68,6 +89,19 @@
             });
         }
 
+        function openViewer(canvas) {
+            const dataUrl = canvas.toDataURL('image/png');
+            activeDownloadUrl = dataUrl;
+            viewerImage.src = dataUrl;
+            viewerModal.hidden = false;
+        }
+
+        function closeViewer() {
+            viewerModal.hidden = true;
+            viewerImage.removeAttribute('src');
+            activeDownloadUrl = '';
+        }
+
         function listenForDrawings() {
             if (unsubscribe) unsubscribe();
             unsubscribe = onSnapshot(query(collection(database, 'segni'), orderBy('createdAt', 'desc')), (snapshot) => {
@@ -81,19 +115,55 @@
                     const footer = document.createElement('footer');
                     const date = document.createElement('span');
                     date.textContent = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleString('it-IT') : 'Appena ricevuto';
+
+                    const actions = document.createElement('div');
+                    actions.className = 'sign-actions';
+
+                    const download = document.createElement('button');
+                    download.type = 'button';
+                    download.className = 'download-btn';
+                    download.textContent = 'Scarica';
+                    download.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        const link = document.createElement('a');
+                        link.href = canvas.toDataURL('image/png');
+                        link.download = `segno-${drawingDoc.id}.png`;
+                        link.click();
+                    });
+
                     const remove = document.createElement('button');
                     remove.className = 'delete';
                     remove.textContent = 'Elimina';
-                    remove.addEventListener('click', async () => {
+                    remove.addEventListener('click', async (event) => {
+                        event.stopPropagation();
                         if (confirm('Eliminare definitivamente questo segno?')) await deleteDoc(doc(database, 'segni', drawingDoc.id));
                     });
-                    footer.append(date, remove);
+
+                    actions.append(download, remove);
+                    footer.append(date, actions);
                     item.append(canvas, footer);
+                    item.addEventListener('click', () => openViewer(canvas));
                     gallery.append(item);
                     renderDrawing(canvas, data.strokes);
                 });
             }, () => { galleryMessage.textContent = 'Impossibile caricare i segni.'; });
         }
+
+        viewerClose.addEventListener('click', closeViewer);
+        viewerModal.addEventListener('click', (event) => {
+            if (event.target === viewerModal) closeViewer();
+        });
+        viewerDownload.addEventListener('click', () => {
+            if (!activeDownloadUrl) return;
+            const link = document.createElement('a');
+            link.href = activeDownloadUrl;
+            link.download = 'segno-fela.png';
+            link.click();
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !viewerModal.hidden) closeViewer();
+        });
 
         document.querySelector('#login-form').addEventListener('submit', async (event) => {
             event.preventDefault();
