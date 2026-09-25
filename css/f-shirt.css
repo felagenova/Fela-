@@ -264,7 +264,7 @@ a {
     align-items: center;
     padding: 28px clamp(20px, 5vw, 72px);
     color: var(--red);
-    background: var(--cream);
+    background: #ffffff;
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;

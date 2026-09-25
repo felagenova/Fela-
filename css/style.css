@@ -1267,6 +1267,43 @@ body.in-varigotti #animation-container {
     margin: 0 auto;
 }
 
+.admin-page .site-header-nav {
+    background-color: #ffffff;
+    border-bottom: 2px solid #ff0403;
+    padding: 12px 24px;
+    box-shadow: 0 2px 8px rgba(17, 24, 39, 0.04);
+}
+
+.admin-page .nav-container {
+    max-width: 1200px;
+    gap: 20px;
+}
+
+.admin-page .nav-logo img {
+    height: 42px;
+}
+
+.admin-page .main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 22px;
+    margin-left: auto;
+}
+
+.admin-page .main-nav a {
+    margin-left: 0;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #ff0403;
+}
+
+.admin-page .hamburger-menu {
+    display: none;
+}
+
 .nav-logo {
     /* Assegna un nome univoco per la transizione del logo tra le pagine */
     view-transition-name: main-logo;
@@ -1376,6 +1413,28 @@ body.in-varigotti .nav-logo::after {
 
     .nav-open .hamburger-line:nth-child(2) { opacity: 0; }
     .nav-open .hamburger-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .admin-page .site-header-nav {
+        padding: 10px 16px;
+    }
+    .admin-page .nav-container {
+        gap: 12px;
+    }
+    .admin-page .main-nav {
+        position: static;
+        width: auto;
+        height: auto;
+        background: transparent;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 12px;
+        transform: none;
+        transition: none;
+    }
+    .admin-page .main-nav a {
+        font-size: 12px;
+    }
 }
 
 /* --- Keyframes per le traiettorie degli asset --- */
@@ -2217,10 +2276,15 @@ body.in-varigotti .nav-logo::after {
    ========================================= */
 
 /* Override per allargare il contenitore nella pagina admin */
+.admin-page {
+    background: #ffffff;
+}
+
 .admin-page .page-container {
-    max-width: 1600px; /* Molto più largo per accomodare la tabella */
+    max-width: 1600px;
     width: 95%;
     padding: 30px 20px;
+    background: #ffffff;
 }
 
 /* Wrapper specifico per la pagina admin (sovrascrive prenotazione.css) */
@@ -2232,16 +2296,41 @@ body.in-varigotti .nav-logo::after {
     padding: 0;
 }
 
+.admin-page .booking-wrapper > h1 {
+    background-color: #ffffff;
+    color: #ff0403;
+    border: 4px solid #ff0403;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+    font-weight: 800;
+    box-shadow: 0 10px 25px rgba(255, 4, 3, 0.08);
+}
+
 /* Stile a card per le sezioni */
 .admin-card {
-    background-color: #f3f0ce;
-    border-radius: 8px;
-    padding: 25px 30px;
+    position: relative;
+    background-color: #ffffff;
+    border: 2px solid rgba(255, 4, 3, 0.9);
+    border-radius: 14px;
+    padding: 28px 28px 22px;
     margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
     overflow: hidden;
-    /* overflow: hidden; Rimosso per evitare che tagli ombre o contenuti */
-    border: 2px solid #ff0403; /* Bordo rosso per coerenza */
+}
+
+.admin-card::before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    top: 12px;
+    height: 4px;
+    background: linear-gradient(90deg, #ff0403 0%, #ff6b5f 100%);
+    border-radius: 999px;
 }
 
 /* Assicura che gli input non sbordino */
@@ -2250,11 +2339,21 @@ body.in-varigotti .nav-logo::after {
 }
 
 .admin-card h2 {
+    position: relative;
     margin-top: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ff0403;
-    padding-bottom: 15px;
+    margin-bottom: 22px;
+    border-bottom: 2px solid rgba(255, 4, 3, 0.35);
+    padding: 18px 0 14px;
     color: #ff0403;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.admin-card .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
 }
 
 /* Stili unificati per i form dentro le admin cards */
@@ -2262,22 +2361,24 @@ body.in-varigotti .nav-logo::after {
 .admin-card .form-group select,
 .admin-card .form-group textarea {
     width: 100%;
-    padding: 12px;
-    border: 2px solid #ff0403;
-    border-radius: 8px;
-    background-color: #fdfdfd;
+    padding: 12px 14px;
+    border: 1.5px solid rgba(255, 4, 3, 0.7);
+    border-radius: 10px;
+    background-color: #ffffff;
     font-family: "Red Hat Display", sans-serif;
     font-size: 16px;
     color: #333;
     box-sizing: border-box;
-    transition: box-shadow 0.2s ease-in-out;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .admin-card .form-group input:focus,
 .admin-card .form-group select:focus,
 .admin-card .form-group textarea:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 4, 3, 0.3);
+    border-color: #ff0403;
+    box-shadow: 0 0 0 4px rgba(255, 4, 3, 0.12);
+    transform: translateY(-1px);
 }
 
 /* Stili per i badge di stato */
@@ -2327,30 +2428,38 @@ body.in-varigotti .nav-logo::after {
 /* Tabelle Admin */
 .admin-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 20px;
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
+    border: 1px solid rgba(255, 4, 3, 0.15);
+    box-shadow: 0 8px 20px rgba(17, 24, 39, 0.05);
 }
 
 .admin-table th, .admin-table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+    border-right: 1px solid rgba(17, 24, 39, 0.05);
     text-align: left;
     font-size: 14px;
     color: #333;
+    vertical-align: top;
 }
 
 .admin-table th {
-    background-color: #ff0403;
-    color: #f3f0ce;
+    background: linear-gradient(180deg, #ff0403 0%, #e60303 100%);
+    color: #ffffff;
     font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
-.admin-table tbody tr:hover { background-color: #f9f9f9; }
-.admin-table tbody tr:nth-child(even) { background-color: #fcfcfc; }
+.admin-table tbody tr:hover {
+    background-color: #fff7f7;
+}
+.admin-table tbody tr:nth-child(even) { background-color: #fffdfd; }
 
 /* Allineamenti specifici colonne */
 .admin-table th:last-child, .admin-table td:last-child { text-align: right; }
@@ -2360,8 +2469,8 @@ body.in-varigotti .nav-logo::after {
 /* Form Creazione Eventi */
 #add-special-event-form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 25px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
     align-items: end;
 }
 
@@ -2390,11 +2499,16 @@ body.in-varigotti .nav-logo::after {
 
 /* Form Login Admin */
 .admin-login-form {
-    max-width: 400px;
+    max-width: 480px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px;
+    padding: 12px 0;
+}
+
+.admin-login-form .form-group {
+    margin: 0;
 }
 
 /* --- RESPONSIVE ADMIN (Mobile) --- */
