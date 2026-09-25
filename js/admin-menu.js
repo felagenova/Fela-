@@ -147,120 +147,118 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderTable() {
-        itemsContainer.innerHTML = ''; // Pulisce il contenitore
+        itemsContainer.innerHTML = '';
 
         if (menuItems.length === 0) {
             itemsContainer.innerHTML = '<p>Nessun prodotto nel menu.</p>';
             return;
         }
 
-        // Raggruppa per categoria
         const groupedItems = menuItems.reduce((acc, item) => {
             (acc[item.category] = acc[item.category] || []).push(item);
             return acc;
         }, {});
 
-        // Determina quali categorie mostrare
         const categoriesToShow = activeCategory ? [activeCategory] : ['Vini', 'Birre', 'Cocktails', 'Food'];
         let hasContent = false;
 
-        categoriesToShow.forEach(category => {
-            if (groupedItems[category]) {
-                hasContent = true;
-                const categoryWrapper = document.createElement('div');
-                categoryWrapper.innerHTML = `<h3 style="color: #ff0403; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 20px;">${category}</h3>`;
+        categoriesToShow.forEach((category) => {
+            if (!groupedItems[category]) {
+                return;
+            }
 
-                // Raggruppa per sotto-categoria
-                const groupedBySubCategory = groupedItems[category].reduce((acc, item) => {
-                    const sub = item.sub_category || 'Generale';
-                    (acc[sub] = acc[sub] || []).push(item);
-                    return acc;
-                }, {});
+            hasContent = true;
+            const categoryWrapper = document.createElement('div');
+            categoryWrapper.innerHTML = `<h3 style="color: #ff0403; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 20px;">${category}</h3>`;
 
-                const orderedSubCategories = Object.keys(groupedBySubCategory).sort((a, b) => {
-                    const cocktailOrder = ['Generale', 'No/Low Alcohol'];
-                    const foodOrder = ['LE SBERLE DI FELA', 'I Taglieri', 'Fela Fritti', 'Bonus Track'];
-                    const wineOrder = ['Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi'];
-                    const beerOrder = ['Alla spina', 'In latta'];
-                    const orderMap = {
-                        'Vini': wineOrder,
-                        'Birre': beerOrder,
-                        'Cocktails': cocktailOrder,
-                        'Food': foodOrder
-                    };
+            const groupedBySubCategory = groupedItems[category].reduce((acc, item) => {
+                const sub = item.sub_category || 'Generale';
+                (acc[sub] = acc[sub] || []).push(item);
+                return acc;
+            }, {});
 
-                    const order = orderMap[category] || [];
-                    const indexA = order.indexOf(a);
-                    const indexB = order.indexOf(b);
-                    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-                    if (indexA !== -1) return -1;
-                    if (indexB !== -1) return 1;
-                    return a.localeCompare(b);
+            const orderMap = {
+                Vini: ['Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi'],
+                Birre: ['Alla spina', 'In latta'],
+                Cocktails: ['Generale', 'No/Low Alcohol'],
+                Food: ['LE SBERLE DI FELA', 'I Taglieri', 'Fela Fritti', 'Bonus Track']
+            };
+
+            const orderedSubCategories = Object.keys(groupedBySubCategory).sort((a, b) => {
+                const order = orderMap[category] || [];
+                const indexA = order.indexOf(a);
+                const indexB = order.indexOf(b);
+                if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                if (indexA !== -1) return -1;
+                if (indexB !== -1) return 1;
+                return a.localeCompare(b);
+            });
+
+            orderedSubCategories.forEach((subCategory) => {
+                if (subCategory !== 'Generale') {
+                    categoryWrapper.innerHTML += `<h4 style="font-style: italic; margin-top: 15px; margin-bottom: 10px;">${subCategory}</h4>`;
+                }
+
+                const table = document.createElement('table');
+                table.className = 'admin-table';
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th data-label="Nome">Nome</th>
+                            <th data-label="Prezzo">Prezzo</th>
+                            <th data-label="Descrizione">Descrizione</th>
+                            <th data-label="Allergeni">Allergeni</th>
+                            <th data-label="Disponibilità">Disponibilità</th>
+                            <th data-label="Azioni">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                `;
+
+                const tbody = table.querySelector('tbody');
+
+                groupedBySubCategory[subCategory].forEach((item) => {
+                    const isAvailable = item.available !== false;
+                    const statusBtnClass = isAvailable ? 'btn-open' : 'btn-close';
+                    const statusBtnText = isAvailable ? 'Disponibile' : 'Esaurito';
+
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td data-label="Nome">${item.name}</td>
+                        <td data-label="Prezzo">${item.price}</td>
+                        <td data-label="Descrizione">${item.description}</td>
+                        <td data-label="Allergeni">${item.allergens}</td>
+                        <td data-label="Disponibilità">
+                            <button class="action-btn ${statusBtnClass} btn-toggle-status" data-id="${item.id}" data-status="${isAvailable}">
+                                ${statusBtnText}
+                            </button>
+                        </td>
+                        <td data-label="Azioni">
+                            <button class="action-btn btn-edit" data-id="${item.id}">Modifica</button>
+                            <button class="action-btn btn-delete" data-id="${item.id}">Elimina</button>
+                        </td>
+                    `;
                 });
 
-                orderedSubCategories.forEach(subCategory => {
-                    if (subCategory !== 'Generale') {
-                         categoryWrapper.innerHTML += `<h4 style="font-style: italic; margin-top: 15px; margin-bottom: 10px;">${subCategory}</h4>`;
-                    }
+                categoryWrapper.appendChild(table);
+            });
 
-                    const table = document.createElement('table');
-                    table.className = 'admin-table';
-                    table.innerHTML = `
-                        <thead>
-                            <tr>
-                                <th data-label="Nome">Nome</th>
-                                <th data-label="Prezzo">Prezzo</th>
-                                <th data-label="Descrizione">Descrizione</th>
-                                <th data-label="Allergeni">Allergeni</th>
-                                <th data-label="Disponibilità">Disponibilità</th>
-                                <th data-label="Azioni">Azioni</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    `;
-                    const tbody = table.querySelector('tbody');
-
-                    groupedBySubCategory[subCategory].forEach(item => {
-                        const isAvailable = item.available !== false; // Default true se non specificato
-                        const statusBtnClass = isAvailable ? 'btn-open' : 'btn-close';
-                        const statusBtnText = isAvailable ? 'Disponibile' : 'Esaurito';
-
-                        const row = tbody.insertRow();
-                        row.innerHTML = `
-                            <td data-label="Nome">${item.name}</td>
-                            <td data-label="Prezzo">${item.price}</td>
-                            <td data-label="Descrizione">${item.description}</td>
-                            <td data-label="Allergeni">${item.allergens}</td>
-                            <td data-label="Disponibilità">
-                                <button class="action-btn ${statusBtnClass} btn-toggle-status" data-id="${item.id}" data-status="${isAvailable}">
-                                    ${statusBtnText}
-                                </button>
-                            </td>
-                            <td data-label="Azioni">
-                                <button class="action-btn btn-edit" data-id="${item.id}">Modifica</button>
-                                <button class="action-btn btn-delete" data-id="${item.id}">Elimina</button>
-                            </td>
-                        `;
-                    });
-                    categoryWrapper.appendChild(table);
-                }
-                itemsContainer.appendChild(categoryWrapper);
-            }
+            itemsContainer.appendChild(categoryWrapper);
         });
 
         if (!hasContent) {
             itemsContainer.innerHTML = `<p style="text-align:center; margin-top:20px;">Nessun prodotto trovato${activeCategory ? ' nella categoria <strong>' + activeCategory + '</strong>' : ''}.</p>`;
         }
 
-        // Aggiungi event listener ai nuovi pulsanti
-        document.querySelectorAll('.btn-edit').forEach(button => {
+        document.querySelectorAll('.btn-edit').forEach((button) => {
             button.addEventListener('click', () => startEdit(button.dataset.id));
         });
-        document.querySelectorAll('.btn-delete').forEach(button => {
+
+        document.querySelectorAll('.btn-delete').forEach((button) => {
             button.addEventListener('click', () => deleteItem(button.dataset.id));
         });
-        // Listener per il cambio stato rapido
-        document.querySelectorAll('.btn-toggle-status').forEach(button => {
+
+        document.querySelectorAll('.btn-toggle-status').forEach((button) => {
             button.addEventListener('click', () => toggleItemStatus(button.dataset.id, button.dataset.status === 'true'));
         });
     }
