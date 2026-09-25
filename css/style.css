@@ -846,6 +846,14 @@ body.in-varigotti #animation-container {
     margin: 0; /* Rimuoviamo il margine per avvicinarlo al sottotitolo */
 }
 
+.menu-section-header .section-subtitle {
+    margin: 6px 0 0;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 700;
+    color: #ff0403;
+}
+
 #cocktails-list .menu-section > h3 {
     text-transform: uppercase;
 }

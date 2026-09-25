@@ -120,7 +120,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Aggiunge il titolo della sotto-categoria se non è "Generale"
                 if (subCat !== 'Generale') {
                     if (category === 'Food') {
-                         section.innerHTML = `<div class="menu-section-header"><h3>${subCat}</h3></div>`;
+                        const isSberleSection = subCat === 'LE SBERLE DI FELA';
+                        const sectionTitle = isSberleSection ? 'LE SBERLE DI FELA' : subCat;
+                        const sectionSubtitle = isSberleSection ? '<p class="section-subtitle">Servite con patatine fritte</p>' : '';
+                        section.innerHTML = `<div class="menu-section-header"><h3>${sectionTitle}</h3>${sectionSubtitle}</div>`;
                     } else {
                          section.innerHTML = `<h3>${subCat}</h3>`;
                     }
