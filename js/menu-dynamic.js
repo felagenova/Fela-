@@ -2,8 +2,10 @@
 
 // Importa le funzioni necessarie da Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, onSnapshot, enableIndexedDbPersistence, setLogLevel } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { firebaseConfig, MENU_COLLECTION } from "./config.js";
+
+setLogLevel('error');
 
 // Inizializza Firebase
 const app = initializeApp(firebaseConfig);
@@ -24,15 +26,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (container) container.innerHTML = '<p style="text-align:center; color:#ff0403;">Caricamento menu...</p>';
     }
 
-    // Abilita la persistenza offline (Cache intelligente di Firestore)
+    // Abilita la persistenza offline solo quando è sicuro farlo.
+    // Nei preview locali o con più tab aperte, Firestore può fallire a causa del lock di cache.
+    // In quel caso usiamo automaticamente la cache in memoria senza bloccare il menu.
     try {
-        await enableIndexedDbPersistence(db);
-        console.log("Persistenza offline abilitata.");
+        if (window.location.protocol !== 'file:') {
+            await enableIndexedDbPersistence(db, { forceOwnership: true });
+            console.log("Persistenza offline abilitata.");
+        }
     } catch (err) {
-        if (err.code == 'failed-precondition') {
-            console.warn("Persistenza fallita: più schede aperte contemporaneamente.");
-        } else if (err.code == 'unimplemented') {
-            console.warn("Il browser non supporta la persistenza.");
+        if (err && err.code === 'failed-precondition') {
+            console.info("Persistenza offline disabilitata in questo ambiente: più tab o lock di cache.");
+        } else if (err && err.code === 'unimplemented') {
+            console.info("Il browser non supporta la persistenza offline.");
+        } else {
+            console.info("Persistenza offline non disponibile; uso la cache in memoria.");
         }
     }
 
@@ -88,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             'Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi', // Vini
             'Alla spina', 'In latta', // Birre
             'Generale', 'No/Low Alcohol', // Cocktails
-            'LE SBERLE DI FELA', 'I Taglieri', 'Fela Fritti', 'Bonus Track' // Food
+            'LE SBERLE DI FELA', 'I TAGLIERI', 'Fela Fritti', 'Bonus Track' // Food
         ];
 
         // Renderizza i prodotti
@@ -124,6 +132,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const sectionTitle = isSberleSection ? 'LE SBERLE DI FELA' : subCat;
                         const sectionSubtitle = isSberleSection ? '<p class="section-subtitle">Servite con patatine fritte & Salsa Special</p>' : '';
                         section.innerHTML = `<div class="menu-section-header"><h3>${sectionTitle}</h3>${sectionSubtitle}</div>`;
+                    } else if (category === 'Cocktails' && subCat === 'No/Low Alcohol') {
+                        section.innerHTML = `
+                            <div class="menu-section-header cocktails-subsection-header">
+                                <h3 class="cocktails-subsection-title">NO/LOW ALCOHOL</h3>
+                            </div>
+                        `;
                     } else {
                          section.innerHTML = `<h3>${subCat}</h3>`;
                     }
