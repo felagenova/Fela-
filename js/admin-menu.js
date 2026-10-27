@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const subCategoriesMap = {
         'Vini': ['Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi'],
         'Birre': ['Alla spina', 'In latta'],
-        'Cocktails': ['No/Low Alcohol'],
+        'Cocktails': [],
+        'No/Low Alcohol': [],
         'Food': ['LE SBERLE DI FELA', 'I Taglieri', 'Fela Fritti', 'Bonus Track']
     };
 
@@ -50,6 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
             option.textContent = sub;
             subCategorySelect.appendChild(option);
         });
+    }
+
+    function getDisplayCategory(item) {
+        return item.category === 'Cocktails' && item.sub_category === 'No/Low Alcohol'
+            ? 'No/Low Alcohol'
+            : item.category;
     }
 
     // Aggiorna le sottocategorie quando l'utente cambia la categoria principale
@@ -155,11 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const groupedItems = menuItems.reduce((acc, item) => {
-            (acc[item.category] = acc[item.category] || []).push(item);
+            const category = getDisplayCategory(item);
+            (acc[category] = acc[category] || []).push(item);
             return acc;
         }, {});
 
-        const categoriesToShow = activeCategory ? [activeCategory] : ['Vini', 'Birre', 'Cocktails', 'Food'];
+        const categoriesToShow = activeCategory ? [activeCategory] : ['Vini', 'Birre', 'Cocktails', 'No/Low Alcohol', 'Food'];
         let hasContent = false;
 
         categoriesToShow.forEach((category) => {
@@ -172,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryWrapper.innerHTML = `<h3 style="color: #ff0403; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 20px;">${category}</h3>`;
 
             const groupedBySubCategory = groupedItems[category].reduce((acc, item) => {
-                const sub = item.sub_category || 'Generale';
+                const sub = category === 'No/Low Alcohol' ? 'Generale' : item.sub_category || 'Generale';
                 (acc[sub] = acc[sub] || []).push(item);
                 return acc;
             }, {});
@@ -180,7 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const orderMap = {
                 Vini: ['Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi'],
                 Birre: ['Alla spina', 'In latta'],
-                Cocktails: ['Generale', 'No/Low Alcohol'],
+                Cocktails: ['Generale'],
+                'No/Low Alcohol': ['Generale'],
                 Food: ['LE SBERLE DI FELA', 'I Taglieri', 'Fela Fritti', 'Bonus Track']
             };
 
@@ -324,12 +333,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!item) return;
 
         document.getElementById('item_id').value = item.id;
-        document.getElementById('item_category').value = item.category;
+        const displayCategory = getDisplayCategory(item);
+        document.getElementById('item_category').value = displayCategory;
         
         // Aggiorna le opzioni della sottocategoria in base alla categoria caricata
         updateSubCategories();
         
-        document.getElementById('item_sub_category').value = item.sub_category || "";
+        document.getElementById('item_sub_category').value = displayCategory === 'No/Low Alcohol' ? '' : item.sub_category || "";
         document.getElementById('item_name').value = item.name;
         document.getElementById('item_price').value = item.price;
         document.getElementById('item_description').value = item.description;

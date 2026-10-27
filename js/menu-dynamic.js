@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         'Vini': 'vini-list',
         'Birre': 'birre-list',
         'Cocktails': 'cocktails-list',
+        'No/Low Alcohol': 'no-low-alcohol-list',
         'Food': 'food-list'
     };
 
@@ -84,10 +85,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Raggruppa i prodotti per Categoria -> Sotto-categoria
         const groupedItems = items.reduce((acc, item) => {
-            if (!acc[item.category]) acc[item.category] = {};
-            const sub = item.sub_category || 'Generale';
-            if (!acc[item.category][sub]) acc[item.category][sub] = [];
-            acc[item.category][sub].push(item);
+            const category = item.category === 'Cocktails' && item.sub_category === 'No/Low Alcohol'
+                ? 'No/Low Alcohol'
+                : item.category;
+            const sub = category === 'No/Low Alcohol' ? 'Generale' : item.sub_category || 'Generale';
+            if (!acc[category]) acc[category] = {};
+            if (!acc[category][sub]) acc[category][sub] = [];
+            acc[category][sub].push(item);
             return acc;
         }, {});
 
@@ -95,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const subCategoryOrder = [
             'Bianchi', 'Bollicine', 'Bollicine Rosé', 'Rossi', // Vini
             'Alla spina', 'In latta', // Birre
-            'Generale', 'No/Low Alcohol', // Cocktails
+            'Generale', // Cocktails
             'LE SBERLE DI FELA', 'I TAGLIERI', 'Fela Fritti', 'Bonus Track' // Food
         ];
 
@@ -132,12 +136,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const sectionTitle = isSberleSection ? 'LE SBERLE DI FELA' : subCat;
                         const sectionSubtitle = isSberleSection ? '<p class="section-subtitle">Servite con patatine fritte & Salsa Special</p>' : '';
                         section.innerHTML = `<div class="menu-section-header"><h3>${sectionTitle}</h3>${sectionSubtitle}</div>`;
-                    } else if (category === 'Cocktails' && subCat === 'No/Low Alcohol') {
-                        section.innerHTML = `
-                            <div class="menu-section-header cocktails-subsection-header">
-                                <h3 class="cocktails-subsection-title">NO/LOW ALCOHOL</h3>
-                            </div>
-                        `;
                     } else {
                          section.innerHTML = `<h3>${subCat}</h3>`;
                     }
